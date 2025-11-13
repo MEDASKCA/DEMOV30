@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Sparkles } from 'lucide-react';
+import { Send } from 'lucide-react';
 import TomLogo from './TomLogo';
 
 interface Message {
@@ -210,41 +210,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
 
     setIsSpeaking(true);
 
-    // Try Azure TTS first for realistic voice
-    try {
-      const response = await fetch('/api/tts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          text,
-          voice: 'onyx' // Deep, professional male voice (ChatGPT-like)
-        })
-      });
-
-      if (response.ok && response.headers.get('Content-Type')?.includes('audio')) {
-        // Play the Azure TTS audio
-        const audioBlob = await response.blob();
-        const audioUrl = URL.createObjectURL(audioBlob);
-        const audio = new Audio(audioUrl);
-
-        audio.play().catch(error => {
-          console.log('Audio playback failed, using browser fallback:', error);
-          speakWithBrowserVoice(text);
-        });
-
-        // Clean up URL after playing
-        audio.onended = () => {
-          URL.revokeObjectURL(audioUrl);
-          setIsSpeaking(false);
-        };
-
-        return; // Successfully using Azure TTS
-      }
-    } catch (error) {
-      console.log('Azure TTS not available, using browser fallback');
-    }
-
-    // Fallback to browser speech synthesis
+    // Use browser speech synthesis
     speakWithBrowserVoice(text);
   };
 

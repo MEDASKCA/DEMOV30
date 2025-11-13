@@ -32,31 +32,7 @@ export class TomAIService {
         };
       }
 
-      // Try Azure OpenAI RAG first if configured
-      try {
-        console.log('🤖 Trying Azure OpenAI RAG...');
-        const response = await fetch('/api/chat', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ message: userQuery })
-        });
-
-        if (response.ok) {
-          const result = await response.json();
-          console.log('✅ Azure OpenAI Response:', result);
-          if (result.success) {
-            return result;
-          }
-        }
-
-        // If Azure OpenAI fails, fall back to rule-based system
-        console.log('⚠️ Azure OpenAI not available, using fallback rule-based system');
-      } catch (error) {
-        console.log('❌ Azure OpenAI error, using fallback rule-based system:', error);
-      }
-
+      // Use direct database queries with pattern matching
       console.log('🔄 Using rule-based pattern matching...');
 
       // Today's schedule queries
