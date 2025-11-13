@@ -333,59 +333,59 @@ export default function DashboardView() {
             <button
               type="button"
               onClick={() => setShowTheatreOpsModal(true)}
-              className="text-left bg-blue-50 border border-blue-200 p-3 sm:p-6 rounded-lg hover:shadow-md hover:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer"
+              className="text-left bg-white border border-gray-200 p-3 sm:p-6 rounded-lg hover:shadow-md hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 cursor-pointer transition-all"
               aria-label="Open theatres operational details"
             >
               <div className="flex items-center justify-between mb-1 sm:mb-3">
-                <Activity className="w-5 h-5 text-blue-600" />
+                <Activity className="w-5 h-5 text-gray-700" />
                 {/* removed secondary Live chip to avoid duplication */}
               </div>
               <h3 className="text-xl sm:text-4xl font-bold text-gray-900">
                 {selectedUnit === 'recovery' ? 'N/A' : `${theatreStats.running}/${theatreStats.total}`}
               </h3>
-              <p className="text-gray-700 font-semibold mt-1 sm:mt-2 text-sm sm:text-base">Theatres</p>
+              <p className="text-gray-600 font-medium mt-1 sm:mt-2 text-sm sm:text-base">Theatres</p>
             </button>
 
             {/* Staff */}
             <button
               type="button"
               onClick={() => setShowStaffDutyModal(true)}
-              className="text-left bg-green-50 border border-green-200 p-3 sm:p-6 rounded-lg hover:shadow-md hover:border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400 cursor-pointer"
+              className="text-left bg-white border border-gray-200 p-3 sm:p-6 rounded-lg hover:shadow-md hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 cursor-pointer transition-all"
               aria-label="Open staff-on-duty details"
             >
               <div className="flex items-center justify-between mb-1 sm:mb-3">
-                <Users className="w-5 h-5 text-green-600" />
+                <Users className="w-5 h-5 text-gray-700" />
               </div>
               <h3 className="text-xl sm:text-4xl font-bold text-gray-900">{staffCount}</h3>
-              <p className="text-gray-700 font-semibold mt-1 sm:mt-2 text-sm sm:text-base">Staff</p>
+              <p className="text-gray-600 font-medium mt-1 sm:mt-2 text-sm sm:text-base">Staff</p>
             </button>
 
             {/* Turnover */}
             <button
               type="button"
               onClick={() => setShowTurnoverModal(true)}
-              className="text-left bg-purple-50 border border-purple-200 p-3 sm:p-6 rounded-lg hover:shadow-md hover:border-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-400 cursor-pointer"
+              className="text-left bg-white border border-gray-200 p-3 sm:p-6 rounded-lg hover:shadow-md hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 cursor-pointer transition-all"
               aria-label="Open turnover time details"
             >
               <div className="flex items-center justify-between mb-1 sm:mb-3">
-                <Clock className="w-5 h-5 text-purple-600" />
+                <Clock className="w-5 h-5 text-gray-700" />
               </div>
               <h3 className="text-xl sm:text-4xl font-bold text-gray-900">{avgTurnover > 0 ? `${avgTurnover}m` : 'N/A'}</h3>
-              <p className="text-gray-700 font-semibold mt-1 sm:mt-2 text-sm sm:text-base">Turnover</p>
+              <p className="text-gray-600 font-medium mt-1 sm:mt-2 text-sm sm:text-base">Turnover</p>
             </button>
 
             {/* Efficiency */}
             <button
               type="button"
               onClick={() => setShowEfficiencyModal(true)}
-              className="text-left bg-orange-50 border border-orange-200 p-3 sm:p-6 rounded-lg hover:shadow-md hover:border-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-400 cursor-pointer"
+              className="text-left bg-white border border-gray-200 p-3 sm:p-6 rounded-lg hover:shadow-md hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 cursor-pointer transition-all"
               aria-label="Open efficiency score details"
             >
               <div className="flex items-center justify-between mb-1 sm:mb-3">
-                <TrendingUp className="w-5 h-5 text-orange-600" />
+                <TrendingUp className="w-5 h-5 text-gray-700" />
               </div>
               <h3 className="text-xl sm:text-4xl font-bold text-gray-900">{avgEfficiency > 0 ? `${avgEfficiency}%` : 'N/A'}</h3>
-              <p className="text-gray-700 font-semibold mt-1 sm:mt-2 text-sm sm:text-base">Efficiency</p>
+              <p className="text-gray-600 font-medium mt-1 sm:mt-2 text-sm sm:text-base">Efficiency</p>
             </button>
           </div>
         </div>
@@ -613,9 +613,9 @@ export default function DashboardView() {
                   const occupancyRate = totalBays > 0 ? Math.round((occupiedBays / totalBays) * 100) : 0;
 
                   return totalBays > 0 ? (
-                    <div className="px-4 py-3 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">
+                    <div className="px-4 py-3 bg-gray-50 border-b border-gray-200">
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                        <div className="bg-white rounded-lg p-3 border border-blue-200">
+                        <div className="bg-white rounded-lg p-3 border border-gray-200">
                           <p className="text-xs font-semibold text-gray-600 uppercase">Occupancy</p>
                           <p className={`text-2xl font-bold mt-1 ${
                             occupancyRate > 85 ? 'text-red-600' :
@@ -627,21 +627,21 @@ export default function DashboardView() {
                           <p className="text-xs text-gray-500 mt-0.5">{occupiedBays}/{totalBays} bays</p>
                         </div>
 
-                        <div className="bg-white rounded-lg p-3 border border-green-200">
+                        <div className="bg-white rounded-lg p-3 border border-gray-200">
                           <p className="text-xs font-semibold text-gray-600 uppercase">Ready</p>
                           <p className="text-2xl font-bold text-green-600 mt-1">{patientsReady}</p>
                           <p className="text-xs text-gray-500 mt-0.5">For discharge</p>
                         </div>
 
-                        <div className="bg-white rounded-lg p-3 border border-orange-200">
+                        <div className="bg-white rounded-lg p-3 border border-gray-200">
                           <p className="text-xs font-semibold text-gray-600 uppercase">Long Stay</p>
                           <p className="text-2xl font-bold text-orange-600 mt-1">{longStayers}</p>
                           <p className="text-xs text-gray-500 mt-0.5">&gt;2 hours</p>
                         </div>
 
-                        <div className="bg-white rounded-lg p-3 border border-purple-200">
+                        <div className="bg-white rounded-lg p-3 border border-gray-200">
                           <p className="text-xs font-semibold text-gray-600 uppercase">Avg Time</p>
-                          <p className="text-2xl font-bold text-purple-600 mt-1">{Math.round(45 + Math.random() * 30)}m</p>
+                          <p className="text-2xl font-bold text-gray-700 mt-1">{Math.round(45 + Math.random() * 30)}m</p>
                           <p className="text-xs text-gray-500 mt-0.5">In recovery</p>
                         </div>
                       </div>
@@ -703,11 +703,11 @@ export default function DashboardView() {
 
                             {/* Efficiency metrics for this unit */}
                             {recovery.totalBays && (
-                              <div className="mb-3 p-2 bg-blue-50 rounded border border-blue-200">
+                              <div className="mb-3 p-2 bg-gray-50 rounded border border-gray-200">
                                 <div className="grid grid-cols-3 gap-2 text-center">
                                   <div>
                                     <p className="text-xs text-gray-600">Bays</p>
-                                    <p className="text-sm font-bold text-blue-700">{recovery.totalBays}</p>
+                                    <p className="text-sm font-bold text-gray-700">{recovery.totalBays}</p>
                                   </div>
                                   <div>
                                     <p className="text-xs text-gray-600">Occupied</p>
@@ -731,15 +731,15 @@ export default function DashboardView() {
                                   return (
                                     <div key={key} className="flex items-center justify-between pb-2 mb-2 border-b border-gray-200">
                                       <div className="flex items-center flex-1 min-w-0">
-                                        <span className="text-[10px] sm:text-sm mr-2 font-semibold text-purple-700">
+                                        <span className="text-[10px] sm:text-sm mr-2 font-semibold text-gray-700">
                                           Coordinator:
                                         </span>
-                                        <span className="cursor-pointer text-purple-600 hover:underline font-medium text-[10px] sm:text-sm">
+                                        <span className="cursor-pointer text-gray-900 hover:underline font-medium text-[10px] sm:text-sm">
                                           {staff.name}
                                         </span>
                                       </div>
                                       {staff.shift && (
-                                        <span className="text-[9px] sm:text-xs ml-2 px-1.5 py-0.5 rounded bg-purple-50 text-purple-700">
+                                        <span className="text-[9px] sm:text-xs ml-2 px-1.5 py-0.5 rounded bg-gray-100 text-gray-700">
                                           {staff.shift}
                                         </span>
                                       )}
@@ -839,11 +839,11 @@ export default function DashboardView() {
           {/* RIGHT column – kept for desktop; hidden on mobile */}
           <aside className="hidden md:block md:w-[35%] space-y-6">
             {/* Critical Alerts Panel */}
-            <section className="bg-white rounded-lg border border-red-200 shadow-sm">
-              <div className="bg-gradient-to-r from-red-600 to-red-700 text-white px-4 py-3 rounded-t-lg">
+            <section className="bg-white rounded-lg border border-gray-200 shadow-sm">
+              <div className="bg-gray-50 border-b border-gray-200 px-4 py-3 rounded-t-lg">
                 <div className="flex items-center gap-2">
-                  <AlertTriangle className="w-5 h-5" />
-                  <h3 className="font-bold text-lg">Critical Alerts</h3>
+                  <AlertTriangle className="w-5 h-5 text-gray-700" />
+                  <h3 className="font-bold text-lg text-gray-900">Critical Alerts</h3>
                 </div>
               </div>
               <div className="p-4 max-h-[300px] overflow-y-auto">
@@ -929,11 +929,11 @@ export default function DashboardView() {
             </section>
 
             {/* Upcoming Lists Panel */}
-            <section className="bg-white rounded-lg border border-blue-200 shadow-sm">
-              <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-3 rounded-t-lg">
+            <section className="bg-white rounded-lg border border-gray-200 shadow-sm">
+              <div className="bg-gray-50 border-b border-gray-200 px-4 py-3 rounded-t-lg">
                 <div className="flex items-center gap-2">
-                  <Clock className="w-5 h-5" />
-                  <h3 className="font-bold text-lg">Upcoming</h3>
+                  <Clock className="w-5 h-5 text-gray-700" />
+                  <h3 className="font-bold text-lg text-gray-900">Upcoming</h3>
                 </div>
               </div>
               <div className="p-4 max-h-[300px] overflow-y-auto">
