@@ -1155,7 +1155,7 @@ export default function AdvancedTemplateBuilder() {
 
             <button
               onClick={saveTemplate}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-cyan-500 text-white rounded-md hover:bg-cyan-600 transition-colors text-sm font-medium"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-md hover:from-blue-700 hover:to-cyan-700 transition-colors text-sm font-medium"
             >
               <Save className="w-4 h-4" />
               Save
@@ -1163,7 +1163,7 @@ export default function AdvancedTemplateBuilder() {
 
             <button
               onClick={exportToExcel}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-cyan-500 text-white rounded-md hover:bg-cyan-600 transition-colors text-sm font-medium"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-md hover:from-blue-700 hover:to-cyan-700 transition-colors text-sm font-medium"
             >
               <Download className="w-4 h-4" />
               Export
@@ -1270,7 +1270,7 @@ export default function AdvancedTemplateBuilder() {
                 <div className="flex gap-2">
                   <button
                     onClick={mergeCells}
-                    className="flex items-center gap-1.5 px-3 py-1.5 bg-cyan-500 text-white rounded-md hover:bg-cyan-600 transition-colors text-sm"
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-md hover:from-blue-700 hover:to-cyan-700 transition-colors text-sm"
                   >
                     <Grid3x3 className="w-4 h-4" />
                     Merge Cells
@@ -2065,7 +2065,7 @@ function FieldsPanel({ systemFields, customFields, onInsert, onAddCustomField, o
 
               <button
                 onClick={handleAddField}
-                className="w-full px-3 py-2 bg-cyan-500 text-white rounded-md hover:bg-cyan-600 transition-colors text-sm font-medium"
+                className="w-full px-3 py-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-md hover:from-blue-700 hover:to-cyan-700 transition-colors text-sm font-medium"
               >
                 Add Field
               </button>

@@ -1279,46 +1279,46 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
   }, [auxUnitContextMenu.visible]);
 
   return (
-    <div className="min-h-screen print:min-h-0 print:bg-white print:p-0" style={{ background: '#A4B5B0' }}>
+    <div className="min-h-screen print:min-h-0 print:bg-white print:p-0 bg-gray-50">
       {/* Print-only header */}
       <div className="hidden print:block text-center py-1">
         <h1 className="text-xs font-bold text-gray-900">{currentHospital?.name || 'Hospital'} - Staff Allocation for {new Date(selectedDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</h1>
       </div>
 
       {/* Header */}
-      <div className="shadow-md p-3 sm:p-4 mb-4 print:hidden" style={{ background: '#455A64' }}>
+      <div className="bg-white shadow-sm border-b border-gray-200 p-3 sm:p-4 mb-4 print:hidden">
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 flex-wrap">
           {/* Date Selector */}
           <div className="flex items-center gap-2">
-            <label className="text-sm font-medium text-white">Date:</label>
+            <label className="text-sm font-medium text-gray-700">Date:</label>
             <input
               type="date"
               value={selectedDate}
               onChange={(e) => setSelectedDate(e.target.value)}
-              className="px-3 py-1.5 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-teal-500"
+              className="px-3 py-1.5 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
             />
-            <span className="text-sm font-medium text-white">{dayName}</span>
+            <span className="text-sm font-medium text-gray-700">{dayName}</span>
           </div>
 
           {/* Font Size Control */}
           <div className="flex items-center gap-2">
-            <label className="text-sm font-medium text-white">Font Size:</label>
+            <label className="text-sm font-medium text-gray-700">Font Size:</label>
             <button
               onClick={() => setFontSize(prev => Math.max(50, prev - 10))}
-              className="px-2 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700"
+              className="px-2 py-1 bg-gray-200 text-gray-700 text-sm rounded hover:bg-gray-300"
             >
               -
             </button>
-            <span className="text-sm font-medium text-white w-12 text-center">{fontSize}%</span>
+            <span className="text-sm font-medium text-gray-700 w-12 text-center">{fontSize}%</span>
             <button
               onClick={() => setFontSize(prev => Math.min(200, prev + 10))}
-              className="px-2 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700"
+              className="px-2 py-1 bg-gray-200 text-gray-700 text-sm rounded hover:bg-gray-300"
             >
               +
             </button>
             <button
               onClick={() => setFontSize(typeof window !== 'undefined' && window.innerWidth < 768 ? 110 : 180)}
-              className="px-2 py-1 bg-gray-600 text-white text-xs rounded hover:bg-gray-700"
+              className="px-2 py-1 bg-gray-200 text-gray-700 text-xs rounded hover:bg-gray-300"
             >
               Reset
             </button>
@@ -1329,13 +1329,13 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
             <button
               onClick={() => window.print()}
               className="px-3 py-1.5 text-white text-xs sm:text-sm font-medium rounded transition-all flex items-center gap-1"
-              style={{ background: '#2C5F5D' }}
+              className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700"
             >
               <Printer className="w-3 h-3 sm:w-4 sm:h-4" />
               Print
             </button>
 
-            <button className="px-3 py-1.5 text-white text-xs sm:text-sm font-medium rounded transition-all flex items-center gap-1" style={{ background: '#2C5F5D' }}>
+            <button className="px-3 py-1.5 text-white text-xs sm:text-sm font-medium rounded transition-all flex items-center gap-1" className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700">
               <Save className="w-3 h-3 sm:w-4 sm:h-4" />
               Save
             </button>
@@ -1353,13 +1353,13 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
           {/* Extra Controls (Collapsible) */}
           {showExtraControls && (
           <div className="flex flex-wrap gap-2">
-            <label className="px-3 py-1.5 text-white text-xs sm:text-sm font-medium rounded transition-all cursor-pointer flex items-center gap-1" style={{ background: '#2C5F5D' }}>
+            <label className="px-3 py-1.5 text-white text-xs sm:text-sm font-medium rounded transition-all cursor-pointer flex items-center gap-1" className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700">
               <Upload className="w-3 h-3 sm:w-4 sm:h-4" />
               Upload Scrub
               <input type="file" accept=".xlsx,.xls" onChange={(e) => handleFileUpload(e, 'scrub')} className="hidden" />
             </label>
 
-            <label className="px-3 py-1.5 text-white text-xs sm:text-sm font-medium rounded transition-all cursor-pointer flex items-center gap-1" style={{ background: '#2C5F5D' }}>
+            <label className="px-3 py-1.5 text-white text-xs sm:text-sm font-medium rounded transition-all cursor-pointer flex items-center gap-1" className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700">
               <Upload className="w-3 h-3 sm:w-4 sm:h-4" />
               Upload Anaes
               <input type="file" accept=".xlsx,.xls" onChange={(e) => handleFileUpload(e, 'anaes')} className="hidden" />
@@ -1437,7 +1437,7 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
             <button
               onClick={() => setShowStaffList(!showStaffList)}
               className="px-3 py-1.5 text-white text-xs sm:text-sm font-medium rounded transition-all flex items-center gap-1"
-              style={{ background: '#2C5F5D' }}
+              className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700"
             >
               <List className="w-3 h-3 sm:w-4 sm:h-4" />
               Staff List
@@ -1455,7 +1455,7 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
 
         {/* Staff Summary */}
         {(scrubStaff.length > 0 || anaesStaff.length > 0) && (
-          <div className="mt-3 pt-3 border-t print:hidden" style={{ borderColor: '#7A8C87' }}>
+          <div className="mt-3 pt-3 border-t print:hidden" style={{ borderColor: '#E5E7EB' }}>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               <div className="text-center">
                 <p className="text-xs text-gray-200">Total Scrub Staff</p>
