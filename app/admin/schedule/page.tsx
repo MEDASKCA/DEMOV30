@@ -476,43 +476,43 @@ function AdminSchedulePageContent() {
                   {requirementsSubTab === 'roles' && (
                     <div className="space-y-6">
                       {/* Step 1: Define Roles */}
-                      <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-orange-200 transition-all hover:shadow-xl">
-                        <div className="px-4 py-3 border-b border-orange-200" style={{background: 'linear-gradient(135deg, #3B82F6 0%, #06B6D4 50%, #8B5CF6 100%)'}}>
-                          <h2 className="text-base font-bold flex items-center gap-2 text-white">
-                            <Settings className="w-5 h-5 text-white flex-shrink-0" />
+                      <div className="w-full bg-white rounded-lg shadow border border-gray-200">
+                        <div className="px-2 md:px-4 py-2 md:py-3 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-cyan-50" style={{//  'linear-gradient(135deg, #3B82F6 0%, #06B6D4 50%, #8B5CF6 100%)'}}>
+                          <h2 className="text-sm md:text-base font-bold flex items-center gap-2 text-gray-900">
+                            <Settings className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
                             <span>Step 1: Define Roles</span>
                           </h2>
-                          <p className="text-sm mt-1 text-white/90">Configure unit coordinators, special units, and staff pool sections</p>
+                          <p className="text-xs md:text-sm mt-1 text-gray-600">Configure unit coordinators, special units, and staff pool sections</p>
                         </div>
-                        <div className="p-5">
+                        <div className="p-2 md:p-4">
                           <AllocationConfigManager />
                         </div>
                       </div>
 
                       {/* Step 2: Configure Default Theatre Staffing */}
-                      <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-orange-200 transition-all hover:shadow-xl">
-                        <div className="px-4 py-3 border-b border-orange-200" style={{background: 'linear-gradient(135deg, #3B82F6 0%, #06B6D4 50%, #8B5CF6 100%)'}}>
-                          <h2 className="text-base font-bold flex items-center gap-2 text-white">
-                            <Users className="w-5 h-5 text-white flex-shrink-0" />
+                      <div className="w-full bg-white rounded-lg shadow border border-gray-200">
+                        <div className="px-2 md:px-4 py-2 md:py-3 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-cyan-50" style={{//  'linear-gradient(135deg, #3B82F6 0%, #06B6D4 50%, #8B5CF6 100%)'}}>
+                          <h2 className="text-sm md:text-base font-bold flex items-center gap-2 text-gray-900">
+                            <Users className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
                             <span>Step 2: Configure Default Theatre Staffing</span>
                           </h2>
-                          <p className="text-sm mt-1 text-white/90">Set default staffing requirements for theatre sessions</p>
+                          <p className="text-xs md:text-sm mt-1 text-gray-600">Set default staffing requirements for theatre sessions</p>
                         </div>
-                        <div className="p-5">
+                        <div className="p-2 md:p-4">
                           <DefaultTheatreStaffing />
                         </div>
                       </div>
 
                       {/* Step 3: Map Additional Requirements */}
-                      <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-orange-200 transition-all hover:shadow-xl">
-                        <div className="px-4 py-3 border-b border-orange-200" style={{background: 'linear-gradient(135deg, #3B82F6 0%, #06B6D4 50%, #8B5CF6 100%)'}}>
-                          <h2 className="text-base font-bold flex items-center gap-2 text-white">
-                            <ClipboardList className="w-5 h-5 text-white flex-shrink-0" />
+                      <div className="w-full bg-white rounded-lg shadow border border-gray-200">
+                        <div className="px-2 md:px-4 py-2 md:py-3 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-cyan-50" style={{//  'linear-gradient(135deg, #3B82F6 0%, #06B6D4 50%, #8B5CF6 100%)'}}>
+                          <h2 className="text-sm md:text-base font-bold flex items-center gap-2 text-gray-900">
+                            <ClipboardList className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
                             <span>Step 3: Map Additional Requirements</span>
                           </h2>
-                          <p className="text-sm mt-1 text-white/90">Map procedure keywords to additional staffing requirements</p>
+                          <p className="text-xs md:text-sm mt-1 text-gray-600">Map procedure keywords to additional staffing requirements</p>
                         </div>
-                        <div className="p-5">
+                        <div className="p-2 md:p-4">
                           <StaffRequirementMapper />
                         </div>
                       </div>
