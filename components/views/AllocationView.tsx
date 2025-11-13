@@ -844,6 +844,13 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
         });
       });
 
+      console.log(`🏥 Loaded theatres:`, {
+        fourthFloor: fourthFloorData.length,
+        fourthFloorNames: fourthFloorData.map(t => t.name),
+        thirdFloor: thirdFloorData.length,
+        thirdFloorNames: thirdFloorData.map(t => t.name)
+      });
+
       setFourthFloorTheatres(fourthFloorData);
       setThirdFloorTheatres(thirdFloorData);
       setLoading(false);
@@ -1225,6 +1232,8 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
         setAutoRosterAllocations(allAllocations);
 
         console.log(`\n✅ Auto-roster generation complete for ${dates.length} days!`);
+        console.log(`📊 Allocation keys:`, Array.from(allAllocations.keys()));
+        console.log(`📊 Sample allocation:`, Array.from(allAllocations.values())[0]);
         alert(`Successfully generated staff allocations for ${dates.length} days!\n\nTotal sessions: ${allAllocations.size}`);
 
       } catch (error) {
@@ -1630,6 +1639,11 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
                                 // Allocation mode: Show actual staff assignments
                                 const sessionId = `${fourthFloorTheatre.id}-${selectedDate}`;
                                 const allocation = autoRosterAllocations.get(sessionId);
+
+                                console.log(`🔍 Theatre: ${fourthFloorTheatre.name}, sessionId="${sessionId}", found=${!!allocation}`);
+                                if (autoRosterAllocations.size === 0) {
+                                  console.log('⚠️ autoRosterAllocations Map is EMPTY');
+                                }
 
                                 if (!allocation || allocation.roles.length === 0) {
                                   return (
