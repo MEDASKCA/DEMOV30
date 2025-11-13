@@ -1499,7 +1499,7 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
               <td className="border border-gray-900 bg-white p-0">
                 <div className="grid h-full" style={{ gridTemplateColumns: `${leftColumnWidth}% ${100 - leftColumnWidth}%` }}>
                   <div className="border-r border-gray-900 px-0.5 py-0 font-bold text-gray-900 bg-blue-200 flex items-center justify-center" style={{ fontSize: `${0.3125 * fontSize / 100}rem`, minHeight: `${0.75 * fontSize / 100}rem` }}>1490</div>
-                  <div className={`px-0.5 py-0 flex items-center justify-center ${templateMode ? 'bg-amber-50' : 'bg-white'}`} style={{ minHeight: `${0.75 * fontSize / 100}rem` }}>
+                  <div className={`px-0.5 py-0 flex items-center justify-center ${templateMode ? 'bg-gray-50' : 'bg-white'}`} style={{ minHeight: `${0.75 * fontSize / 100}rem` }}>
                     <div className="leading-[1.35] w-full text-center" style={{ fontSize: `${0.3125 * fontSize / 100}rem` }}>
                       {templateMode ? (
                         <span className="text-gray-600 font-medium">Band 7 (Coordinator)</span>
@@ -1513,7 +1513,7 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
               <td className="border border-gray-900 bg-white p-0">
                 <div className="grid h-full" style={{ gridTemplateColumns: `${leftColumnWidth}% ${100 - leftColumnWidth}%` }}>
                   <div className="border-r border-gray-900 px-0.5 py-0 font-bold text-gray-900 bg-blue-200 flex items-center justify-center" style={{ fontSize: `${0.3125 * fontSize / 100}rem`, minHeight: `${0.75 * fontSize / 100}rem` }}>45871</div>
-                  <div className={`px-0.5 py-0 flex items-center justify-center ${templateMode ? 'bg-amber-50' : 'bg-white'}`} style={{ minHeight: `${0.75 * fontSize / 100}rem` }}>
+                  <div className={`px-0.5 py-0 flex items-center justify-center ${templateMode ? 'bg-gray-50' : 'bg-white'}`} style={{ minHeight: `${0.75 * fontSize / 100}rem` }}>
                     <div className="leading-[1.35] w-full text-center" style={{ fontSize: `${0.3125 * fontSize / 100}rem` }}>
                       {templateMode ? (
                         <span className="text-gray-600 font-medium">Band 7 (Coordinator)</span>
@@ -1532,7 +1532,7 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
               <td className="border border-gray-900 bg-white p-0">
                 <div className="grid h-full" style={{ gridTemplateColumns: `${leftColumnWidth}% ${100 - leftColumnWidth}%` }}>
                   <div className="border-r border-gray-900 px-0.5 py-0 font-bold text-gray-900 bg-blue-200 flex items-center justify-center" style={{ fontSize: `${0.3125 * fontSize / 100}rem`, minHeight: `${0.75 * fontSize / 100}rem` }}>1494</div>
-                  <div className={`px-0.5 py-0 flex items-center justify-center ${templateMode ? 'bg-amber-50' : 'bg-white'}`} style={{ minHeight: `${0.75 * fontSize / 100}rem` }}>
+                  <div className={`px-0.5 py-0 flex items-center justify-center ${templateMode ? 'bg-gray-50' : 'bg-white'}`} style={{ minHeight: `${0.75 * fontSize / 100}rem` }}>
                     <div className="leading-[1.35] w-full text-center" style={{ fontSize: `${0.3125 * fontSize / 100}rem` }}>
                       {templateMode ? (
                         <span className="text-gray-600 font-medium">Anaes N/P (not allocated)</span>
@@ -1608,7 +1608,7 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
                             </div>
                           </div>
                           <div
-                            className={`px-0.5 py-0.5 ${templateMode ? 'bg-amber-50 cursor-pointer hover:bg-amber-100' : 'bg-white'} flex flex-col gap-0 min-h-[42px] transition-colors`}
+                            className={`px-0.5 py-0.5 ${templateMode ? 'bg-gray-50 cursor-pointer hover:bg-gray-100' : 'bg-white'} flex flex-col gap-0 min-h-[42px] transition-colors`}
                             onClick={templateMode ? (e) => handleTheatreStaffClick(e, fourthFloorTheatre, specialty) : undefined}
                           >
                             <div className={`flex flex-col gap-0 w-full ${templateMode ? 'pointer-events-none' : ''}`}>
@@ -1727,7 +1727,7 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
                                   <div className="mt-0.5" style={{ fontSize: `${0.3125 * fontSize / 100}rem` }}>{getSessionTypeAbbr(auxUnitSessionTypes[specialUnit.id])}</div>
                                 )}
                               </div>
-                              <div className={`px-0.5 py-0.5 ${templateMode ? 'bg-amber-50' : 'bg-white'} flex flex-col gap-0`} style={{ minHeight: `${minHeight}px` }}>
+                              <div className={`px-0.5 py-0.5 ${templateMode ? 'bg-gray-50' : 'bg-white'} flex flex-col gap-0`} style={{ minHeight: `${minHeight}px` }}>
                                 <div className="flex flex-col gap-0 w-full">
                                   {specialUnit.type === 'night-shift' ? (
                                     templateMode ? (
@@ -1824,7 +1824,7 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
                             </div>
                           </div>
                           <div
-                            className={`px-0.5 py-0.5 ${templateMode ? 'bg-amber-50 cursor-pointer hover:bg-amber-100' : 'bg-white'} flex flex-col gap-0 min-h-[42px] transition-colors`}
+                            className={`px-0.5 py-0.5 ${templateMode ? 'bg-gray-50 cursor-pointer hover:bg-gray-100' : 'bg-white'} flex flex-col gap-0 min-h-[42px] transition-colors`}
                             onClick={templateMode ? (e) => handleTheatreStaffClick(e, thirdFloorTheatre, specialty) : undefined}
                           >
                             <div className={`flex flex-col gap-0 w-full ${templateMode ? 'pointer-events-none' : ''}`}>
@@ -1938,7 +1938,7 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
                                   <div className="mt-0.5" style={{ fontSize: `${0.3125 * fontSize / 100}rem` }}>{getSessionTypeAbbr(auxUnitSessionTypes[specialUnit.id])}</div>
                                 )}
                               </div>
-                              <div className={`px-0.5 py-0.5 ${templateMode ? 'bg-amber-50' : 'bg-white'} flex flex-col gap-0`} style={{ minHeight: `${minHeight}px` }}>
+                              <div className={`px-0.5 py-0.5 ${templateMode ? 'bg-gray-50' : 'bg-white'} flex flex-col gap-0`} style={{ minHeight: `${minHeight}px` }}>
                                 <div className="flex flex-col gap-0 w-full">
                                   {specialUnit.type === 'night-shift' ? (
                                     templateMode ? (
@@ -2017,7 +2017,7 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
                       <td className="border-l border-r border-b border-gray-900 bg-white p-0.5 text-left align-top" rowSpan={maxRows + 2}>
                         <div className="flex flex-col gap-0 items-start">
                           {/* MANAGEMENT DAY Section */}
-                          <div className={`w-full ${templateMode ? 'bg-amber-50 p-1' : ''}`}>
+                          <div className={`w-full ${templateMode ? 'bg-gray-50 p-1' : ''}`}>
                             <div className="font-bold text-gray-900 bg-blue-200 px-0.5 py-0.5 mb-0.5" style={{ fontSize: `${0.375 * fontSize / 100}rem` }}>MANAGEMENT DAY</div>
                             {templateMode ? (
                               <div className="text-gray-600 italic text-center py-2" style={{ fontSize: `${0.3125 * fontSize / 100}rem` }}>2-3 Band 7s per day</div>
@@ -2027,7 +2027,7 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
                           </div>
 
                           {/* FLOATERS Section */}
-                          <div className={`w-full mt-1 ${templateMode ? 'bg-amber-50 p-1' : ''}`}>
+                          <div className={`w-full mt-1 ${templateMode ? 'bg-gray-50 p-1' : ''}`}>
                             <div className="font-bold text-gray-900 bg-blue-200 px-0.5 py-0.5 mb-0.5" style={{ fontSize: `${0.375 * fontSize / 100}rem` }}>FLOATERS</div>
                             {templateMode ? (
                               <div className="text-gray-600 italic text-center py-2" style={{ fontSize: `${0.3125 * fontSize / 100}rem` }}>Max 2 staff (any role)</div>
@@ -2037,7 +2037,7 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
                           </div>
 
                           {/* UNALLOCATED Section */}
-                          <div className={`w-full mt-1 ${templateMode ? 'bg-amber-50 p-1' : ''}`}>
+                          <div className={`w-full mt-1 ${templateMode ? 'bg-gray-50 p-1' : ''}`}>
                             <div className="font-bold text-gray-900 bg-blue-200 px-0.5 py-0.5 mb-0.5" style={{ fontSize: `${0.375 * fontSize / 100}rem` }}>UNALLOCATED</div>
                             {templateMode ? (
                               <div className="text-gray-600 italic text-center py-2" style={{ fontSize: `${0.3125 * fontSize / 100}rem` }}>Theatre cancellations only</div>
@@ -2410,7 +2410,7 @@ function TheatreBlock({ theatre, specialties, sessionTypes, onSpecialtyChange, o
                 onContextMenu={(e) => !templateMode && onRoleRightClick(idx, e)}
                 className={`flex items-center gap-2 text-[11px] px-2 py-1 ${!templateMode ? 'cursor-pointer' : ''} transition-colors border ${
                   templateMode
-                    ? 'bg-amber-50 border-amber-200'
+                    ? 'bg-gray-50 border-gray-200'
                     : role.assignedStaff
                     ? 'bg-blue-50 hover:bg-gray-300 border-blue-400'
                     : 'bg-white hover:bg-gray-50 border-gray-300'

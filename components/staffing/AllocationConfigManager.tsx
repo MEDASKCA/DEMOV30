@@ -304,10 +304,11 @@ export default function AllocationConfigManager() {
             </p>
             <button
               onClick={handleAddCoordinator}
-              className="flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors"
+              className="flex items-center gap-1 px-2 py-1 md:px-4 md:py-2 bg-teal-600 text-white text-xs md:text-sm rounded hover:bg-teal-700 transition-colors"
             >
-              <Plus className="w-4 h-4" />
-              Add Coordinator
+              <Plus className="w-3 h-3 md:w-4 md:h-4" />
+              <span className="hidden sm:inline">Add Coordinator</span>
+              <span className="sm:hidden">Add</span>
             </button>
           </div>
 
@@ -370,10 +371,11 @@ export default function AllocationConfigManager() {
             </p>
             <button
               onClick={handleAddSpecialUnit}
-              className="flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors"
+              className="flex items-center gap-1 px-2 py-1 md:px-4 md:py-2 bg-teal-600 text-white text-xs md:text-sm rounded hover:bg-teal-700 transition-colors"
             >
-              <Plus className="w-4 h-4" />
-              Add Special Unit
+              <Plus className="w-3 h-3 md:w-4 md:h-4" />
+              <span className="hidden sm:inline">Add Special Unit</span>
+              <span className="sm:hidden">Add</span>
             </button>
           </div>
 
@@ -438,10 +440,11 @@ export default function AllocationConfigManager() {
             </p>
             <button
               onClick={handleAddPoolSection}
-              className="flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors"
+              className="flex items-center gap-1 px-2 py-1 md:px-4 md:py-2 bg-teal-600 text-white text-xs md:text-sm rounded hover:bg-teal-700 transition-colors"
             >
-              <Plus className="w-4 h-4" />
-              Add Pool Section
+              <Plus className="w-3 h-3 md:w-4 md:h-4" />
+              <span className="hidden sm:inline">Add Pool Section</span>
+              <span className="sm:hidden">Add</span>
             </button>
           </div>
 
