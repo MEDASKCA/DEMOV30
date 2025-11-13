@@ -384,8 +384,69 @@ button.theme-toggle:hover {
   }
 }
 
-/* Listening indicator dot */
-.listening-indicator {
+/* Speaking state animations */
+.tom-logo-container.speaking .tom-logo-wrapper {
+  filter: drop-shadow(0 8px 24px rgba(16, 185, 129, 0.6));
+  animation: logoFloat 1.5s ease-in-out infinite;
+}
+
+/* Reactive logo blinking - Listening (cyan pulse) */
+.logo-blink-listening {
+  animation: blinkListening 1.2s ease-in-out infinite;
+}
+
+@keyframes blinkListening {
+  0%, 100% {
+    opacity: 1;
+    filter: brightness(1) drop-shadow(0 0 8px rgba(6, 182, 212, 0.5));
+  }
+  50% {
+    opacity: 0.85;
+    filter: brightness(1.15) drop-shadow(0 0 16px rgba(6, 182, 212, 0.8));
+  }
+}
+
+/* Reactive logo blinking - Speaking (green pulse) */
+.logo-blink-speaking {
+  animation: blinkSpeaking 0.8s ease-in-out infinite;
+}
+
+@keyframes blinkSpeaking {
+  0%, 100% {
+    opacity: 1;
+    filter: brightness(1) drop-shadow(0 0 8px rgba(16, 185, 129, 0.5));
+  }
+  50% {
+    opacity: 0.9;
+    filter: brightness(1.2) drop-shadow(0 0 20px rgba(16, 185, 129, 0.9));
+  }
+}
+
+/* Speaking ring pulse - faster animation */
+.speaking-ring {
+  animation: speakingRingPulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes speakingRingPulse {
+  0% {
+    r: 85;
+    opacity: 0.8;
+    stroke-width: 8;
+  }
+  50% {
+    r: 100;
+    opacity: 0.3;
+    stroke-width: 3;
+  }
+  100% {
+    r: 110;
+    opacity: 0;
+    stroke-width: 1;
+  }
+}
+
+/* Active indicator dot (replaces listening-indicator) */
+.active-indicator {
   position: absolute;
   bottom: 5%;
   right: 5%;
@@ -399,15 +460,22 @@ button.theme-toggle:hover {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.listening-dot {
+.active-dot {
   width: 60%;
   height: 60%;
-  background: #ef4444;
   border-radius: 50%;
-  animation: listeningPulse 1s ease-in-out infinite;
+  animation: activePulse 1s ease-in-out infinite;
 }
 
-@keyframes listeningPulse {
+.active-indicator.listening .active-dot {
+  background: #ef4444; /* Red for listening */
+}
+
+.active-indicator.speaking .active-dot {
+  background: #10B981; /* Green for speaking */
+}
+
+@keyframes activePulse {
   0%, 100% {
     transform: scale(1);
     opacity: 1;

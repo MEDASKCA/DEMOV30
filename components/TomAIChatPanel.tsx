@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Mic, MicOff, Sparkles } from 'lucide-react';
+import { Send, Sparkles } from 'lucide-react';
+import TomLogo from './TomLogo';
 
 interface Message {
   id: string;
@@ -25,6 +26,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
   ]);
   const [inputMessage, setInputMessage] = useState('');
   const [isListening, setIsListening] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const [voicesLoaded, setVoicesLoaded] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
@@ -244,6 +246,8 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       window.speechSynthesis.cancel();
     }
 
+    setIsSpeaking(true);
+
     // Try Azure TTS first for realistic voice
     try {
       const response = await fetch('/api/tts', {
@@ -269,6 +273,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
         // Clean up URL after playing
         audio.onended = () => {
           URL.revokeObjectURL(audioUrl);
+          setIsSpeaking(false);
         };
 
         return; // Successfully using Azure TTS
@@ -349,9 +354,18 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
 
       utterance.volume = 1.0;
 
-      utterance.onstart = () => console.log('Speech started');
-      utterance.onend = () => console.log('Speech ended');
-      utterance.onerror = (event) => console.error('Speech error:', event);
+      utterance.onstart = () => {
+        console.log('Speech started');
+        setIsSpeaking(true);
+      };
+      utterance.onend = () => {
+        console.log('Speech ended');
+        setIsSpeaking(false);
+      };
+      utterance.onerror = (event) => {
+        console.error('Speech error:', event);
+        setIsSpeaking(false);
+      };
 
       console.log('Starting speech...');
       window.speechSynthesis.speak(utterance);
@@ -403,14 +417,15 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
         <div className="flex gap-2 items-end">
           <button
             onClick={handleVoiceInput}
-            className={`p-3 rounded-lg transition-all flex-shrink-0 ${
-              isListening
-                ? 'bg-red-500 text-white hover:bg-red-600'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}
+            className="p-2 rounded-full transition-all flex-shrink-0 hover:scale-105"
             title={isListening ? 'Stop listening' : 'Start voice input'}
           >
-            {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+            <TomLogo
+              isListening={isListening}
+              isSpeaking={isSpeaking}
+              size={48}
+              variant="inline"
+            />
           </button>
           <input
             type="text"
