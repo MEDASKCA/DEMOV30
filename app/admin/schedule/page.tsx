@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Settings, Calendar, Users, ClipboardList, Loader2, ChevronDown, User, HelpCircle, LogOut, UserCircle, Grid3x3, List } from 'lucide-react';
 import {
   getHospitalConfig,
@@ -35,7 +35,8 @@ type ListSubTab = 'waiting-list' | 'procedures-pool';
 
 export default function SchedulePage() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<SidebarTab>('configurations');
+  const searchParams = useSearchParams();
+  const [activeTab, setActiveTab] = useState<SidebarTab>((searchParams?.get('tab') as SidebarTab) || 'configurations');
   const [configSubTab, setConfigSubTab] = useState<ConfigSubTab>('specialties');
   const [requirementsSubTab, setRequirementsSubTab] = useState<RequirementsSubTab>('roles');
   const [listSubTab, setListSubTab] = useState<ListSubTab>('waiting-list');

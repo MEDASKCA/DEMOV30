@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { ChevronDown, User, Settings, HelpCircle, LogOut, List, Grid3x3 } from 'lucide-react';
 import HospitalSelector from '@/components/HospitalSelector';
 import WaitingListManager from '@/components/waitingList/WaitingListManager';
@@ -10,7 +10,10 @@ import AdminDrawer from '@/components/AdminDrawer';
 
 export default function AdminListsPage() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<'waiting-list' | 'procedures-pool'>('waiting-list');
+  const searchParams = useSearchParams();
+  const [activeTab, setActiveTab] = useState<'waiting-list' | 'procedures-pool'>(
+    (searchParams.get('tab') as 'waiting-list' | 'procedures-pool') || 'waiting-list'
+  );
   const [currentPage, setCurrentPage] = useState<'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu' | 'workforce' | 'inventory'>('ops');
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [showDrawer, setShowDrawer] = useState(false);

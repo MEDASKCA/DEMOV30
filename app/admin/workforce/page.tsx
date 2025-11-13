@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Users, Search, PoundSterling, Briefcase, CalendarOff, MapPin, Send, Mic, ChevronDown, User, Settings, HelpCircle, LogOut, ArrowLeft } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import TomLogo from '@/components/TomLogo';
 import DesktopRoster from '@/features/roster/components/DesktopRoster';
 import StaffingCostCalculator from '@/components/finance/StaffingCostCalculator';
@@ -18,6 +18,7 @@ type SidebarTab = 'fte' | 'teams' | 'leave' | 'finder' | 'costs';
 
 export default function WorkforcePage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [mounted, setMounted] = useState(false);
   const [activeTab, setActiveTab] = useState<SidebarTab>('fte');
   const [currentPage, setCurrentPage] = useState<'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu' | 'workforce' | 'inventory'>('ops');
@@ -76,7 +77,13 @@ export default function WorkforcePage() {
 
   useEffect(() => {
     setMounted(true);
-  }, []);
+
+    // Set active tab from URL query parameter
+    const tabParam = searchParams.get('tab');
+    if (tabParam && ['fte', 'teams', 'leave', 'finder', 'costs'].includes(tabParam)) {
+      setActiveTab(tabParam as SidebarTab);
+    }
+  }, [searchParams]);
 
   if (!mounted) {
     return (
