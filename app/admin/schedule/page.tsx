@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Settings, Calendar, Users, ClipboardList, Loader2, ChevronDown, User, HelpCircle, LogOut, UserCircle, Grid3x3, List } from 'lucide-react';
 import {
@@ -33,7 +33,7 @@ type ConfigSubTab = 'specialties' | 'units' | 'mapping';
 type RequirementsSubTab = 'roles' | 'template' | 'builder' | 'allocation';
 type ListSubTab = 'waiting-list' | 'procedures-pool';
 
-export default function SchedulePage() {
+function AdminSchedulePageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState<SidebarTab>((searchParams?.get('tab') as SidebarTab) || 'configurations');
@@ -648,5 +648,13 @@ export default function SchedulePage() {
         />
       </div>
     </div>
+  );
+}
+
+export default function AdminSchedulePage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <AdminSchedulePageContent />
+    </Suspense>
   );
 }

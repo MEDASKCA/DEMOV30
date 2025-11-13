@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ArrowLeft, Building2, Calendar, Users, ClipboardList, Settings, CheckCircle, AlertCircle, Loader2, ChevronDown, User, HelpCircle, LogOut } from 'lucide-react';
 import {
@@ -22,7 +22,7 @@ import AdminDrawer from '@/components/AdminDrawer';
 type TabType = 'configurations' | 'sessions' | 'requirements' | 'list';
 type ConfigSubTab = 'specialties' | 'sessionTypes' | 'units' | 'mapping' | 'theatres';
 
-export default function TheatreManagementPage() {
+function TheatreManagementPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState<TabType>((searchParams?.get('tab') as TabType) || 'configurations');
@@ -579,5 +579,13 @@ export default function TheatreManagementPage() {
         }
       `}</style>
     </div>
+  );
+}
+
+export default function TheatreManagementPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <TheatreManagementPageContent />
+    </Suspense>
   );
 }

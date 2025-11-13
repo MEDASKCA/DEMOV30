@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ChevronDown, User, Settings, HelpCircle, LogOut, List, Grid3x3 } from 'lucide-react';
 import HospitalSelector from '@/components/HospitalSelector';
@@ -8,7 +8,7 @@ import WaitingListManager from '@/components/waitingList/WaitingListManager';
 import AdminBottomNav from '@/components/AdminBottomNav';
 import AdminDrawer from '@/components/AdminDrawer';
 
-export default function AdminListsPage() {
+function AdminListsPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState<'waiting-list' | 'procedures-pool'>(
@@ -259,5 +259,13 @@ export default function AdminListsPage() {
         onNavigate={handleDrawerNavigate}
       />
     </div>
+  );
+}
+
+export default function AdminListsPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <AdminListsPageContent />
+    </Suspense>
   );
 }

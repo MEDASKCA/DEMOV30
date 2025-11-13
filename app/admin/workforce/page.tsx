@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { Users, Search, PoundSterling, Briefcase, CalendarOff, MapPin, Send, Mic, ChevronDown, User, Settings, HelpCircle, LogOut, ArrowLeft } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import TomLogo from '@/components/TomLogo';
@@ -16,7 +16,7 @@ import AdminDrawer from '@/components/AdminDrawer';
 
 type SidebarTab = 'fte' | 'teams' | 'leave' | 'finder' | 'costs';
 
-export default function WorkforcePage() {
+function WorkforcePageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [mounted, setMounted] = useState(false);
@@ -656,5 +656,13 @@ export default function WorkforcePage() {
         onNavigate={handleDrawerNavigate}
       />
     </div>
+  );
+}
+
+export default function WorkforcePage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <WorkforcePageContent />
+    </Suspense>
   );
 }
