@@ -1597,12 +1597,12 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
                             onClick={(e) => handleTheatreLabelClick(e, fourthFloorTheatre, uniqueLocations[0])}
                           >
                             <div className="flex flex-col items-center gap-0 leading-none">
-                              <div className="font-bold" style={{ fontSize: `${0.34375 * fontSize / 100}rem` }}>{fourthFloorTheatre.name}</div>
+                              <div className="font-bold text-center" style={{ fontSize: `${0.34375 * fontSize / 100}rem` }}>{fourthFloorTheatre.name}</div>
                               {specialty && (
-                                <div className="font-bold" style={{ fontSize: `${0.34375 * fontSize / 100}rem` }}>{specialty}</div>
+                                <div className="font-bold text-center" style={{ fontSize: `${0.34375 * fontSize / 100}rem` }}>{specialty}</div>
                               )}
                               {sessionCount && (
-                                <div className="font-bold" style={{ fontSize: `${0.34375 * fontSize / 100}rem` }}>{sessionCount}</div>
+                                <div className="font-bold text-center" style={{ fontSize: `${0.34375 * fontSize / 100}rem` }}>{sessionCount}</div>
                               )}
                             </div>
                           </div>
@@ -1813,12 +1813,12 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
                             onClick={(e) => handleTheatreLabelClick(e, thirdFloorTheatre, uniqueLocations[1])}
                           >
                             <div className="flex flex-col items-center gap-0 leading-none">
-                              <div className="font-bold" style={{ fontSize: `${0.34375 * fontSize / 100}rem` }}>{thirdFloorTheatre.name}</div>
+                              <div className="font-bold text-center" style={{ fontSize: `${0.34375 * fontSize / 100}rem` }}>{thirdFloorTheatre.name}</div>
                               {specialty && (
-                                <div className="font-bold" style={{ fontSize: `${0.34375 * fontSize / 100}rem` }}>{specialty}</div>
+                                <div className="font-bold text-center" style={{ fontSize: `${0.34375 * fontSize / 100}rem` }}>{specialty}</div>
                               )}
                               {sessionCount && (
-                                <div className="font-bold" style={{ fontSize: `${0.34375 * fontSize / 100}rem` }}>{sessionCount}</div>
+                                <div className="font-bold text-center" style={{ fontSize: `${0.34375 * fontSize / 100}rem` }}>{sessionCount}</div>
                               )}
                             </div>
                           </div>

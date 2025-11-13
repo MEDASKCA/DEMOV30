@@ -1,0 +1,29 @@
+{
+  "totalProcedures": 3,
+  "totalCodes": 5,
+  "validCodes": 5,
+  "invalidCodes": 0,
+  "issues": [
+    {
+      "procedureName": "Laparotomy - Exploratory",
+      "specialty": "Emergency",
+      "code": "T421",
+      "issue": "Code exists but description may not match",
+      "suggestion": "Official: \"Endoscopic resection of lesion of peritoneum\""
+    },
+    {
+      "procedureName": "Laparotomy for Perforated Viscus",
+      "specialty": "Emergency",
+      "code": "T421",
+      "issue": "Code exists but description may not match",
+      "suggestion": "Official: \"Endoscopic resection of lesion of peritoneum\""
+    },
+    {
+      "procedureName": "Laparotomy for Perforated Viscus",
+      "specialty": "Emergency",
+      "code": "G512",
+      "issue": "Code exists but description may not match",
+      "suggestion": "Official: \"Bypass of duodenum by anastomosis of duodenum to duodenum\""
+    }
+  ]
+}

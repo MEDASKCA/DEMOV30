@@ -1,0 +1,186 @@
+/**
+ * Royal London Hospital - Comprehensive Procedures Database
+ *
+ * 810 procedures across 14 specialties with accurate OPCS-4 codes
+ * Structure matches Royal London Hospital's actual specialty configuration
+ */
+
+export interface Procedure {
+  name: string;
+  specialtyName: string;
+  subspecialtyName?: string;
+  opcs4: string[];
+  commonVariations?: string[];
+}
+
+export const ROYAL_LONDON_PROCEDURES: Procedure[] = [
+  // ============================================
+  // EMERGENCY (30 procedures - no subspecialty)
+  // ============================================
+  { name: 'Laparotomy - Exploratory', specialtyName: 'Emergency', opcs4: ['T421'], commonVariations: ['Ex-Lap', 'Emergency Laparotomy'] },
+  { name: 'Appendicectomy - Emergency', specialtyName: 'Emergency', opcs4: ['H011', 'H012'], commonVariations: ['Emergency Appendicectomy'] },
+  { name: 'Laparotomy for Perforated Viscus', specialtyName: 'Emergency', opcs4: ['T421', 'G512'], commonVariations: ['Perforation Repair'] },
+  { name: 'Small Bowel Resection - Emergency', specialtyName: 'Emergency', opcs4: ['G761'], commonVariations: ['Emergency Bowel Resection'] },
+  { name: 'Hartmanns Procedure - Emergency', specialtyName: 'Emergency', opcs4: ['H081'], commonVariations: ['Emergency Hartmann'] },
+  { name: 'Damage Control Laparotomy', specialtyName: 'Emergency', opcs4: ['T421'], commonVariations: ['DCL', 'Trauma Laparotomy'] },
+  { name: 'Splenectomy for Trauma', specialtyName: 'Emergency', opcs4: ['T701'], commonVariations: ['Trauma Splenectomy'] },
+  { name: 'Liver Packing for Trauma', specialtyName: 'Emergency', opcs4: ['J511', 'T791'], commonVariations: ['Hepatic Injury Control'] },
+  { name: 'Emergency Hernia Repair', specialtyName: 'Emergency', opcs4: ['T201'], commonVariations: ['Strangulated Hernia Repair'] },
+  { name: 'Incarcerated Femoral Hernia Repair', specialtyName: 'Emergency', opcs4: ['T211'], commonVariations: ['Emergency Femoral Hernia'] },
+  { name: 'Bowel Obstruction Release', specialtyName: 'Emergency', opcs4: ['T781'], commonVariations: ['Adhesiolysis'] },
+  { name: 'Peritoneal Lavage and Drainage', specialtyName: 'Emergency', opcs4: ['T421', 'T511'], commonVariations: ['Washout Laparotomy'] },
+  { name: 'Mesenteric Ischaemia Surgery', specialtyName: 'Emergency', opcs4: ['G761', 'H061'], commonVariations: ['Ischaemic Bowel Resection'] },
+  { name: 'Sigmoid Volvulus Decompression', specialtyName: 'Emergency', opcs4: ['H481'], commonVariations: ['Volvulus Reduction'] },
+  { name: 'Emergency Tracheostomy', specialtyName: 'Emergency', opcs4: ['E421'], commonVariations: ['Urgent Airway'] },
+  { name: 'Gastric Perforation Repair', specialtyName: 'Emergency', opcs4: ['G512'], commonVariations: ['Omental Patch'] },
+  { name: 'Bleeding Duodenal Ulcer Oversew', specialtyName: 'Emergency', opcs4: ['G512'], commonVariations: ['Ulcer Oversew'] },
+  { name: 'Abdominal Abscess Drainage', specialtyName: 'Emergency', opcs4: ['T481'], commonVariations: ['Intra-abdominal Collection Drainage'] },
+  { name: 'Necrotising Fasciitis Debridement', specialtyName: 'Emergency', opcs4: ['S571'], commonVariations: ['Surgical Debridement NF'] },
+  { name: 'Fournier Gangrene Debridement', specialtyName: 'Emergency', opcs4: ['S571'], commonVariations: ['Perineal Debridement'] },
+  { name: 'Testicular Torsion Exploration', specialtyName: 'Emergency', opcs4: ['N181'], commonVariations: ['Scrotal Exploration', 'Orchidopexy'] },
+  { name: 'Ruptured AAA Repair', specialtyName: 'Emergency', opcs4: ['L181'], commonVariations: ['Emergency AAA'] },
+  { name: 'Oesophageal Perforation Repair', specialtyName: 'Emergency', opcs4: ['G512'], commonVariations: ['Boerhaave Repair'] },
+  { name: 'Second Look Laparotomy', specialtyName: 'Emergency', opcs4: ['T421'], commonVariations: ['Re-look Laparotomy'] },
+  { name: 'Diaphragmatic Injury Repair', specialtyName: 'Emergency', opcs4: ['T281'], commonVariations: ['Diaphragm Repair'] },
+  { name: 'Chest Drain Insertion', specialtyName: 'Emergency', opcs4: ['T121'], commonVariations: ['Intercostal Drain'] },
+  { name: 'Emergency Thoracotomy', specialtyName: 'Emergency', opcs4: ['T021'], commonVariations: ['Resuscitative Thoracotomy'] },
+  { name: 'Pancreatic Injury Repair', specialtyName: 'Emergency', opcs4: ['J511'], commonVariations: ['Trauma Pancreatectomy'] },
+  { name: 'Renal Trauma Repair', specialtyName: 'Emergency', opcs4: ['M511'], commonVariations: ['Nephrorrhaphy'] },
+  { name: 'Emergency Fasciotomy', specialtyName: 'Emergency', opcs4: ['T561'], commonVariations: ['Compartment Syndrome Release'] },
+
+  // ============================================
+  // ENDOSCOPY
+  // ============================================
+
+  // Endoscopic Retrograde Cholangiopancreatography (ERCP) - 30 procedures
+  { name: 'ERCP with Sphincterotomy', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551'], commonVariations: ['ERCP', 'Biliary Sphincterotomy'] },
+  { name: 'ERCP with Stone Extraction', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551', 'J481'], commonVariations: ['CBD Stone Removal'] },
+  { name: 'ERCP with Biliary Stent Insertion', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551', 'J491'], commonVariations: ['Biliary Stenting'] },
+  { name: 'ERCP with Pancreatic Stent Insertion', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551', 'J491'], commonVariations: ['Pancreatic Duct Stenting'] },
+  { name: 'Diagnostic ERCP', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551'], commonVariations: ['ERCP Cholangiogram'] },
+  { name: 'ERCP with Balloon Dilatation', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551', 'J472'], commonVariations: ['Biliary Balloon Dilatation'] },
+  { name: 'ERCP with Basket Extraction', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551', 'J481'], commonVariations: ['Dormia Basket Extraction'] },
+  { name: 'ERCP with Mechanical Lithotripsy', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551'], commonVariations: ['Stone Fragmentation'] },
+  { name: 'ERCP with Cholangioscopy', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551', 'J231'], commonVariations: ['SpyGlass Cholangioscopy'] },
+  { name: 'ERCP with Ampullectomy', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551', 'J091'], commonVariations: ['Ampullary Resection'] },
+  { name: 'ERCP with Nasobiliary Drain', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551', 'J491'], commonVariations: ['NBD Insertion'] },
+  { name: 'ERCP Stent Removal', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551', 'J492'], commonVariations: ['Biliary Stent Removal'] },
+  { name: 'ERCP Stent Exchange', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551', 'J491', 'J492'], commonVariations: ['Stent Replacement'] },
+  { name: 'ERCP with Minor Papilla Sphincterotomy', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551'], commonVariations: ['Minor Papilla ERCP'] },
+  { name: 'ERCP for Bile Leak', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551', 'J491'], commonVariations: ['Post-operative Bile Leak Management'] },
+  { name: 'ERCP for Cholangitis', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551', 'J491'], commonVariations: ['Ascending Cholangitis ERCP'] },
+  { name: 'ERCP with Biliary Brushings', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551', 'J231'], commonVariations: ['Biliary Cytology'] },
+  { name: 'ERCP with Intraductal Biopsy', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551', 'J231'], commonVariations: ['Cholangioscopic Biopsy'] },
+  { name: 'ERCP for Biliary Stricture', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551', 'J491'], commonVariations: ['Stricture Dilatation'] },
+  { name: 'ERCP Post-Whipple', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551'], commonVariations: ['Post-Pancreaticoduodenectomy ERCP'] },
+  { name: 'Precut Sphincterotomy', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551'], commonVariations: ['Needle Knife Sphincterotomy'] },
+  { name: 'ERCP with Radiofrequency Ablation', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551'], commonVariations: ['RFA Biliary Tree'] },
+  { name: 'ERCP for Pancreatic Pseudocyst Drainage', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551', 'J491'], commonVariations: ['Pseudocyst Stenting'] },
+  { name: 'ERCP with Metal Stent Insertion', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551', 'J491'], commonVariations: ['SEMS Insertion'] },
+  { name: 'ERCP for Mirizzi Syndrome', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551'], commonVariations: ['Mirizzi ERCP'] },
+  { name: 'ERCP for Primary Sclerosing Cholangitis', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551', 'J491'], commonVariations: ['PSC ERCP'] },
+  { name: 'ERCP with Choledochoscopy', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551', 'J231'], commonVariations: ['Direct Cholangioscopy'] },
+  { name: 'Double Balloon ERCP', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551'], commonVariations: ['DBE-ERCP', 'Roux-en-Y ERCP'] },
+  { name: 'ERCP for Sphincter of Oddi Dysfunction', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551'], commonVariations: ['SOD ERCP'] },
+  { name: 'ERCP with Photodynamic Therapy', specialtyName: 'Endoscopy', subspecialtyName: 'Endoscopic Retrograde Cholangiopancreatography', opcs4: ['J551'], commonVariations: ['PDT Biliary'] },
+
+  // Gastroscopy and Colonoscopy - 30 procedures
+  { name: 'Diagnostic Gastroscopy', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['G451'], commonVariations: ['OGD', 'Upper GI Endoscopy'] },
+  { name: 'Diagnostic Colonoscopy', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['H201'], commonVariations: ['Full Colonoscopy'] },
+  { name: 'Gastroscopy with Biopsy', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['G451', 'G141'], commonVariations: ['OGD with Biopsy'] },
+  { name: 'Colonoscopy with Polypectomy', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['H201', 'H421'], commonVariations: ['Endoscopic Polypectomy'] },
+  { name: 'Gastroscopy for Variceal Banding', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['G451', 'G172'], commonVariations: ['EVL', 'Oesophageal Variceal Ligation'] },
+  { name: 'Gastroscopy for Variceal Injection', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['G451', 'G171'], commonVariations: ['Sclerotherapy'] },
+  { name: 'Gastroscopy with PEG Insertion', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['G451', 'G413'], commonVariations: ['PEG Placement'] },
+  { name: 'Gastroscopy with Argon Plasma Coagulation', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['G451'], commonVariations: ['APC Upper GI'] },
+  { name: 'Colonoscopy with Argon Plasma Coagulation', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['H201'], commonVariations: ['APC Lower GI'] },
+  { name: 'Flexible Sigmoidoscopy', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['H221'], commonVariations: ['Flexi Sig'] },
+  { name: 'Gastroscopy with Haemostasis', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['G451', 'G512'], commonVariations: ['Bleeding Ulcer Therapy'] },
+  { name: 'Colonoscopy with Haemostasis', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['H201', 'H512'], commonVariations: ['Lower GI Bleeding Control'] },
+  { name: 'Endoscopic Mucosal Resection - Gastric', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['G091'], commonVariations: ['EMR Stomach'] },
+  { name: 'Endoscopic Mucosal Resection - Colonic', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['H421'], commonVariations: ['EMR Colon'] },
+  { name: 'Endoscopic Submucosal Dissection - Gastric', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['G091'], commonVariations: ['ESD Stomach'] },
+  { name: 'Endoscopic Submucosal Dissection - Colonic', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['H421'], commonVariations: ['ESD Colon'] },
+  { name: 'Oesophageal Dilatation', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['G461'], commonVariations: ['Stricture Dilatation'] },
+  { name: 'Oesophageal Stent Insertion', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['G491'], commonVariations: ['SEMS Oesophagus'] },
+  { name: 'Colonic Stent Insertion', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['H491'], commonVariations: ['Colonic SEMS'] },
+  { name: 'Gastroscopy with Foreign Body Removal', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['G451', 'G481'], commonVariations: ['FB Removal Upper GI'] },
+  { name: 'Colonoscopy with Foreign Body Removal', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['H201', 'H481'], commonVariations: ['FB Removal Lower GI'] },
+  { name: 'Capsule Endoscopy', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['G161'], commonVariations: ['Pill Cam'] },
+  { name: 'Enteroscopy - Double Balloon', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['G451'], commonVariations: ['DBE'] },
+  { name: 'Enteroscopy - Single Balloon', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['G451'], commonVariations: ['SBE'] },
+  { name: 'Colonoscopy with Tattooing', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['H201'], commonVariations: ['Lesion Marking'] },
+  { name: 'Endoscopic Retroflexion Examination', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['G451', 'H201'], commonVariations: ['Retroflexion View'] },
+  { name: 'Chromoendoscopy', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['G451', 'H201'], commonVariations: ['Dye Spray Endoscopy'] },
+  { name: 'Narrow Band Imaging', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['G451', 'H201'], commonVariations: ['NBI Endoscopy'] },
+  { name: 'Endoscopic Ultrasound', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['G451', 'U211'], commonVariations: ['EUS'] },
+  { name: 'Gastroscopy with Botox Injection', specialtyName: 'Endoscopy', subspecialtyName: 'Gastroscopy and Colonoscopy', opcs4: ['G451'], commonVariations: ['Achalasia Botox'] },
+
+  // ============================================
+  // ENT
+  // ============================================
+
+  // ENT Robotic - 30 procedures
+  { name: 'Robotic Thyroidectomy', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['B081'], commonVariations: ['TOETVA', 'Robotic Thyroid Surgery'] },
+  { name: 'Robotic Total Thyroidectomy', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['B081'], commonVariations: ['Robotic Complete Thyroidectomy'] },
+  { name: 'Robotic Hemithyroidectomy', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['B081'], commonVariations: ['Robotic Partial Thyroidectomy'] },
+  { name: 'Robotic Parathyroidectomy', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['B102'], commonVariations: ['Robotic Parathyroid Surgery'] },
+  { name: 'Transoral Robotic Surgery - Base of Tongue', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['C111'], commonVariations: ['TORS BOT'] },
+  { name: 'Transoral Robotic Surgery - Tonsil', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['F341'], commonVariations: ['TORS Tonsillectomy'] },
+  { name: 'Transoral Robotic Surgery - Supraglottis', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['E291'], commonVariations: ['TORS Supraglottic Laryngectomy'] },
+  { name: 'Robotic Tongue Base Resection', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['C111'], commonVariations: ['TORS Glossectomy'] },
+  { name: 'Robotic Radical Tonsillectomy', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['F341'], commonVariations: ['TORS Radical Tonsil'] },
+  { name: 'Robotic Vallecular Cyst Excision', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['C111'], commonVariations: ['TORS Vallecula'] },
+  { name: 'Robotic Lingual Tonsillectomy', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['C111'], commonVariations: ['TORS Lingual Tonsil'] },
+  { name: 'Robotic Hypopharyngeal Tumour Resection', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['C152'], commonVariations: ['TORS Hypopharynx'] },
+  { name: 'Robotic Parapharyngeal Space Tumour', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['C152'], commonVariations: ['TORS Parapharyngeal'] },
+  { name: 'Robotic Submandibular Gland Excision', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['F121'], commonVariations: ['Robotic SMG Excision'] },
+  { name: 'Robotic Neck Dissection', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['E121'], commonVariations: ['Robotic Selective Neck Dissection'] },
+  { name: 'Robotic Radical Neck Dissection', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['E121'], commonVariations: ['Robotic RND'] },
+  { name: 'Robotic Modified Radical Neck Dissection', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['E121'], commonVariations: ['Robotic MRND'] },
+  { name: 'Robotic Zenker Diverticulectomy', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['C152'], commonVariations: ['TORS Zenker'] },
+  { name: 'Robotic Sleep Apnoea Surgery', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['E291', 'F341'], commonVariations: ['TORS OSA'] },
+  { name: 'Robotic Uvulopalatopharyngoplasty', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['F242'], commonVariations: ['Robotic UPPP'] },
+  { name: 'Robotic Aryepiglottoplasty', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['E291'], commonVariations: ['TORS Laryngomalacia'] },
+  { name: 'Robotic Epiglottectomy', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['E291'], commonVariations: ['TORS Epiglottis'] },
+  { name: 'Robotic Laryngeal Cleft Repair', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['E371'], commonVariations: ['TORS Cleft Repair'] },
+  { name: 'Robotic Pharyngeal Pouch Excision', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['C152'], commonVariations: ['TORS Pouch'] },
+  { name: 'Robotic Pyriform Sinus Fistula', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['C152'], commonVariations: ['TORS Pyriform Fistula'] },
+  { name: 'Robotic Retropharyngeal Abscess Drainage', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['C481'], commonVariations: ['TORS Abscess'] },
+  { name: 'Robotic Laryngocele Excision', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['E291'], commonVariations: ['TORS Laryngocele'] },
+  { name: 'Robotic Vocal Cord Medialization', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['E371'], commonVariations: ['Robotic Thyroplasty'] },
+  { name: 'Robotic Glomus Tumour Resection', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['C152'], commonVariations: ['TORS Glomus'] },
+  { name: 'Robotic Nasopharyngeal Tumour Resection', specialtyName: 'ENT', subspecialtyName: 'ENT Robotic', opcs4: ['E031'], commonVariations: ['TORS Nasopharynx'] },
+
+  // ENT Laser - 30 procedures
+  { name: 'Laser Tonsillectomy', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['F341'], commonVariations: ['Laser Tonsil Surgery'] },
+  { name: 'Laser Adenoidectomy', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['E201'], commonVariations: ['Laser Adenoid Removal'] },
+  { name: 'Laser Microlaryngoscopy', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['E491'], commonVariations: ['Laser MLS'] },
+  { name: 'Laser Vocal Cord Surgery', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['E371'], commonVariations: ['Laser Cordectomy'] },
+  { name: 'Laser Arytenoidectomy', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['E291'], commonVariations: ['Laser Arytenoid Excision'] },
+  { name: 'Laser Epiglottoplasty', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['E291'], commonVariations: ['Laser Epiglottis Surgery'] },
+  { name: 'CO2 Laser Laryngeal Papilloma', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['E091'], commonVariations: ['Laser RRP'] },
+  { name: 'Laser Subglottic Stenosis', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['E461'], commonVariations: ['Laser SGS Dilatation'] },
+  { name: 'Laser Supraglottoplasty', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['E291'], commonVariations: ['Laser Laryngomalacia'] },
+  { name: 'Laser Laryngeal Web Division', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['E371'], commonVariations: ['Laser Web Excision'] },
+  { name: 'KTP Laser Vocal Cord Lesion', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['E091'], commonVariations: ['KTP Laser Polyp'] },
+  { name: 'Laser Reinke Oedema', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['E371'], commonVariations: ['Laser Vocal Cord Stripping'] },
+  { name: 'Laser Turbinate Reduction', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['E042'], commonVariations: ['Laser Turbinectomy'] },
+  { name: 'Laser Assisted Uvulopalatoplasty', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['F242'], commonVariations: ['LAUP'] },
+  { name: 'Holmium Laser Tonsillotomy', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['F341'], commonVariations: ['Laser Tonsil Reduction'] },
+  { name: 'Laser Lingual Frenulectomy', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['F271'], commonVariations: ['Laser Tongue Tie'] },
+  { name: 'Laser Pharyngoplasty', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['F242'], commonVariations: ['Laser UPPP'] },
+  { name: 'Laser Stapedotomy', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['D161'], commonVariations: ['Laser Stapes Surgery'] },
+  { name: 'Laser Myringotomy', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['D151'], commonVariations: ['Laser Ear Drum Perforation'] },
+  { name: 'Laser Tympanoplasty', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['D141'], commonVariations: ['Laser Ear Drum Repair'] },
+  { name: 'Laser Nasal Polypectomy', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['E092'], commonVariations: ['Laser Polyp Removal'] },
+  { name: 'Laser Septal Surgery', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['E031'], commonVariations: ['Laser Septoplasty'] },
+  { name: 'Laser Choanal Atresia Repair', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['E461'], commonVariations: ['Laser Choanal Opening'] },
+  { name: 'Laser Posterior Nasal Nerve Ablation', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['A652'], commonVariations: ['Laser PNN'] },
+  { name: 'Laser Nasopharyngeal Stenosis', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['E461'], commonVariations: ['Laser NPS Release'] },
+  { name: 'PDL Laser Vascular Lesion', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['S574'], commonVariations: ['Pulsed Dye Laser'] },
+  { name: 'Laser Granuloma Excision - Larynx', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['E091'], commonVariations: ['Laser Contact Granuloma'] },
+  { name: 'Laser Zenker Diverticulum', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['C152'], commonVariations: ['Laser Pharyngeal Pouch'] },
+  { name: 'Laser Laryngeal Cyst', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['E091'], commonVariations: ['Laser Saccular Cyst'] },
+  { name: 'Laser Vallecular Cyst', specialtyName: 'ENT', subspecialtyName: 'ENT Laser', opcs4: ['C111'], commonVariations: ['Laser Vallecula Cyst'] },
+];

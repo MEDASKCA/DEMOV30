@@ -1,0 +1,3065 @@
+{
+  "summary": {
+    "totalProcedures": 418,
+    "totalCodes": 667,
+    "validCodes": 623,
+    "invalidCodes": 44,
+    "mismatchedCodes": 393
+  },
+  "issues": [
+    {
+      "procedureName": "Cannulated Hip Screws",
+      "specialty": "Unknown",
+      "code": "W241",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Closed reduction of intracapsular fracture of neck of femur and fixation using nail or screw"
+    },
+    {
+      "procedureName": "Cannulated Hip Screws",
+      "specialty": "Unknown",
+      "code": "W248",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Other specified closed reduction of fracture of bone and internal fixation"
+    },
+    {
+      "procedureName": "Cephalomedullary Nailing (Gamma Nail/PFNA)",
+      "specialty": "Unknown",
+      "code": "W244",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Closed reduction of fracture of short bone and fixation using screw"
+    },
+    {
+      "procedureName": "Hemiarthroplasty (Uncemented)",
+      "specialty": "Unknown",
+      "code": "W371",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary total prosthetic replacement of hip joint using cement"
+    },
+    {
+      "procedureName": "Hemiarthroplasty (Cemented)",
+      "specialty": "Unknown",
+      "code": "W381",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary total prosthetic replacement of hip joint not using cement"
+    },
+    {
+      "procedureName": "Girdlestone Excision Arthroplasty",
+      "specialty": "Unknown",
+      "code": "W351",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Introduction of therapeutic substance into bone"
+    },
+    {
+      "procedureName": "Hip Arthroscopy",
+      "specialty": "Unknown",
+      "code": "W822",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Endoscopic resection of meniscus of knee joint"
+    },
+    {
+      "procedureName": "Hip Arthroscopy",
+      "specialty": "Unknown",
+      "code": "Y762",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Functional endoscopic nasal surgery"
+    },
+    {
+      "procedureName": "Femoral Osteotomy",
+      "specialty": "Unknown",
+      "code": "W273",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Insertion of staple into epiphysis"
+    },
+    {
+      "procedureName": "Pelvic Osteotomy (PAO)",
+      "specialty": "Unknown",
+      "code": "V363",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Prosthetic replacement of lumbar intervertebral disc"
+    },
+    {
+      "procedureName": "Pelvic Osteotomy (PAO)",
+      "specialty": "Unknown",
+      "code": "V373",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Transoral fusion of atlantoaxial joint"
+    },
+    {
+      "procedureName": "Tibial Shaft IM Nailing",
+      "specialty": "Unknown",
+      "code": "W194",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary open reduction of fracture of short bone and fixation using screw"
+    },
+    {
+      "procedureName": "Knee Arthroscopy - Diagnostic",
+      "specialty": "Unknown",
+      "code": "Y753",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Robotic minimal access approach to abdominal cavity"
+    },
+    {
+      "procedureName": "Knee Arthroscopy - Meniscectomy (Partial)",
+      "specialty": "Unknown",
+      "code": "O162",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Spine NEC"
+    },
+    {
+      "procedureName": "Knee Arthroscopy - Meniscectomy (Total)",
+      "specialty": "Unknown",
+      "code": "O163",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Axilla NEC"
+    },
+    {
+      "procedureName": "Knee Arthroscopy - Meniscal Repair",
+      "specialty": "Unknown",
+      "code": "W801",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Open debridement and irrigation of joint"
+    },
+    {
+      "procedureName": "Knee Arthroscopy - Meniscal Repair",
+      "specialty": "Unknown",
+      "code": "O161",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Pelvis NEC"
+    },
+    {
+      "procedureName": "ACL Reconstruction (Hamstring)",
+      "specialty": "Unknown",
+      "code": "W821",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Endoscopic total excision meniscus of knee joint"
+    },
+    {
+      "procedureName": "ACL Reconstruction (Hamstring)",
+      "specialty": "Unknown",
+      "code": "W801",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Open debridement and irrigation of joint"
+    },
+    {
+      "procedureName": "ACL Reconstruction (Hamstring)",
+      "specialty": "Unknown",
+      "code": "O171",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Remanipulation of intracapsular fracture of neck of femur and fixation using nail or screw"
+    },
+    {
+      "procedureName": "ACL Reconstruction (Bone-Patellar Tendon-Bone)",
+      "specialty": "Unknown",
+      "code": "W821",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Endoscopic total excision meniscus of knee joint"
+    },
+    {
+      "procedureName": "ACL Reconstruction (Bone-Patellar Tendon-Bone)",
+      "specialty": "Unknown",
+      "code": "W801",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Open debridement and irrigation of joint"
+    },
+    {
+      "procedureName": "ACL Reconstruction (Bone-Patellar Tendon-Bone)",
+      "specialty": "Unknown",
+      "code": "O171",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Remanipulation of intracapsular fracture of neck of femur and fixation using nail or screw"
+    },
+    {
+      "procedureName": "PCL Reconstruction",
+      "specialty": "Unknown",
+      "code": "W821",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Endoscopic total excision meniscus of knee joint"
+    },
+    {
+      "procedureName": "PCL Reconstruction",
+      "specialty": "Unknown",
+      "code": "W801",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Open debridement and irrigation of joint"
+    },
+    {
+      "procedureName": "PCL Reconstruction",
+      "specialty": "Unknown",
+      "code": "O172",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Remanipulation of fracture of long bone and rigid internal fixation NEC"
+    },
+    {
+      "procedureName": "Multi-Ligament Knee Reconstruction",
+      "specialty": "Unknown",
+      "code": "W801",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Open debridement and irrigation of joint"
+    },
+    {
+      "procedureName": "Multi-Ligament Knee Reconstruction",
+      "specialty": "Unknown",
+      "code": "O178",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Other specified secondary closed reduction of fracture of bone and internal fixation"
+    },
+    {
+      "procedureName": "High Tibial Osteotomy (HTO)",
+      "specialty": "Unknown",
+      "code": "W273",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Insertion of staple into epiphysis"
+    },
+    {
+      "procedureName": "Distal Femoral Osteotomy (DFO)",
+      "specialty": "Unknown",
+      "code": "W274",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Removal of staple from epiphysis"
+    },
+    {
+      "procedureName": "Shoulder Hemiarthroplasty",
+      "specialty": "Unknown",
+      "code": "W461",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary prosthetic replacement of head of femur using cement"
+    },
+    {
+      "procedureName": "Shoulder Hemiarthroplasty",
+      "specialty": "Unknown",
+      "code": "W471",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary prosthetic replacement of head of femur not using cement"
+    },
+    {
+      "procedureName": "Shoulder Hemiarthroplasty",
+      "specialty": "Unknown",
+      "code": "W481",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary prosthetic replacement of head of femur NEC"
+    },
+    {
+      "procedureName": "Shoulder Arthroscopy - Diagnostic",
+      "specialty": "Unknown",
+      "code": "W825",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Endoscopic partial replacement of meniscus of knee joint"
+    },
+    {
+      "procedureName": "Shoulder Arthroscopy - Diagnostic",
+      "specialty": "Unknown",
+      "code": "Y762",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Functional endoscopic nasal surgery"
+    },
+    {
+      "procedureName": "Shoulder Arthroscopy - Subacromial Decompression",
+      "specialty": "Unknown",
+      "code": "W825",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Endoscopic partial replacement of meniscus of knee joint"
+    },
+    {
+      "procedureName": "Shoulder Arthroscopy - Subacromial Decompression",
+      "specialty": "Unknown",
+      "code": "W854",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: T79.1 (Plastic repair of rotator cuff of shoulder NEC) | T79.1 (Plastic repair of rotator cuff of shoulder NEC) | T79.4 (Plastic repair of multiple tears of rotator cuff of shoulder)"
+    },
+    {
+      "procedureName": "Shoulder Arthroscopy - Subacromial Decompression",
+      "specialty": "Unknown",
+      "code": "O205",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Endovascular placement of three or more stent grafts"
+    },
+    {
+      "procedureName": "Shoulder Arthroscopy - Rotator Cuff Repair (Single Tendon)",
+      "specialty": "Unknown",
+      "code": "W825",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Endoscopic partial replacement of meniscus of knee joint"
+    },
+    {
+      "procedureName": "Shoulder Arthroscopy - Rotator Cuff Repair (Single Tendon)",
+      "specialty": "Unknown",
+      "code": "W805",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: T79.1 (Plastic repair of rotator cuff of shoulder NEC) | T79.1 (Plastic repair of rotator cuff of shoulder NEC) | T79.4 (Plastic repair of multiple tears of rotator cuff of shoulder)"
+    },
+    {
+      "procedureName": "Shoulder Arthroscopy - Rotator Cuff Repair (Single Tendon)",
+      "specialty": "Unknown",
+      "code": "T523",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Plantar fasciectomy"
+    },
+    {
+      "procedureName": "Shoulder Arthroscopy - Rotator Cuff Repair (Massive Tear)",
+      "specialty": "Unknown",
+      "code": "W825",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Endoscopic partial replacement of meniscus of knee joint"
+    },
+    {
+      "procedureName": "Shoulder Arthroscopy - Rotator Cuff Repair (Massive Tear)",
+      "specialty": "Unknown",
+      "code": "W805",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: T79.1 (Plastic repair of rotator cuff of shoulder NEC) | T79.1 (Plastic repair of rotator cuff of shoulder NEC) | T79.4 (Plastic repair of multiple tears of rotator cuff of shoulder)"
+    },
+    {
+      "procedureName": "Shoulder Arthroscopy - Rotator Cuff Repair (Massive Tear)",
+      "specialty": "Unknown",
+      "code": "T528",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Other specified excision of other fascia"
+    },
+    {
+      "procedureName": "Shoulder Arthroscopy - Bankart Repair (Anterior Instability)",
+      "specialty": "Unknown",
+      "code": "W825",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Endoscopic partial replacement of meniscus of knee joint"
+    },
+    {
+      "procedureName": "Shoulder Arthroscopy - Bankart Repair (Anterior Instability)",
+      "specialty": "Unknown",
+      "code": "W805",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: T79.1 (Plastic repair of rotator cuff of shoulder NEC) | T79.1 (Plastic repair of rotator cuff of shoulder NEC) | T79.4 (Plastic repair of multiple tears of rotator cuff of shoulder)"
+    },
+    {
+      "procedureName": "Shoulder Arthroscopy - Bankart Repair (Anterior Instability)",
+      "specialty": "Unknown",
+      "code": "O211",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary total prosthetic replacement of elbow joint using cement"
+    },
+    {
+      "procedureName": "Shoulder Arthroscopy - SLAP Repair",
+      "specialty": "Unknown",
+      "code": "W825",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Endoscopic partial replacement of meniscus of knee joint"
+    },
+    {
+      "procedureName": "Shoulder Arthroscopy - SLAP Repair",
+      "specialty": "Unknown",
+      "code": "W805",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: T79.1 (Plastic repair of rotator cuff of shoulder NEC) | T79.1 (Plastic repair of rotator cuff of shoulder NEC) | T79.4 (Plastic repair of multiple tears of rotator cuff of shoulder)"
+    },
+    {
+      "procedureName": "Shoulder Arthroscopy - SLAP Repair",
+      "specialty": "Unknown",
+      "code": "O218",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Other specified total prosthetic replacement of elbow joint using cement"
+    },
+    {
+      "procedureName": "Shoulder Arthroscopy - AC Joint Excision",
+      "specialty": "Unknown",
+      "code": "W854",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: T79.1 (Plastic repair of rotator cuff of shoulder NEC) | T79.1 (Plastic repair of rotator cuff of shoulder NEC) | T79.4 (Plastic repair of multiple tears of rotator cuff of shoulder)"
+    },
+    {
+      "procedureName": "Shoulder Arthroscopy - AC Joint Excision",
+      "specialty": "Unknown",
+      "code": "O203",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Endovascular placement of one stent graft NEC"
+    },
+    {
+      "procedureName": "Shoulder Arthroscopy - Biceps Tenodesis",
+      "specialty": "Unknown",
+      "code": "W825",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Endoscopic partial replacement of meniscus of knee joint"
+    },
+    {
+      "procedureName": "Shoulder Arthroscopy - Biceps Tenodesis",
+      "specialty": "Unknown",
+      "code": "T523",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Plantar fasciectomy"
+    },
+    {
+      "procedureName": "Shoulder Arthroscopy - Biceps Tenotomy",
+      "specialty": "Unknown",
+      "code": "W825",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Endoscopic partial replacement of meniscus of knee joint"
+    },
+    {
+      "procedureName": "Shoulder Arthroscopy - Biceps Tenotomy",
+      "specialty": "Unknown",
+      "code": "T523",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Plantar fasciectomy"
+    },
+    {
+      "procedureName": "Open Rotator Cuff Repair",
+      "specialty": "Unknown",
+      "code": "T523",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Plantar fasciectomy"
+    },
+    {
+      "procedureName": "Open Rotator Cuff Repair",
+      "specialty": "Unknown",
+      "code": "W805",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: A04 (Open biopsy of lesion of tissue of brain) | A04.1 (Open biopsy of lesion of tissue of frontal lobe of brain) | A04.1 (Open biopsy of lesion of tissue of frontal lobe of brain)"
+    },
+    {
+      "procedureName": "Open Rotator Cuff Repair",
+      "specialty": "Unknown",
+      "code": "O208",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Other specified endovascular placement of stent graft"
+    },
+    {
+      "procedureName": "Latarjet Procedure (Coracoid Transfer)",
+      "specialty": "Unknown",
+      "code": "W212",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary excision of intra-articular fragment of intra-articular fracture of bone"
+    },
+    {
+      "procedureName": "Latarjet Procedure (Coracoid Transfer)",
+      "specialty": "Unknown",
+      "code": "O211",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary total prosthetic replacement of elbow joint using cement"
+    },
+    {
+      "procedureName": "Proximal Humeral Fracture ORIF",
+      "specialty": "Unknown",
+      "code": "W271",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Permanent cross union epiphysiodesis"
+    },
+    {
+      "procedureName": "Humeral Shaft IM Nailing",
+      "specialty": "Unknown",
+      "code": "W272",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Epiphysioplasty"
+    },
+    {
+      "procedureName": "Elbow Arthroscopy",
+      "specialty": "Unknown",
+      "code": "W826",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: W78.5 (Release of contracture of elbow joint) | W78.5 (Release of contracture of elbow joint) | O21 (Total prosthetic replacement of elbow joint using cement)"
+    },
+    {
+      "procedureName": "Elbow Arthroscopy",
+      "specialty": "Unknown",
+      "code": "Y762",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Functional endoscopic nasal surgery"
+    },
+    {
+      "procedureName": "Tennis Elbow Release (Open)",
+      "specialty": "Unknown",
+      "code": "T623",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Biopsy of lesion of bursa"
+    },
+    {
+      "procedureName": "Tennis Elbow Release (Arthroscopic)",
+      "specialty": "Unknown",
+      "code": "W826",
+      "issue": "CODE NOT FOUND IN OPCS-4.10"
+    },
+    {
+      "procedureName": "Tennis Elbow Release (Arthroscopic)",
+      "specialty": "Unknown",
+      "code": "T623",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Biopsy of lesion of bursa"
+    },
+    {
+      "procedureName": "Ulnar Nerve Decompression/Transposition",
+      "specialty": "Unknown",
+      "code": "A651",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Carpal tunnel release"
+    },
+    {
+      "procedureName": "Ulnar Nerve Decompression/Transposition",
+      "specialty": "Unknown",
+      "code": "A652",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Canal of Guyon release"
+    },
+    {
+      "procedureName": "Olecranon Fracture ORIF (Tension Band)",
+      "specialty": "Unknown",
+      "code": "W281",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Application of internal fixation to bone NEC"
+    },
+    {
+      "procedureName": "Distal Humerus Fracture ORIF",
+      "specialty": "Unknown",
+      "code": "W282",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Adjustment to internal fixation of bone NEC"
+    },
+    {
+      "procedureName": "Trigger Finger Release",
+      "specialty": "Unknown",
+      "code": "T661",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary repair of multiple tendons HFQ"
+    },
+    {
+      "procedureName": "Ganglion Excision",
+      "specialty": "Unknown",
+      "code": "T572",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Biopsy of lesion of fascia"
+    },
+    {
+      "procedureName": "Ganglion Excision",
+      "specialty": "Unknown",
+      "code": "T573",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Repair of fascia"
+    },
+    {
+      "procedureName": "Trapeziectomy with Ligament Reconstruction",
+      "specialty": "Unknown",
+      "code": "W591",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Fusion of first metatarsophalangeal joint and replacement of lesser metatarsophalangeal joint"
+    },
+    {
+      "procedureName": "Trapeziectomy with Ligament Reconstruction",
+      "specialty": "Unknown",
+      "code": "W592",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Fusion of first metatarsophalangeal joint and excision of lesser metatarsophalangeal joint"
+    },
+    {
+      "procedureName": "Trapeziectomy with Ligament Reconstruction",
+      "specialty": "Unknown",
+      "code": "W805",
+      "issue": "CODE NOT FOUND IN OPCS-4.10"
+    },
+    {
+      "procedureName": "Wrist Arthroscopy",
+      "specialty": "Unknown",
+      "code": "W827",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: A65 (Release of entrapment of peripheral nerve at wrist) | A65.8 (Other specified release of entrapment of peripheral nerve at wrist) | A65.8 (Other specified release of entrapment of peripheral nerve at wrist)"
+    },
+    {
+      "procedureName": "Wrist Arthroscopy",
+      "specialty": "Unknown",
+      "code": "Y762",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Functional endoscopic nasal surgery"
+    },
+    {
+      "procedureName": "Wrist Arthrodesis (Fusion)",
+      "specialty": "Unknown",
+      "code": "W584",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: A65 (Release of entrapment of peripheral nerve at wrist) | A65.8 (Other specified release of entrapment of peripheral nerve at wrist) | A65.8 (Other specified release of entrapment of peripheral nerve at wrist)"
+    },
+    {
+      "procedureName": "Wrist Arthrodesis (Fusion)",
+      "specialty": "Unknown",
+      "code": "W585",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: A65 (Release of entrapment of peripheral nerve at wrist) | A65.8 (Other specified release of entrapment of peripheral nerve at wrist) | A65.8 (Other specified release of entrapment of peripheral nerve at wrist)"
+    },
+    {
+      "procedureName": "Scaphoid Fracture ORIF",
+      "specialty": "Unknown",
+      "code": "W293",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Removal of skeletal traction from bone"
+    },
+    {
+      "procedureName": "Distal Radius Fracture ORIF (Volar Plating)",
+      "specialty": "Unknown",
+      "code": "W293",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Removal of skeletal traction from bone"
+    },
+    {
+      "procedureName": "Distal Radius Fracture ORIF (K-wires)",
+      "specialty": "Unknown",
+      "code": "W294",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: A13.2 (Maintenance of distal catheter of cerebroventricular shunt) | A13.2 (Maintenance of distal catheter of cerebroventricular shunt) | L77.4 (Creation of distal splenorenal shunt)"
+    },
+    {
+      "procedureName": "Hand Tendon Repair (Flexor)",
+      "specialty": "Unknown",
+      "code": "T523",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Plantar fasciectomy"
+    },
+    {
+      "procedureName": "Hand Tendon Repair (Flexor)",
+      "specialty": "Unknown",
+      "code": "T528",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Other specified excision of other fascia"
+    },
+    {
+      "procedureName": "Hand Tendon Repair (Extensor)",
+      "specialty": "Unknown",
+      "code": "T523",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Plantar fasciectomy"
+    },
+    {
+      "procedureName": "Hand Tendon Repair (Extensor)",
+      "specialty": "Unknown",
+      "code": "T528",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Other specified excision of other fascia"
+    },
+    {
+      "procedureName": "Nerve Repair (Digital Nerves)",
+      "specialty": "Unknown",
+      "code": "A481",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Biopsy of lesion of spinal cord NEC"
+    },
+    {
+      "procedureName": "Nerve Repair (Digital Nerves)",
+      "specialty": "Unknown",
+      "code": "A482",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Aspiration of lesion of spinal cord"
+    },
+    {
+      "procedureName": "First Web Space Release",
+      "specialty": "Unknown",
+      "code": "T543",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Needle fasciotomy of palmar fascia"
+    },
+    {
+      "procedureName": "Ankle Fracture ORIF (Lateral Malleolus)",
+      "specialty": "Unknown",
+      "code": "W321",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Prepared graft of bone"
+    },
+    {
+      "procedureName": "Ankle Fracture ORIF (Bimalleolar)",
+      "specialty": "Unknown",
+      "code": "W322",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Allograft of bone NEC"
+    },
+    {
+      "procedureName": "Ankle Fracture ORIF (Trimalleolar)",
+      "specialty": "Unknown",
+      "code": "W323",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Xenograft of bone"
+    },
+    {
+      "procedureName": "Syndesmotic Screw Insertion",
+      "specialty": "Unknown",
+      "code": "W324",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Synthetic graft of bone"
+    },
+    {
+      "procedureName": "Ankle Arthroscopy",
+      "specialty": "Unknown",
+      "code": "W822",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Endoscopic resection of meniscus of knee joint"
+    },
+    {
+      "procedureName": "Ankle Arthroscopy",
+      "specialty": "Unknown",
+      "code": "Y762",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Functional endoscopic nasal surgery"
+    },
+    {
+      "procedureName": "Total Ankle Replacement",
+      "specialty": "Unknown",
+      "code": "W611",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary arthrodesis and articular bone graft NEC"
+    },
+    {
+      "procedureName": "Total Ankle Replacement",
+      "specialty": "Unknown",
+      "code": "W621",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary arthrodesis and internal fixation of joint NEC"
+    },
+    {
+      "procedureName": "Total Ankle Replacement",
+      "specialty": "Unknown",
+      "code": "W631",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Revision of arthrodesis and internal fixation NEC"
+    },
+    {
+      "procedureName": "Subtalar Fusion",
+      "specialty": "Unknown",
+      "code": "W641",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Conversion to arthrodesis and internal fixation NEC"
+    },
+    {
+      "procedureName": "Triple Arthrodesis",
+      "specialty": "Unknown",
+      "code": "W643",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: W04.2 (Triple fusion of joints of hindfoot) | W04.2 (Triple fusion of joints of hindfoot)"
+    },
+    {
+      "procedureName": "Bunion Correction - Scarf Osteotomy",
+      "specialty": "Unknown",
+      "code": "W651",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary open reduction of fracture dislocation of joint and skeletal traction HFQ"
+    },
+    {
+      "procedureName": "Bunion Correction - Chevron Osteotomy",
+      "specialty": "Unknown",
+      "code": "W651",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary open reduction of fracture dislocation of joint and skeletal traction HFQ"
+    },
+    {
+      "procedureName": "Bunion Correction - Lapidus Procedure",
+      "specialty": "Unknown",
+      "code": "W652",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary open reduction of traumatic dislocation of joint and skeletal traction NEC"
+    },
+    {
+      "procedureName": "Hallux Rigidus - Cheilectomy",
+      "specialty": "Unknown",
+      "code": "W671",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Secondary open reduction of fracture dislocation of joint and skeletal traction HFQ"
+    },
+    {
+      "procedureName": "Hallux Rigidus - MTP Fusion",
+      "specialty": "Unknown",
+      "code": "W672",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Secondary open reduction of traumatic dislocation of joint and skeletal traction NEC"
+    },
+    {
+      "procedureName": "Hammer Toe Correction",
+      "specialty": "Unknown",
+      "code": "W681",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Open reduction of injury to growth plate and internal fixation HFQ"
+    },
+    {
+      "procedureName": "Plantar Fascia Release",
+      "specialty": "Unknown",
+      "code": "T691",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary tenolysis"
+    },
+    {
+      "procedureName": "Calcaneal Fracture ORIF",
+      "specialty": "Unknown",
+      "code": "W341",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Autograft of bone marrow"
+    },
+    {
+      "procedureName": "Lumbar Fusion ALIF (Anterior Lumbar Interbody Fusion)",
+      "specialty": "Unknown",
+      "code": "V364",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: A52.1 (Therapeutic lumbar epidural injection) | A52.1 (Therapeutic lumbar epidural injection) | A53.6 (Creation of lumbar subcutaneous shunt)"
+    },
+    {
+      "procedureName": "Cervical Discectomy and Fusion (ACDF)",
+      "specialty": "Unknown",
+      "code": "V313",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary costotransversectomy of thoracic intervertebral disc"
+    },
+    {
+      "procedureName": "Cervical Discectomy and Fusion (ACDF)",
+      "specialty": "Unknown",
+      "code": "V314",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary percutaneous endoscopic excision of thoracic intervertebral disc"
+    },
+    {
+      "procedureName": "Cervical Laminectomy",
+      "specialty": "Unknown",
+      "code": "V314",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary percutaneous endoscopic excision of thoracic intervertebral disc"
+    },
+    {
+      "procedureName": "Cervical Posterior Fusion",
+      "specialty": "Unknown",
+      "code": "V323",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Revisional costotransversectomy of thoracic intervertebral disc"
+    },
+    {
+      "procedureName": "Thoracolumbar Fusion",
+      "specialty": "Unknown",
+      "code": "V353",
+      "issue": "CODE NOT FOUND IN OPCS-4.10"
+    },
+    {
+      "procedureName": "Spinal Deformity Correction (Scoliosis)",
+      "specialty": "Unknown",
+      "code": "V373",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Transoral fusion of atlantoaxial joint"
+    },
+    {
+      "procedureName": "Spinal Deformity Correction (Scoliosis)",
+      "specialty": "Unknown",
+      "code": "V383",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary posterior fusion of joint of lumbar spine NEC"
+    },
+    {
+      "procedureName": "Spinal Deformity Correction (Scoliosis)",
+      "specialty": "Unknown",
+      "code": "V393",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Revisional posterior interlaminar fusion of joint of lumbar spine"
+    },
+    {
+      "procedureName": "Kyphoplasty",
+      "specialty": "Unknown",
+      "code": "V423",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Anterolateral release of spine for correction of deformity and graft HFQ"
+    },
+    {
+      "procedureName": "Kyphoplasty",
+      "specialty": "Unknown",
+      "code": "V424",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Anterior and posterior epiphysiodesis of spine for correction of deformity"
+    },
+    {
+      "procedureName": "Vertebroplasty",
+      "specialty": "Unknown",
+      "code": "V413",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Removal of correctional instrument from spine"
+    },
+    {
+      "procedureName": "Vertebroplasty",
+      "specialty": "Unknown",
+      "code": "V414",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Anterior and posterior attachment of correctional instrument to spine"
+    },
+    {
+      "procedureName": "Spinal Tumor Resection",
+      "specialty": "Unknown",
+      "code": "V201",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Total prosthetic replacement of temporomandibular joint"
+    },
+    {
+      "procedureName": "Spinal Tumor Resection",
+      "specialty": "Unknown",
+      "code": "V202",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Prosthetic replacement of temporomandibular joint NEC"
+    },
+    {
+      "procedureName": "Spinal Tumor Resection",
+      "specialty": "Unknown",
+      "code": "V203",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Intra-articular arthroplasty of temporomandibular joint"
+    },
+    {
+      "procedureName": "Spinal Cord Decompression",
+      "specialty": "Unknown",
+      "code": "V334",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary anterior excision of lumbar intervertebral disc NEC"
+    },
+    {
+      "procedureName": "Spinal Cord Decompression",
+      "specialty": "Unknown",
+      "code": "V344",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Revisional anterior excision of lumbar intervertebral disc NEC"
+    },
+    {
+      "procedureName": "Spinal Cord Decompression",
+      "specialty": "Unknown",
+      "code": "V354",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: A12.5 (Creation of subcutaneous cerebrospinal fluid reservoir) | A12.5 (Creation of subcutaneous cerebrospinal fluid reservoir) | A44 (Partial extirpation of spinal cord)"
+    },
+    {
+      "procedureName": "Forearm Fracture ORIF",
+      "specialty": "Unknown",
+      "code": "W292",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Adjustment to skeletal traction of bone"
+    },
+    {
+      "procedureName": "Club Foot Correction (Ponseti Casting)",
+      "specialty": "Unknown",
+      "code": "W701",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Open total excision of meniscus of knee joint"
+    },
+    {
+      "procedureName": "Club Foot Surgery (Soft Tissue Release)",
+      "specialty": "Unknown",
+      "code": "W702",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Open excision of meniscus of knee joint NEC"
+    },
+    {
+      "procedureName": "DDH (Developmental Dysplasia of Hip) - Closed Reduction",
+      "specialty": "Unknown",
+      "code": "W711",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Open drilling of articular cartilage"
+    },
+    {
+      "procedureName": "Perthes Disease - Varus Osteotomy",
+      "specialty": "Unknown",
+      "code": "W273",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Insertion of staple into epiphysis"
+    },
+    {
+      "procedureName": "Slipped Capital Femoral Epiphysis (SCFE) Pinning",
+      "specialty": "Unknown",
+      "code": "W241",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Closed reduction of intracapsular fracture of neck of femur and fixation using nail or screw"
+    },
+    {
+      "procedureName": "Scoliosis Correction (Growing Rods)",
+      "specialty": "Unknown",
+      "code": "V383",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary posterior fusion of joint of lumbar spine NEC"
+    },
+    {
+      "procedureName": "Scoliosis Correction (Growing Rods)",
+      "specialty": "Unknown",
+      "code": "V393",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Revisional posterior interlaminar fusion of joint of lumbar spine"
+    },
+    {
+      "procedureName": "Limb Lengthening (External Fixator)",
+      "specialty": "Unknown",
+      "code": "W232",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Secondary open reduction of fracture of bone and extramedullary fixation HFQ"
+    },
+    {
+      "procedureName": "Limb Lengthening (External Fixator)",
+      "specialty": "Unknown",
+      "code": "W281",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Application of internal fixation to bone NEC"
+    },
+    {
+      "procedureName": "Epiphysiodesis (Growth Arrest)",
+      "specialty": "Unknown",
+      "code": "W721",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary prosthetic replacement of multiple ligaments"
+    },
+    {
+      "procedureName": "Laparoscopic Fundoplication (Nissen)",
+      "specialty": "Unknown",
+      "code": "G223",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: J09.2 (Laparoscopic ultrasound examination of liver and biopsy of lesion of liver) | J09.2 (Laparoscopic ultrasound examination of liver and biopsy of lesion of liver) | J09.3 (Laparoscopic ultrasound examination of liver NEC)"
+    },
+    {
+      "procedureName": "Laparoscopic Fundoplication (Toupet)",
+      "specialty": "Unknown",
+      "code": "G223",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: J09.2 (Laparoscopic ultrasound examination of liver and biopsy of lesion of liver) | J09.2 (Laparoscopic ultrasound examination of liver and biopsy of lesion of liver) | J09.3 (Laparoscopic ultrasound examination of liver NEC)"
+    },
+    {
+      "procedureName": "Open Fundoplication",
+      "specialty": "Unknown",
+      "code": "G221",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: A04 (Open biopsy of lesion of tissue of brain) | A04.1 (Open biopsy of lesion of tissue of frontal lobe of brain) | A04.1 (Open biopsy of lesion of tissue of frontal lobe of brain)"
+    },
+    {
+      "procedureName": "Laparoscopic Gastric Bypass (Roux-en-Y)",
+      "specialty": "Unknown",
+      "code": "G283",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Partial gastrectomy and anastomosis of stomach to jejunum NEC"
+    },
+    {
+      "procedureName": "Laparoscopic Adjustable Gastric Banding",
+      "specialty": "Unknown",
+      "code": "G283",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Partial gastrectomy and anastomosis of stomach to jejunum NEC"
+    },
+    {
+      "procedureName": "Oesophagectomy (Ivor Lewis)",
+      "specialty": "Unknown",
+      "code": "G011",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Oesophagogastrectomy and anastomosis of oesophagus to stomach"
+    },
+    {
+      "procedureName": "Oesophagectomy (Ivor Lewis)",
+      "specialty": "Unknown",
+      "code": "G012",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Oesophagogastrectomy and anastomosis of oesophagus to transposed jejunum"
+    },
+    {
+      "procedureName": "Oesophagectomy (McKeown - 3 stage)",
+      "specialty": "Unknown",
+      "code": "G011",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Oesophagogastrectomy and anastomosis of oesophagus to stomach"
+    },
+    {
+      "procedureName": "Oesophagectomy (McKeown - 3 stage)",
+      "specialty": "Unknown",
+      "code": "G012",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Oesophagogastrectomy and anastomosis of oesophagus to transposed jejunum"
+    },
+    {
+      "procedureName": "Oesophagectomy (McKeown - 3 stage)",
+      "specialty": "Unknown",
+      "code": "G013",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Oesophagogastrectomy and anastomosis of oesophagus to jejunum NEC"
+    },
+    {
+      "procedureName": "Distal Pancreatectomy",
+      "specialty": "Unknown",
+      "code": "J621",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Division of annular pancreas"
+    },
+    {
+      "procedureName": "Distal Pancreatectomy",
+      "specialty": "Unknown",
+      "code": "J622",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: A13.2 (Maintenance of distal catheter of cerebroventricular shunt) | A13.2 (Maintenance of distal catheter of cerebroventricular shunt) | L77.4 (Creation of distal splenorenal shunt)"
+    },
+    {
+      "procedureName": "Liver Resection (Hepatectomy)",
+      "specialty": "Unknown",
+      "code": "J021",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Right hemihepatectomy NEC"
+    },
+    {
+      "procedureName": "Liver Resection (Hepatectomy)",
+      "specialty": "Unknown",
+      "code": "J022",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Left hemihepatectomy NEC"
+    },
+    {
+      "procedureName": "Splenectomy (Open)",
+      "specialty": "Unknown",
+      "code": "T911",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Biopsy of sentinel lymph node NEC"
+    },
+    {
+      "procedureName": "Splenectomy (Laparoscopic)",
+      "specialty": "Unknown",
+      "code": "T913",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: J69.2 (Total splenectomy) | J69.2 (Total splenectomy) | J70.1 (Partial splenectomy)"
+    },
+    {
+      "procedureName": "Appendicectomy (Open)",
+      "specialty": "Unknown",
+      "code": "H011",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Emergency excision of abnormal appendix and drainage HFQ"
+    },
+    {
+      "procedureName": "Appendicectomy (Laparoscopic)",
+      "specialty": "Unknown",
+      "code": "H013",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Emergency excision of normal appendix"
+    },
+    {
+      "procedureName": "Anterior Resection (Open)",
+      "specialty": "Unknown",
+      "code": "H331",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Abdominoperineal excision of rectum and end colostomy"
+    },
+    {
+      "procedureName": "Abdominoperineal Resection (APR)",
+      "specialty": "Unknown",
+      "code": "H081",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Transverse colectomy and end to end anastomosis"
+    },
+    {
+      "procedureName": "Total Colectomy",
+      "specialty": "Unknown",
+      "code": "H041",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Panproctocolectomy and ileostomy"
+    },
+    {
+      "procedureName": "Panproctocolectomy",
+      "specialty": "Unknown",
+      "code": "H081",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Transverse colectomy and end to end anastomosis"
+    },
+    {
+      "procedureName": "Ileoanal Pouch (J-Pouch)",
+      "specialty": "Unknown",
+      "code": "H041",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Panproctocolectomy and ileostomy"
+    },
+    {
+      "procedureName": "Ileoanal Pouch (J-Pouch)",
+      "specialty": "Unknown",
+      "code": "H342",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Open cauterisation of lesion of rectum"
+    },
+    {
+      "procedureName": "Loop Colostomy Formation",
+      "specialty": "Unknown",
+      "code": "H111",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Colectomy and end to end anastomosis of colon to colon NEC"
+    },
+    {
+      "procedureName": "Loop Ileostomy Formation",
+      "specialty": "Unknown",
+      "code": "H101",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Sigmoid colectomy and end to end anastomosis of ileum to rectum"
+    },
+    {
+      "procedureName": "Stoma Reversal",
+      "specialty": "Unknown",
+      "code": "H121",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Excision of diverticulum of colon"
+    },
+    {
+      "procedureName": "Stoma Reversal",
+      "specialty": "Unknown",
+      "code": "H122",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Excision of lesion of colon NEC"
+    },
+    {
+      "procedureName": "Colonoscopy",
+      "specialty": "Unknown",
+      "code": "H221",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Diagnostic fibreoptic endoscopic examination of colon and biopsy of lesion of colon"
+    },
+    {
+      "procedureName": "Colonoscopy",
+      "specialty": "Unknown",
+      "code": "H222",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: H18.1 (Open colonoscopy) | H18.1 (Open colonoscopy)"
+    },
+    {
+      "procedureName": "Flexible Sigmoidoscopy",
+      "specialty": "Unknown",
+      "code": "H231",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Endoscopic snare resection of lesion of lower bowel using fibreoptic sigmoidoscope"
+    },
+    {
+      "procedureName": "Flexible Sigmoidoscopy",
+      "specialty": "Unknown",
+      "code": "H232",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Endoscopic cauterisation of lesion of lower bowel using fibreoptic sigmoidoscope"
+    },
+    {
+      "procedureName": "Rigid Sigmoidoscopy",
+      "specialty": "Unknown",
+      "code": "H231",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Endoscopic snare resection of lesion of lower bowel using fibreoptic sigmoidoscope"
+    },
+    {
+      "procedureName": "Haemorrhoidectomy (Stapled - PPH)",
+      "specialty": "Unknown",
+      "code": "H512",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Partial internal sphincterotomy for haemorrhoid"
+    },
+    {
+      "procedureName": "Haemorrhoidal Artery Ligation (HAL/THD)",
+      "specialty": "Unknown",
+      "code": "H513",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Stapled haemorrhoidectomy"
+    },
+    {
+      "procedureName": "Fistula-in-Ano - Fistulotomy",
+      "specialty": "Unknown",
+      "code": "H521",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Cryotherapy to haemorrhoid"
+    },
+    {
+      "procedureName": "Fistula-in-Ano - Seton Insertion",
+      "specialty": "Unknown",
+      "code": "H522",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Infrared photocoagulation of haemorrhoid"
+    },
+    {
+      "procedureName": "Fistula-in-Ano - LIFT Procedure",
+      "specialty": "Unknown",
+      "code": "H523",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Injection of sclerosing substance into haemorrhoid"
+    },
+    {
+      "procedureName": "Anal Fissure - Lateral Sphincterotomy",
+      "specialty": "Unknown",
+      "code": "H511",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Haemorrhoidectomy"
+    },
+    {
+      "procedureName": "Pilonidal Sinus Excision",
+      "specialty": "Unknown",
+      "code": "S571",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Debridement of skin NEC"
+    },
+    {
+      "procedureName": "Rectal Prolapse Repair (Perineal)",
+      "specialty": "Unknown",
+      "code": "H571",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Placement of artificial anal sphincter NEC"
+    },
+    {
+      "procedureName": "Rectal Prolapse Repair (Abdominal - Rectopexy)",
+      "specialty": "Unknown",
+      "code": "H581",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Drainage of ischiorectal abscess"
+    },
+    {
+      "procedureName": "Rectal Prolapse Repair (Abdominal - Rectopexy)",
+      "specialty": "Unknown",
+      "code": "H582",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Drainage of perianal abscess"
+    },
+    {
+      "procedureName": "Rectal Prolapse Repair (Abdominal - Rectopexy)",
+      "specialty": "Unknown",
+      "code": "H583",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Drainage of perirectal abscess"
+    },
+    {
+      "procedureName": "Epigastric Hernia Repair",
+      "specialty": "Unknown",
+      "code": "T281",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Closure of gastroschisis"
+    },
+    {
+      "procedureName": "Incisional Hernia Repair (Open with Mesh)",
+      "specialty": "Unknown",
+      "code": "T291",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Excision of umbilicus"
+    },
+    {
+      "procedureName": "Incisional Hernia Repair (Laparoscopic)",
+      "specialty": "Unknown",
+      "code": "T293",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Extirpation of lesion of umbilicus"
+    },
+    {
+      "procedureName": "Spigelian Hernia Repair",
+      "specialty": "Unknown",
+      "code": "T298",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Other specified operations on umbilicus"
+    },
+    {
+      "procedureName": "Obturator Hernia Repair",
+      "specialty": "Unknown",
+      "code": "T298",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Other specified operations on umbilicus"
+    },
+    {
+      "procedureName": "Wide Local Excision (WLE)",
+      "specialty": "Unknown",
+      "code": "B281",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Quadrantectomy of breast"
+    },
+    {
+      "procedureName": "Wide Local Excision + Oncoplastic Reconstruction",
+      "specialty": "Unknown",
+      "code": "B281",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Quadrantectomy of breast"
+    },
+    {
+      "procedureName": "Axillary Node Clearance (ANC)",
+      "specialty": "Unknown",
+      "code": "T851",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Block dissection of cervical lymph nodes"
+    },
+    {
+      "procedureName": "Mastectomy with Immediate Reconstruction (LD Flap)",
+      "specialty": "Unknown",
+      "code": "B301",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Insertion of prosthesis for breast NEC"
+    },
+    {
+      "procedureName": "Mastectomy with Immediate Reconstruction (DIEP Flap)",
+      "specialty": "Unknown",
+      "code": "B302",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Revision of prosthesis for breast NEC"
+    },
+    {
+      "procedureName": "Breast Abscess Incision & Drainage",
+      "specialty": "Unknown",
+      "code": "B241",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: B27 (Total excision of breast) | B27.8 (Other specified total excision of breast) | B27.8 (Other specified total excision of breast)"
+    },
+    {
+      "procedureName": "Gynaecomastia Excision",
+      "specialty": "Unknown",
+      "code": "B331",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Drainage of lesion of breast"
+    },
+    {
+      "procedureName": "Microdochectomy",
+      "specialty": "Unknown",
+      "code": "B351",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Transposition of nipple"
+    },
+    {
+      "procedureName": "Hickman Line Insertion",
+      "specialty": "Unknown",
+      "code": "E851",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Invasive ventilation"
+    },
+    {
+      "procedureName": "PICC Line Insertion",
+      "specialty": "Unknown",
+      "code": "E851",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Invasive ventilation"
+    },
+    {
+      "procedureName": "Portacath Insertion",
+      "specialty": "Unknown",
+      "code": "E851",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Invasive ventilation"
+    },
+    {
+      "procedureName": "Portacath Removal",
+      "specialty": "Unknown",
+      "code": "E859",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Unspecified ventilation support"
+    },
+    {
+      "procedureName": "Permcath Insertion",
+      "specialty": "Unknown",
+      "code": "E851",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Invasive ventilation"
+    },
+    {
+      "procedureName": "Tunnelled Dialysis Catheter Insertion",
+      "specialty": "Unknown",
+      "code": "E851",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Invasive ventilation"
+    },
+    {
+      "procedureName": "AV Fistula Formation (Radiocephalic)",
+      "specialty": "Unknown",
+      "code": "L741",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Insertion of arteriovenous prosthesis"
+    },
+    {
+      "procedureName": "AV Fistula Formation (Brachiocephalic)",
+      "specialty": "Unknown",
+      "code": "L741",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Insertion of arteriovenous prosthesis"
+    },
+    {
+      "procedureName": "AV Graft Insertion",
+      "specialty": "Unknown",
+      "code": "L751",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Excision of congenital arteriovenous malformation"
+    },
+    {
+      "procedureName": "Abdominal Aortic Aneurysm Repair (Open)",
+      "specialty": "Unknown",
+      "code": "L181",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Emergency replacement of aneurysmal segment of ascending aorta by anastomosis of aorta to aorta"
+    },
+    {
+      "procedureName": "Abdominal Aortic Aneurysm Repair (Open)",
+      "specialty": "Unknown",
+      "code": "L191",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Replacement of aneurysmal segment of ascending aorta by anastomosis of aorta to aorta NEC"
+    },
+    {
+      "procedureName": "Endovascular Aortic Aneurysm Repair (EVAR)",
+      "specialty": "Unknown",
+      "code": "L183",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Emergency replacement of aneurysmal segment of suprarenal abdominal aorta by anastomosis of aorta to aorta"
+    },
+    {
+      "procedureName": "Endovascular Aortic Aneurysm Repair (EVAR)",
+      "specialty": "Unknown",
+      "code": "L193",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Replacement of aneurysmal segment of suprarenal abdominal aorta by anastomosis of aorta to aorta NEC"
+    },
+    {
+      "procedureName": "Thoracic Endovascular Aortic Repair (TEVAR)",
+      "specialty": "Unknown",
+      "code": "L173",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: A75.2 (Excision of thoracic sympathetic nerve) | A75.2 (Excision of thoracic sympathetic nerve) | A76.2 (Chemical destruction of thoracic sympathetic nerve)"
+    },
+    {
+      "procedureName": "Femoral-Distal Bypass",
+      "specialty": "Unknown",
+      "code": "L521",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Endarterectomy of iliac artery and patch repair of iliac artery"
+    },
+    {
+      "procedureName": "Femoral-Distal Bypass",
+      "specialty": "Unknown",
+      "code": "L522",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Endarterectomy of iliac artery NEC"
+    },
+    {
+      "procedureName": "Axillo-Bifemoral Bypass",
+      "specialty": "Unknown",
+      "code": "L241",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: U53.1 (Delivery of rehabilitation following plastic maxillofacial reconstructive surgery) | U53.1 (Delivery of rehabilitation following plastic maxillofacial reconstructive surgery)"
+    },
+    {
+      "procedureName": "Embolectomy (Femoral)",
+      "specialty": "Unknown",
+      "code": "L481",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Emergency replacement of aneurysmal common iliac artery by anastomosis of aorta to common iliac artery"
+    },
+    {
+      "procedureName": "Thrombectomy",
+      "specialty": "Unknown",
+      "code": "L481",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Emergency replacement of aneurysmal common iliac artery by anastomosis of aorta to common iliac artery"
+    },
+    {
+      "procedureName": "Profundaplasty",
+      "specialty": "Unknown",
+      "code": "L491",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Replacement of aneurysmal common iliac artery by anastomosis of aorta to common iliac artery NEC"
+    },
+    {
+      "procedureName": "Femoral Endarterectomy",
+      "specialty": "Unknown",
+      "code": "L491",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Replacement of aneurysmal common iliac artery by anastomosis of aorta to common iliac artery NEC"
+    },
+    {
+      "procedureName": "Angioplasty and Stenting",
+      "specialty": "Unknown",
+      "code": "L503",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Emergency bypass of artery of leg by anastomosis of aorta to common femoral artery NEC"
+    },
+    {
+      "procedureName": "Angioplasty and Stenting",
+      "specialty": "Unknown",
+      "code": "L513",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Bypass of artery of leg by anastomosis of aorta to common femoral artery NEC"
+    },
+    {
+      "procedureName": "Angioplasty and Stenting",
+      "specialty": "Unknown",
+      "code": "L523",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: J10.4 (Percutaneous transluminal angioplasty of blood vessel of liver) | J10.4 (Percutaneous transluminal angioplasty of blood vessel of liver) | J11.1 (Transjugular intrahepatic angioplasty of portal vein)"
+    },
+    {
+      "procedureName": "Amputation - Toe",
+      "specialty": "Unknown",
+      "code": "X141",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Total exenteration of pelvis"
+    },
+    {
+      "procedureName": "Fasciotomy (Compartment Syndrome)",
+      "specialty": "Unknown",
+      "code": "T781",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Delayed primary repair of multiple tendons HFQ"
+    },
+    {
+      "procedureName": "Endovenous Laser Therapy (EVLT)",
+      "specialty": "Unknown",
+      "code": "L853",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Ligation of recurrent varicose vein of leg"
+    },
+    {
+      "procedureName": "Radiofrequency Ablation (RFA)",
+      "specialty": "Unknown",
+      "code": "L853",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Ligation of recurrent varicose vein of leg"
+    },
+    {
+      "procedureName": "Sclerotherapy",
+      "specialty": "Unknown",
+      "code": "L883",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Percutaneous transluminal laser ablation of varicose vein of leg NEC"
+    },
+    {
+      "procedureName": "Venous Ulcer Debridement",
+      "specialty": "Unknown",
+      "code": "S603",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Tattooing of skin"
+    },
+    {
+      "procedureName": "GreenLight Laser Prostatectomy (PVP)",
+      "specialty": "Unknown",
+      "code": "M653",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Endoscopic resection of prostate NEC"
+    },
+    {
+      "procedureName": "Cystoscopy (Flexible)",
+      "specialty": "Unknown",
+      "code": "M451",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Diagnostic endoscopic examination of bladder and biopsy of lesion of bladder NEC"
+    },
+    {
+      "procedureName": "Cystoscopy (Rigid)",
+      "specialty": "Unknown",
+      "code": "M451",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Diagnostic endoscopic examination of bladder and biopsy of lesion of bladder NEC"
+    },
+    {
+      "procedureName": "Ureteroscopy (Rigid)",
+      "specialty": "Unknown",
+      "code": "M281",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Code retired - refer to introduction"
+    },
+    {
+      "procedureName": "Ureteroscopy (Flexible)",
+      "specialty": "Unknown",
+      "code": "M281",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Code retired - refer to introduction"
+    },
+    {
+      "procedureName": "Laser Lithotripsy",
+      "specialty": "Unknown",
+      "code": "M153",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: B40.1 (Interstitial laser destruction of lesion of breast) | B40.1 (Interstitial laser destruction of lesion of breast) | C44.2 (Laser in situ keratomileusis)"
+    },
+    {
+      "procedureName": "PCNL (Percutaneous Nephrolithotomy)",
+      "specialty": "Unknown",
+      "code": "M143",
+      "issue": "CODE NOT FOUND IN OPCS-4.10"
+    },
+    {
+      "procedureName": "JJ Stent Insertion",
+      "specialty": "Unknown",
+      "code": "M281",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Code retired - refer to introduction"
+    },
+    {
+      "procedureName": "JJ Stent Removal",
+      "specialty": "Unknown",
+      "code": "M281",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Code retired - refer to introduction"
+    },
+    {
+      "procedureName": "Nephrostomy Insertion",
+      "specialty": "Unknown",
+      "code": "M113",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Diagnostic endoscopic retrograde examination of kidney NEC"
+    },
+    {
+      "procedureName": "Urethral Dilatation",
+      "specialty": "Unknown",
+      "code": "M781",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Endoscopic removal of mesh from urethra"
+    },
+    {
+      "procedureName": "Optical Urethrotomy",
+      "specialty": "Unknown",
+      "code": "M782",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: C91.1 (Optical coherence tomography of anterior segment of eye) | C91.1 (Optical coherence tomography of anterior segment of eye) | M76.3 (Optical urethrotomy)"
+    },
+    {
+      "procedureName": "Bladder Neck Incision (BNI)",
+      "specialty": "Unknown",
+      "code": "M782",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: J08.2 (Endoscopic insertion of cannula into gall bladder using laparoscope) | J08.2 (Endoscopic insertion of cannula into gall bladder using laparoscope) | J18 (Excision of gall bladder)"
+    },
+    {
+      "procedureName": "Radical Prostatectomy (Open)",
+      "specialty": "Unknown",
+      "code": "M611",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Total excision of prostate and capsule of prostate"
+    },
+    {
+      "procedureName": "Radical Nephrectomy (Open)",
+      "specialty": "Unknown",
+      "code": "M022",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Nephroureterectomy NEC"
+    },
+    {
+      "procedureName": "Partial Nephrectomy (Open)",
+      "specialty": "Unknown",
+      "code": "M031",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Heminephrectomy of duplex kidney"
+    },
+    {
+      "procedureName": "Partial Nephrectomy (Laparoscopic/Robotic)",
+      "specialty": "Unknown",
+      "code": "M033",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: A01.3 (Partial lobectomy of brain) | A01.3 (Partial lobectomy of brain) | A07.7 (Partial callosotomy)"
+    },
+    {
+      "procedureName": "Nephroureterectomy",
+      "specialty": "Unknown",
+      "code": "M061",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Open removal of calculus from kidney"
+    },
+    {
+      "procedureName": "Radical Cystectomy with Ileal Conduit",
+      "specialty": "Unknown",
+      "code": "M341",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Cystoprostatectomy"
+    },
+    {
+      "procedureName": "Radical Cystectomy with Ileal Conduit",
+      "specialty": "Unknown",
+      "code": "M342",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Cystourethrectomy"
+    },
+    {
+      "procedureName": "Radical Cystectomy with Neobladder",
+      "specialty": "Unknown",
+      "code": "M341",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Cystoprostatectomy"
+    },
+    {
+      "procedureName": "Radical Cystectomy with Neobladder",
+      "specialty": "Unknown",
+      "code": "M372",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Repair of vesicocolic fistula"
+    },
+    {
+      "procedureName": "Pyeloplasty (Anderson-Hynes)",
+      "specialty": "Unknown",
+      "code": "M191",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Construction of ileal conduit"
+    },
+    {
+      "procedureName": "Pyeloplasty (Anderson-Hynes)",
+      "specialty": "Unknown",
+      "code": "M193",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Revision of urinary diversion"
+    },
+    {
+      "procedureName": "Ureteric Reimplantation",
+      "specialty": "Unknown",
+      "code": "M301",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Endoscopic retrograde pyelography"
+    },
+    {
+      "procedureName": "Orchidectomy (Simple)",
+      "specialty": "Unknown",
+      "code": "N211",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: N05.1 (Bilateral subcapsular orchidectomy) | N05.1 (Bilateral subcapsular orchidectomy) | N05.2 (Bilateral orchidectomy NEC)"
+    },
+    {
+      "procedureName": "Orchidectomy (Radical - Inguinal)",
+      "specialty": "Unknown",
+      "code": "N212",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: N05.1 (Bilateral subcapsular orchidectomy) | N05.1 (Bilateral subcapsular orchidectomy) | N05.2 (Bilateral orchidectomy NEC)"
+    },
+    {
+      "procedureName": "Orchidopexy (Undescended Testis)",
+      "specialty": "Unknown",
+      "code": "N251",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: N08.2 (One stage bilateral orchidopexy NEC) | N08.2 (One stage bilateral orchidopexy NEC) | N08.3 (First stage bilateral orchidopexy)"
+    },
+    {
+      "procedureName": "Hydrocele Repair",
+      "specialty": "Unknown",
+      "code": "N271",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Excision of lesion of penis"
+    },
+    {
+      "procedureName": "Varicocele Repair",
+      "specialty": "Unknown",
+      "code": "N311",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: N19 (Operations on varicocele) | N19.1 (Ligation of varicocele) | N19.1 (Ligation of varicocele)"
+    },
+    {
+      "procedureName": "Circumcision",
+      "specialty": "Unknown",
+      "code": "N301",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Prepuceplasty"
+    },
+    {
+      "procedureName": "Urethroplasty (Anastomotic)",
+      "specialty": "Unknown",
+      "code": "M711",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "High intensity focused ultrasound of prostate"
+    },
+    {
+      "procedureName": "Urethroplasty (Buccal Mucosa Graft)",
+      "specialty": "Unknown",
+      "code": "M711",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "High intensity focused ultrasound of prostate"
+    },
+    {
+      "procedureName": "Bladder Augmentation",
+      "specialty": "Unknown",
+      "code": "M361",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Caecocystoplasty"
+    },
+    {
+      "procedureName": "Mitrofanoff Procedure",
+      "specialty": "Unknown",
+      "code": "M391",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Open removal of calculus from bladder"
+    },
+    {
+      "procedureName": "Artificial Urinary Sphincter (AUS) Insertion",
+      "specialty": "Unknown",
+      "code": "M531",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Vaginal buttressing of urethra"
+    },
+    {
+      "procedureName": "Pacemaker Insertion",
+      "specialty": "Unknown",
+      "code": "K591",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Implantation of cardioverter defibrillator using one electrode lead"
+    },
+    {
+      "procedureName": "Pacemaker Insertion",
+      "specialty": "Unknown",
+      "code": "K592",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Implantation of cardioverter defibrillator using two electrode leads"
+    },
+    {
+      "procedureName": "Pacemaker Insertion",
+      "specialty": "Unknown",
+      "code": "K593",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Resiting of lead of cardioverter defibrillator"
+    },
+    {
+      "procedureName": "Pacemaker Insertion",
+      "specialty": "Unknown",
+      "code": "K594",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Renewal of cardioverter defibrillator NEC"
+    },
+    {
+      "procedureName": "ICD Insertion",
+      "specialty": "Unknown",
+      "code": "K601",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Implantation of intravenous cardiac pacemaker system NEC"
+    },
+    {
+      "procedureName": "ICD Insertion",
+      "specialty": "Unknown",
+      "code": "K602",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Resiting of lead of intravenous cardiac pacemaker system"
+    },
+    {
+      "procedureName": "ICD Insertion",
+      "specialty": "Unknown",
+      "code": "K603",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Renewal of intravenous cardiac pacemaker system NEC"
+    },
+    {
+      "procedureName": "Lobectomy",
+      "specialty": "Unknown",
+      "code": "E541",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Total pneumonectomy"
+    },
+    {
+      "procedureName": "Lobectomy",
+      "specialty": "Unknown",
+      "code": "E542",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Bilobectomy of lung"
+    },
+    {
+      "procedureName": "Lobectomy",
+      "specialty": "Unknown",
+      "code": "E544",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Excision of segment of lung"
+    },
+    {
+      "procedureName": "Pneumonectomy",
+      "specialty": "Unknown",
+      "code": "E551",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Open decortication of lesion of lung"
+    },
+    {
+      "procedureName": "Wedge Resection",
+      "specialty": "Unknown",
+      "code": "E521",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Irrigation of bronchus NEC"
+    },
+    {
+      "procedureName": "Wedge Resection",
+      "specialty": "Unknown",
+      "code": "E522",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Aspiration of bronchus NEC"
+    },
+    {
+      "procedureName": "VATS (Video-Assisted Thoracoscopic Surgery)",
+      "specialty": "Unknown",
+      "code": "E502",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Endoscopic laser destruction of lesion of lower respiratory tract using rigid bronchoscope"
+    },
+    {
+      "procedureName": "VATS (Video-Assisted Thoracoscopic Surgery)",
+      "specialty": "Unknown",
+      "code": "E522",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Aspiration of bronchus NEC"
+    },
+    {
+      "procedureName": "VATS (Video-Assisted Thoracoscopic Surgery)",
+      "specialty": "Unknown",
+      "code": "E542",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Bilobectomy of lung"
+    },
+    {
+      "procedureName": "Oesophagectomy (Ivor Lewis)",
+      "specialty": "Unknown",
+      "code": "G011",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Oesophagogastrectomy and anastomosis of oesophagus to stomach"
+    },
+    {
+      "procedureName": "Oesophagectomy (Ivor Lewis)",
+      "specialty": "Unknown",
+      "code": "G012",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Oesophagogastrectomy and anastomosis of oesophagus to transposed jejunum"
+    },
+    {
+      "procedureName": "Oesophagectomy (McKeown)",
+      "specialty": "Unknown",
+      "code": "G011",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Oesophagogastrectomy and anastomosis of oesophagus to stomach"
+    },
+    {
+      "procedureName": "Oesophagectomy (McKeown)",
+      "specialty": "Unknown",
+      "code": "G012",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Oesophagogastrectomy and anastomosis of oesophagus to transposed jejunum"
+    },
+    {
+      "procedureName": "Mediastinoscopy",
+      "specialty": "Unknown",
+      "code": "T091",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Open destruction of lesion of pleura"
+    },
+    {
+      "procedureName": "Thymectomy",
+      "specialty": "Unknown",
+      "code": "T131",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Insufflation of talc into pleural cavity NEC"
+    },
+    {
+      "procedureName": "Thymectomy",
+      "specialty": "Unknown",
+      "code": "T132",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Introduction of sclerosing substance into pleural cavity NEC"
+    },
+    {
+      "procedureName": "Chest Drain Insertion",
+      "specialty": "Unknown",
+      "code": "E851",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Invasive ventilation"
+    },
+    {
+      "procedureName": "Chest Drain Insertion",
+      "specialty": "Unknown",
+      "code": "E852",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Non-invasive ventilation NEC"
+    },
+    {
+      "procedureName": "Pleurodesis",
+      "specialty": "Unknown",
+      "code": "E832",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: T09.3 (Mechanical open pleurodesis) | T09.3 (Mechanical open pleurodesis) | T09.4 (Chemical open pleurodesis)"
+    },
+    {
+      "procedureName": "Craniotomy for Tumour",
+      "specialty": "Unknown",
+      "code": "A041",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Open biopsy of lesion of tissue of frontal lobe of brain"
+    },
+    {
+      "procedureName": "Craniotomy for Tumour",
+      "specialty": "Unknown",
+      "code": "A042",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Open biopsy of lesion of tissue of temporal lobe of brain"
+    },
+    {
+      "procedureName": "Craniotomy for Tumour",
+      "specialty": "Unknown",
+      "code": "A048",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Other specified open biopsy of lesion of tissue of brain"
+    },
+    {
+      "procedureName": "Craniotomy for Aneurysm",
+      "specialty": "Unknown",
+      "code": "A041",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Open biopsy of lesion of tissue of frontal lobe of brain"
+    },
+    {
+      "procedureName": "Craniotomy for Aneurysm",
+      "specialty": "Unknown",
+      "code": "L361",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: V03.1 (Exploratory open craniotomy) | V03.1 (Exploratory open craniotomy) | V05.7 (Hemicraniotomy)"
+    },
+    {
+      "procedureName": "Craniotomy for Haematoma",
+      "specialty": "Unknown",
+      "code": "A041",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Open biopsy of lesion of tissue of frontal lobe of brain"
+    },
+    {
+      "procedureName": "Craniotomy for Haematoma",
+      "specialty": "Unknown",
+      "code": "A091",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Implantation of brain neurostimulator"
+    },
+    {
+      "procedureName": "Cranioplasty",
+      "specialty": "Unknown",
+      "code": "V251",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary extended decompression of lumbar spine and intertransverse fusion of joint of lumbar spine"
+    },
+    {
+      "procedureName": "Cranioplasty",
+      "specialty": "Unknown",
+      "code": "V252",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary extended decompression of lumbar spine NEC"
+    },
+    {
+      "procedureName": "Cranioplasty",
+      "specialty": "Unknown",
+      "code": "V253",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary posterior decompression of lumbar spine and intertransverse fusion of joint of lumbar spine"
+    },
+    {
+      "procedureName": "Ventriculoperitoneal (VP) Shunt",
+      "specialty": "Unknown",
+      "code": "A391",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Repair of meningoencephalocele"
+    },
+    {
+      "procedureName": "Ventriculoperitoneal (VP) Shunt",
+      "specialty": "Unknown",
+      "code": "A392",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Repair of dura of anterior fossa of cranium"
+    },
+    {
+      "procedureName": "External Ventricular Drain (EVD)",
+      "specialty": "Unknown",
+      "code": "A381",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Extirpation of lesion of meninges of cortex of brain"
+    },
+    {
+      "procedureName": "Burr Holes",
+      "specialty": "Unknown",
+      "code": "A021",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Excision of lesion of tissue of frontal lobe of brain"
+    },
+    {
+      "procedureName": "Burr Holes",
+      "specialty": "Unknown",
+      "code": "A022",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Excision of lesion of tissue of temporal lobe of brain"
+    },
+    {
+      "procedureName": "Transsphenoidal Hypophysectomy",
+      "specialty": "Unknown",
+      "code": "A031",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Stereotactic leucotomy"
+    },
+    {
+      "procedureName": "Transsphenoidal Hypophysectomy",
+      "specialty": "Unknown",
+      "code": "A032",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Stereotactic ablation of tissue of thalamus"
+    },
+    {
+      "procedureName": "Awake Craniotomy",
+      "specialty": "Unknown",
+      "code": "A041",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Open biopsy of lesion of tissue of frontal lobe of brain"
+    },
+    {
+      "procedureName": "Microdiscectomy (Lumbar)",
+      "specialty": "Unknown",
+      "code": "V381",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary fusion of joint of thoracic spine"
+    },
+    {
+      "procedureName": "Lumbar Laminectomy",
+      "specialty": "Unknown",
+      "code": "V401",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Non-rigid stabilisation of spine"
+    },
+    {
+      "procedureName": "Lumbar Laminectomy",
+      "specialty": "Unknown",
+      "code": "V402",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Posterior instrumented fusion of cervical spine NEC"
+    },
+    {
+      "procedureName": "Lumbar Fusion (PLIF/TLIF)",
+      "specialty": "Unknown",
+      "code": "V401",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Non-rigid stabilisation of spine"
+    },
+    {
+      "procedureName": "Lumbar Fusion (PLIF/TLIF)",
+      "specialty": "Unknown",
+      "code": "V471",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Biopsy of cervical vertebra"
+    },
+    {
+      "procedureName": "Lumbar Fusion (PLIF/TLIF)",
+      "specialty": "Unknown",
+      "code": "V472",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Biopsy of thoracic vertebra"
+    },
+    {
+      "procedureName": "Spinal Tumour Resection",
+      "specialty": "Unknown",
+      "code": "V141",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Hemimandibulectomy"
+    },
+    {
+      "procedureName": "Spinal Tumour Resection",
+      "specialty": "Unknown",
+      "code": "V142",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Extensive excision of mandible NEC"
+    },
+    {
+      "procedureName": "Spinal Cord Stimulator Insertion",
+      "specialty": "Unknown",
+      "code": "A741",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: A12.5 (Creation of subcutaneous cerebrospinal fluid reservoir) | A12.5 (Creation of subcutaneous cerebrospinal fluid reservoir) | A44 (Partial extirpation of spinal cord)"
+    },
+    {
+      "procedureName": "Laparoscopic Hysterectomy",
+      "specialty": "Unknown",
+      "code": "Q076",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Excision of accessory uterus"
+    },
+    {
+      "procedureName": "Myomectomy",
+      "specialty": "Unknown",
+      "code": "Q101",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Dilation of cervix uteri and curettage of products of conception from uterus"
+    },
+    {
+      "procedureName": "Myomectomy",
+      "specialty": "Unknown",
+      "code": "Q102",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Curettage of products of conception from uterus NEC"
+    },
+    {
+      "procedureName": "Myomectomy",
+      "specialty": "Unknown",
+      "code": "Q103",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Dilation of cervix uteri and curettage of uterus NEC"
+    },
+    {
+      "procedureName": "Oophorectomy (Unilateral)",
+      "specialty": "Unknown",
+      "code": "Q281",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Open ligation of remaining solitary fallopian tube"
+    },
+    {
+      "procedureName": "Oophorectomy (Unilateral)",
+      "specialty": "Unknown",
+      "code": "Q282",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Open ligation of fallopian tube NEC"
+    },
+    {
+      "procedureName": "Oophorectomy (Bilateral)",
+      "specialty": "Unknown",
+      "code": "Q283",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Open clipping of remaining solitary fallopian tube"
+    },
+    {
+      "procedureName": "Oophorectomy (Bilateral)",
+      "specialty": "Unknown",
+      "code": "Q284",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Open clipping of fallopian tube NEC"
+    },
+    {
+      "procedureName": "Salpingectomy",
+      "specialty": "Unknown",
+      "code": "Q221",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Bilateral salpingoophorectomy"
+    },
+    {
+      "procedureName": "Ovarian Cystectomy",
+      "specialty": "Unknown",
+      "code": "Q271",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Open bilateral ligation of fallopian tubes"
+    },
+    {
+      "procedureName": "Ovarian Cystectomy",
+      "specialty": "Unknown",
+      "code": "Q272",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Open bilateral clipping of fallopian tubes"
+    },
+    {
+      "procedureName": "Hysteroscopy",
+      "specialty": "Unknown",
+      "code": "Q171",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Endoscopic resection of lesion of uterus"
+    },
+    {
+      "procedureName": "Hysteroscopy",
+      "specialty": "Unknown",
+      "code": "Q172",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Endoscopic cauterisation of lesion of uterus"
+    },
+    {
+      "procedureName": "Laparoscopy (Diagnostic)",
+      "specialty": "Unknown",
+      "code": "Q182",
+      "issue": "CODE NOT FOUND IN OPCS-4.10"
+    },
+    {
+      "procedureName": "LLETZ Procedure",
+      "specialty": "Unknown",
+      "code": "Q082",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Vaginal hysterectomy and excision of periuterine tissue NEC"
+    },
+    {
+      "procedureName": "TOT (Transobturator Tape)",
+      "specialty": "Unknown",
+      "code": "M531",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Vaginal buttressing of urethra"
+    },
+    {
+      "procedureName": "Sacrocolpopexy",
+      "specialty": "Unknown",
+      "code": "P241",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Repair of vault of vagina using combined abdominal and vaginal approach"
+    },
+    {
+      "procedureName": "Caesarean Section (Emergency)",
+      "specialty": "Unknown",
+      "code": "R173",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: R17 (Elective caesarean delivery) | R17.1 (Elective upper uterine segment caesarean delivery) | R17.1 (Elective upper uterine segment caesarean delivery)"
+    },
+    {
+      "procedureName": "Caesarean Section (Emergency)",
+      "specialty": "Unknown",
+      "code": "R174",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: R17 (Elective caesarean delivery) | R17.1 (Elective upper uterine segment caesarean delivery) | R17.1 (Elective upper uterine segment caesarean delivery)"
+    },
+    {
+      "procedureName": "Manual Removal of Placenta",
+      "specialty": "Unknown",
+      "code": "R211",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "High forceps cephalic delivery with rotation"
+    },
+    {
+      "procedureName": "Myringotomy & Grommets",
+      "specialty": "Unknown",
+      "code": "D152",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Suction clearance of middle ear"
+    },
+    {
+      "procedureName": "Mastoidectomy",
+      "specialty": "Unknown",
+      "code": "D131",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "First stage insertion of fixtures for bone anchored hearing prosthesis"
+    },
+    {
+      "procedureName": "Mastoidectomy",
+      "specialty": "Unknown",
+      "code": "D132",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Second stage insertion of fixtures for bone anchored hearing prosthesis"
+    },
+    {
+      "procedureName": "Tympanoplasty",
+      "specialty": "Unknown",
+      "code": "D148",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Other specified repair of eardrum"
+    },
+    {
+      "procedureName": "Stapedectomy",
+      "specialty": "Unknown",
+      "code": "D121",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Obliteration of mastoid"
+    },
+    {
+      "procedureName": "Cochlear Implant",
+      "specialty": "Unknown",
+      "code": "D161",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Prosthetic replacement of ossicular chain"
+    },
+    {
+      "procedureName": "Bone Anchored Hearing Aid (BAHA)",
+      "specialty": "Unknown",
+      "code": "D162",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Graft replacement of ossicular chain"
+    },
+    {
+      "procedureName": "Septoplasty",
+      "specialty": "Unknown",
+      "code": "E021",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Total reconstruction of nose"
+    },
+    {
+      "procedureName": "Functional Endoscopic Sinus Surgery (FESS)",
+      "specialty": "Unknown",
+      "code": "E041",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Submucous diathermy to turbinate of nose"
+    },
+    {
+      "procedureName": "Functional Endoscopic Sinus Surgery (FESS)",
+      "specialty": "Unknown",
+      "code": "E042",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Excision of turbinate of nose NEC"
+    },
+    {
+      "procedureName": "Functional Endoscopic Sinus Surgery (FESS)",
+      "specialty": "Unknown",
+      "code": "E043",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Excision of lesion of turbinate of nose NEC"
+    },
+    {
+      "procedureName": "Functional Endoscopic Sinus Surgery (FESS)",
+      "specialty": "Unknown",
+      "code": "E048",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Other specified operations on turbinate of nose"
+    },
+    {
+      "procedureName": "Rhinoplasty",
+      "specialty": "Unknown",
+      "code": "E011",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Total excision of nose"
+    },
+    {
+      "procedureName": "Nasal Polypectomy",
+      "specialty": "Unknown",
+      "code": "E051",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Cauterisation of internal nose"
+    },
+    {
+      "procedureName": "Turbinate Reduction",
+      "specialty": "Unknown",
+      "code": "E061",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Packing of posterior cavity of nose NEC"
+    },
+    {
+      "procedureName": "Microlaryngoscopy",
+      "specialty": "Unknown",
+      "code": "E421",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Permanent tracheostomy"
+    },
+    {
+      "procedureName": "Microlaryngoscopy",
+      "specialty": "Unknown",
+      "code": "E422",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Cricothyroidostomy"
+    },
+    {
+      "procedureName": "Vocal Cord Surgery",
+      "specialty": "Unknown",
+      "code": "E421",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Permanent tracheostomy"
+    },
+    {
+      "procedureName": "Vocal Cord Surgery",
+      "specialty": "Unknown",
+      "code": "E441",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Excision of carina"
+    },
+    {
+      "procedureName": "Tracheostomy",
+      "specialty": "Unknown",
+      "code": "E422",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Cricothyroidostomy"
+    },
+    {
+      "procedureName": "Emergency Cricothyroidotomy",
+      "specialty": "Unknown",
+      "code": "E431",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Open destruction of lesion of trachea"
+    },
+    {
+      "procedureName": "Thyroidectomy (Partial)",
+      "specialty": "Unknown",
+      "code": "B083",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Hemithyroidectomy"
+    },
+    {
+      "procedureName": "Parathyroidectomy",
+      "specialty": "Unknown",
+      "code": "B091",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Excision of substernal thyroid tissue"
+    },
+    {
+      "procedureName": "Parathyroidectomy",
+      "specialty": "Unknown",
+      "code": "B092",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Excision of sublingual thyroid tissue"
+    },
+    {
+      "procedureName": "Neck Dissection (Radical)",
+      "specialty": "Unknown",
+      "code": "E541",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Total pneumonectomy"
+    },
+    {
+      "procedureName": "Neck Dissection (Modified Radical)",
+      "specialty": "Unknown",
+      "code": "E542",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Bilobectomy of lung"
+    },
+    {
+      "procedureName": "Neck Dissection (Selective)",
+      "specialty": "Unknown",
+      "code": "E543",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Lobectomy of lung"
+    },
+    {
+      "procedureName": "Parotidectomy (Superficial)",
+      "specialty": "Unknown",
+      "code": "F191",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Removal of dental implant"
+    },
+    {
+      "procedureName": "Parotidectomy (Total)",
+      "specialty": "Unknown",
+      "code": "F192",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Preservation of alveolar ridge using graft"
+    },
+    {
+      "procedureName": "Submandibular Gland Excision",
+      "specialty": "Unknown",
+      "code": "F211",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Debridement of root of tooth"
+    },
+    {
+      "procedureName": "Phacoemulsification with IOL",
+      "specialty": "Unknown",
+      "code": "C751",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Insertion of prosthetic replacement for lens NEC"
+    },
+    {
+      "procedureName": "Phacoemulsification with IOL",
+      "specialty": "Unknown",
+      "code": "C752",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Revision of prosthetic replacement for lens"
+    },
+    {
+      "procedureName": "Manual Small Incision Cataract Surgery (MSICS)",
+      "specialty": "Unknown",
+      "code": "C711",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Simple linear extraction of lens"
+    },
+    {
+      "procedureName": "Complex Cataract Surgery",
+      "specialty": "Unknown",
+      "code": "C758",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Other specified prosthesis of lens"
+    },
+    {
+      "procedureName": "Vitrectomy (Pars Plana)",
+      "specialty": "Unknown",
+      "code": "C621",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Iridosclerotomy"
+    },
+    {
+      "procedureName": "Vitrectomy (Pars Plana)",
+      "specialty": "Unknown",
+      "code": "C622",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Surgical iridotomy"
+    },
+    {
+      "procedureName": "Retinal Detachment Repair",
+      "specialty": "Unknown",
+      "code": "C531",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Punch resection of sclera"
+    },
+    {
+      "procedureName": "Retinal Detachment Repair",
+      "specialty": "Unknown",
+      "code": "C532",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Excision of lesion of sclera NEC"
+    },
+    {
+      "procedureName": "Retinal Detachment Repair",
+      "specialty": "Unknown",
+      "code": "C533",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Cauterisation of lesion of sclera"
+    },
+    {
+      "procedureName": "Macular Hole Surgery",
+      "specialty": "Unknown",
+      "code": "C621",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Iridosclerotomy"
+    },
+    {
+      "procedureName": "Diabetic Retinopathy Surgery",
+      "specialty": "Unknown",
+      "code": "C621",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Iridosclerotomy"
+    },
+    {
+      "procedureName": "Diabetic Retinopathy Surgery",
+      "specialty": "Unknown",
+      "code": "C551",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Drainage of lesion of sclera"
+    },
+    {
+      "procedureName": "Intravitreal Injections",
+      "specialty": "Unknown",
+      "code": "C651",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Needling of bleb"
+    },
+    {
+      "procedureName": "Trabeculectomy",
+      "specialty": "Unknown",
+      "code": "C411",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Peritomy"
+    },
+    {
+      "procedureName": "Trabeculectomy",
+      "specialty": "Unknown",
+      "code": "C412",
+      "issue": "CODE NOT FOUND IN OPCS-4.10",
+      "suggestedCorrection": "Try: C60.1 (Trabeculectomy) | C60.1 (Trabeculectomy)"
+    },
+    {
+      "procedureName": "Tube Shunt Surgery",
+      "specialty": "Unknown",
+      "code": "C431",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Division of adhesions of conjunctiva"
+    },
+    {
+      "procedureName": "iStent Implantation",
+      "specialty": "Unknown",
+      "code": "C432",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Biopsy of lesion of conjunctiva"
+    },
+    {
+      "procedureName": "Ptosis Repair",
+      "specialty": "Unknown",
+      "code": "C121",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Excision of lesion of eyelid NEC"
+    },
+    {
+      "procedureName": "Ptosis Repair",
+      "specialty": "Unknown",
+      "code": "C122",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Cauterisation of lesion of eyelid"
+    },
+    {
+      "procedureName": "Ectropion Repair",
+      "specialty": "Unknown",
+      "code": "C131",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Blepharoplasty of both eyelids"
+    },
+    {
+      "procedureName": "Entropion Repair",
+      "specialty": "Unknown",
+      "code": "C141",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Flap of skin to eyelid"
+    },
+    {
+      "procedureName": "Dacryocystorhinostomy (DCR)",
+      "specialty": "Unknown",
+      "code": "C181",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Correction of ptosis of eyelid using levator muscle technique"
+    },
+    {
+      "procedureName": "Dacryocystorhinostomy (DCR)",
+      "specialty": "Unknown",
+      "code": "C182",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Correction of ptosis of eyelid using frontalis muscle technique"
+    },
+    {
+      "procedureName": "Enucleation",
+      "specialty": "Unknown",
+      "code": "C041",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Revision of prosthetic replacement for orbit"
+    },
+    {
+      "procedureName": "Evisceration",
+      "specialty": "Unknown",
+      "code": "C042",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Revision of prosthetic replacement for eyeball"
+    },
+    {
+      "procedureName": "Free Flap (DIEP)",
+      "specialty": "Unknown",
+      "code": "B271",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Total mastectomy and excision of both pectoral muscles and part of chest wall"
+    },
+    {
+      "procedureName": "Free Flap (DIEP)",
+      "specialty": "Unknown",
+      "code": "B272",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Total mastectomy and excision of both pectoral muscles NEC"
+    },
+    {
+      "procedureName": "Free Flap (ALT)",
+      "specialty": "Unknown",
+      "code": "B271",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Total mastectomy and excision of both pectoral muscles and part of chest wall"
+    },
+    {
+      "procedureName": "Free Flap (ALT)",
+      "specialty": "Unknown",
+      "code": "B272",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Total mastectomy and excision of both pectoral muscles NEC"
+    },
+    {
+      "procedureName": "Free Flap (Radial Forearm)",
+      "specialty": "Unknown",
+      "code": "B271",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Total mastectomy and excision of both pectoral muscles and part of chest wall"
+    },
+    {
+      "procedureName": "Free Flap (Radial Forearm)",
+      "specialty": "Unknown",
+      "code": "B272",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Total mastectomy and excision of both pectoral muscles NEC"
+    },
+    {
+      "procedureName": "Pedicled Flap",
+      "specialty": "Unknown",
+      "code": "S481",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Insertion of skin expander into subcutaneous tissue of head or neck"
+    },
+    {
+      "procedureName": "Pedicled Flap",
+      "specialty": "Unknown",
+      "code": "S482",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Insertion of skin expander into subcutaneous tissue of breast"
+    },
+    {
+      "procedureName": "Tissue Expansion",
+      "specialty": "Unknown",
+      "code": "S571",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Debridement of skin NEC"
+    },
+    {
+      "procedureName": "Scar Revision",
+      "specialty": "Unknown",
+      "code": "S501",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Insertion of organic inert substance into subcutaneous tissue"
+    },
+    {
+      "procedureName": "Burn Surgery",
+      "specialty": "Unknown",
+      "code": "S491",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Adjustment to skin expander in subcutaneous tissue"
+    },
+    {
+      "procedureName": "Burn Surgery",
+      "specialty": "Unknown",
+      "code": "S492",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Removal of skin expander from subcutaneous tissue of head or neck"
+    },
+    {
+      "procedureName": "Burn Surgery",
+      "specialty": "Unknown",
+      "code": "S493",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Removal of skin expander from subcutaneous tissue of breast"
+    },
+    {
+      "procedureName": "Rhinoplasty",
+      "specialty": "Unknown",
+      "code": "E011",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Total excision of nose"
+    },
+    {
+      "procedureName": "Facelift",
+      "specialty": "Unknown",
+      "code": "S051",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Microscopically controlled excision of lesion of skin of head or neck using fresh tissue technique"
+    },
+    {
+      "procedureName": "Blepharoplasty",
+      "specialty": "Unknown",
+      "code": "C101",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Excision of lesion of eyebrow"
+    },
+    {
+      "procedureName": "Blepharoplasty",
+      "specialty": "Unknown",
+      "code": "C102",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Hair bearing flap to eyebrow"
+    },
+    {
+      "procedureName": "Otoplasty",
+      "specialty": "Unknown",
+      "code": "D021",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Excision of lesion of external ear"
+    },
+    {
+      "procedureName": "Abdominoplasty",
+      "specialty": "Unknown",
+      "code": "T281",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Closure of gastroschisis"
+    },
+    {
+      "procedureName": "Liposuction",
+      "specialty": "Unknown",
+      "code": "S571",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Debridement of skin NEC"
+    },
+    {
+      "procedureName": "Trigger Finger Release",
+      "specialty": "Unknown",
+      "code": "T661",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary repair of multiple tendons HFQ"
+    },
+    {
+      "procedureName": "Hand Tendon Repair",
+      "specialty": "Unknown",
+      "code": "T511",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Excision of fascia of posterior abdominal wall"
+    },
+    {
+      "procedureName": "Hand Tendon Repair",
+      "specialty": "Unknown",
+      "code": "T521",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Palmar fasciectomy"
+    },
+    {
+      "procedureName": "Mandible Fracture Fixation",
+      "specialty": "Unknown",
+      "code": "V481",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Radiofrequency controlled thermal denervation of spinal facet joint of cervical vertebra"
+    },
+    {
+      "procedureName": "Mandible Fracture Fixation",
+      "specialty": "Unknown",
+      "code": "V482",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Denervation of spinal facet joint of cervical vertebra NEC"
+    },
+    {
+      "procedureName": "Maxillary Fracture Fixation (Le Fort I)",
+      "specialty": "Unknown",
+      "code": "V331",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary laminectomy excision of lumbar intervertebral disc"
+    },
+    {
+      "procedureName": "Maxillary Fracture Fixation (Le Fort II)",
+      "specialty": "Unknown",
+      "code": "V332",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary fenestration excision of lumbar intervertebral disc"
+    },
+    {
+      "procedureName": "Maxillary Fracture Fixation (Le Fort III)",
+      "specialty": "Unknown",
+      "code": "V333",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary anterior excision of lumbar intervertebral disc and interbody fusion of joint of lumbar spine"
+    },
+    {
+      "procedureName": "Zygomatic Fracture Fixation",
+      "specialty": "Unknown",
+      "code": "V281",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary insertion of lumbar interspinous process spacer"
+    },
+    {
+      "procedureName": "Zygomatic Fracture Fixation",
+      "specialty": "Unknown",
+      "code": "V282",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Revisional insertion of lumbar interspinous process spacer"
+    },
+    {
+      "procedureName": "Orbital Floor Reconstruction",
+      "specialty": "Unknown",
+      "code": "V251",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary extended decompression of lumbar spine and intertransverse fusion of joint of lumbar spine"
+    },
+    {
+      "procedureName": "Orbital Floor Reconstruction",
+      "specialty": "Unknown",
+      "code": "V252",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary extended decompression of lumbar spine NEC"
+    },
+    {
+      "procedureName": "Nasal Bone Fracture Reduction",
+      "specialty": "Unknown",
+      "code": "E031",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Submucous excision of septum of nose"
+    },
+    {
+      "procedureName": "Le Fort I Osteotomy",
+      "specialty": "Unknown",
+      "code": "V331",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary laminectomy excision of lumbar intervertebral disc"
+    },
+    {
+      "procedureName": "Bilateral Sagittal Split Osteotomy (BSSO)",
+      "specialty": "Unknown",
+      "code": "V481",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Radiofrequency controlled thermal denervation of spinal facet joint of cervical vertebra"
+    },
+    {
+      "procedureName": "Genioplasty",
+      "specialty": "Unknown",
+      "code": "V501",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Manipulation of spine using traction"
+    },
+    {
+      "procedureName": "Distraction Osteogenesis",
+      "specialty": "Unknown",
+      "code": "V252",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Primary extended decompression of lumbar spine NEC"
+    },
+    {
+      "procedureName": "Dental Extractions (Multiple)",
+      "specialty": "Unknown",
+      "code": "F091",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Surgical removal of impacted wisdom tooth"
+    },
+    {
+      "procedureName": "Dental Extractions (Multiple)",
+      "specialty": "Unknown",
+      "code": "F092",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Surgical removal of impacted tooth NEC"
+    },
+    {
+      "procedureName": "Dental Extractions (Multiple)",
+      "specialty": "Unknown",
+      "code": "F098",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Other specified surgical removal of tooth"
+    },
+    {
+      "procedureName": "Dental Implants",
+      "specialty": "Unknown",
+      "code": "F141",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Insertion of fixed orthodontic appliance NEC"
+    },
+    {
+      "procedureName": "Dental Implants",
+      "specialty": "Unknown",
+      "code": "F142",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Insertion of movable orthodontic appliance NEC"
+    },
+    {
+      "procedureName": "Removal of Impacted Wisdom Teeth",
+      "specialty": "Unknown",
+      "code": "F101",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Full dental clearance"
+    },
+    {
+      "procedureName": "Removal of Impacted Wisdom Teeth",
+      "specialty": "Unknown",
+      "code": "F102",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Upper dental clearance"
+    },
+    {
+      "procedureName": "Apicectomy",
+      "specialty": "Unknown",
+      "code": "F111",
+      "issue": "POSSIBLE MISMATCH",
+      "officialDescription": "Oral alveoplasty"
+    }
+  ]
+}

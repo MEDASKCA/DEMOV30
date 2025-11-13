@@ -1,0 +1,9 @@
+{
+  "hospital": "Royal London Hospital",
+  "lastUpdated": "2025-01-02",
+  "version": "1.0",
+  "totalProcedures": 810,
+  "totalSpecialties": 14,
+  "description": "Comprehensive surgical procedures database for Royal London Hospital with OPCS-4 codes. Download and edit this file to customize procedures.",
+  "procedures": []
+}

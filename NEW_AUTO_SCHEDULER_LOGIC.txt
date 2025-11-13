@@ -1,0 +1,229 @@
+REPLACE THE LOOP STARTING AT LINE 560 (for const unit of units)
+WITH THIS THEATRE-LEVEL LOOP:
+
+    // Process each INDIVIDUAL THEATRE (not units)
+    for (const [theatreId, assignments] of theatreAssignments.entries()) {
+      if (assignments.length === 0) {
+        continue; // No specialty assigned to this theatre
+      }
+
+      // Get the theatre details
+      const theatre = theatres.find(t => t.id === theatreId);
+      if (!theatre) {
+        console.warn(`   ⚠️  Theatre ${theatreId} not found in theatres collection`);
+        continue;
+      }
+
+      // Check if this is an emergency/trauma theatre (operates 7 days/week)
+      const isEmergencyTheatre = theatre.name.toLowerCase().includes('emergency') ||
+                                  theatre.name.toLowerCase().includes('trauma');
+
+      // Skip weekends for non-emergency/trauma theatres
+      if (isWeekend && !isEmergencyTheatre) {
+        continue; // Theatre closed on weekend
+      }
+
+      // Get the Priority 1 specialty for this theatre
+      const assignment = assignments[0]; // Already sorted by priority
+
+      console.log(`   ✨ ${assignment.theatreName}: ${assignment.specialtyName}${assignment.subspecialtyName ? ` - ${assignment.subspecialtyName}` : ''} (Priority ${assignment.priority})`);
+
+      // Get consultants for this specialty
+      const consultants = await loadConsultants(hospitalId, assignment.specialtyName);
+
+      if (consultants.length === 0) {
+        console.warn(`      ⚠️  No consultants found for ${assignment.specialtyName}`);
+        continue;
+      }
+
+      // Find an available consultant (check conflicts)
+      const dateStr = currentDate.toISOString().split('T')[0];
+      let surgeon = null;
+      let attempts = 0;
+
+      while (!surgeon && attempts < consultants.length) {
+        const candidate = consultants[Math.floor(Math.random() * consultants.length)];
+        const sessionTypeForConflict = getSessionType(assignment.unitName, assignment.specialtyName);
+
+        if (isSurgeonAvailable(candidate.id, dateStr, sessionTypeForConflict, scheduledSurgeons)) {
+          surgeon = candidate;
+          // Record this surgeon's schedule
+          scheduledSurgeons.push({
+            surgeonId: candidate.id,
+            surgeonName: candidate.fullName,
+            date: dateStr,
+            sessionType: sessionTypeForConflict,
+            theatreId: theatre.id
+          });
+        }
+        attempts++;
+      }
+
+      if (!surgeon) {
+        console.warn(`      ⚠️  No available consultants (all busy) for ${assignment.specialtyName}`);
+        continue;
+      }
+
+      // Pick a random anaesthetist
+      if (anaesthetists.length === 0) {
+        console.warn(`      ⚠️  No anaesthetists available`);
+        continue;
+      }
+      const anaesthetist = anaesthetists[Math.floor(Math.random() * anaesthetists.length)];
+
+      // 🚀 SMART PROCEDURE ALLOCATION: Load from waiting list
+      console.log(`      📋 Loading procedures from waiting list...`);
+      let waitingListProcedures = await loadProceduresFromWaitingList(
+        assignment.specialtyName,
+        surgeon.id // Filter by this surgeon's patients
+      );
+
+      // Determine session type
+      const sessionType = getSessionType(assignment.unitName, assignment.specialtyName);
+
+      // Determine if this is emergency/trauma
+      const isEmergency = assignment.unitName.toLowerCase().includes('emergency');
+      const isTrauma = assignment.unitName.toLowerCase().includes('trauma');
+
+      // If no procedures in waiting list, fallback to legacy hardcoded data
+      let procedures: Procedure[] = [];
+      if (waitingListProcedures.length === 0) {
+        console.warn(`      ⚠️  No procedures in waiting list for ${assignment.specialtyName}, using fallback data`);
+        procedures = getProceduresForSpecialty(assignment.specialtyName);
+
+        if (procedures.length === 0) {
+          console.warn(`      ⚠️  No procedures found (even in fallback)`);
+          continue;
+        }
+
+        // Generate the theatre list using legacy method
+        const list = generateTheatreList(
+          new Date(currentDate),
+          theatre.id,
+          theatre.name,
+          assignment.unitId,
+          assignment.unitName,
+          hospitalId,
+          await getHospitalName(hospitalId),
+          assignment.specialtyName,
+          sessionType,
+          procedures,
+          surgeon.fullName,
+          surgeon.initials,
+          anaesthetist.fullName,
+          anaesthetist.initials,
+          isEmergency || isTrauma,
+          assignment.subspecialtyName
+        );
+
+        lists.push(list);
+        console.log(`      ✅ Generated ${list.totalCases} cases (Fallback Mode - Legacy data)`);
+      } else {
+        // SMART MODE: Use procedures from waiting list
+        console.log(`      🎯 Smart Mode: Allocating up to 4 procedures for session type '${sessionType}'`);
+
+        // Determine max cases based on session type
+        const maxCases = sessionType === 'EVE' ? 2 : 4;
+
+        // Prioritize by urgency
+        const priorityOrder = ['Urgent', 'Expedited', 'Routine', 'Planned'];
+        waitingListProcedures.sort((a, b) => {
+          const aPriority = priorityOrder.indexOf(a.priority);
+          const bPriority = priorityOrder.indexOf(b.priority);
+          return aPriority - bPriority;
+        });
+
+        // Allocate procedures
+        const allocatedProcedures = waitingListProcedures.slice(0, maxCases);
+        console.log(`      📊 Available procedures in pool: ${waitingListProcedures.length}`);
+
+        // Convert waiting list procedures to surgical cases
+        const cases: SurgicalCase[] = allocatedProcedures.map((proc, idx) => {
+          const score: ProcedureScore = scoreProcedure(
+            proc.procedureName,
+            proc.opcs4Codes,
+            assignment.specialtyName,
+            assignment.subspecialtyName
+          );
+
+          const anaestheticType = determineAnaestheticType(
+            proc.procedureName,
+            score.complexityScore,
+            assignment.specialtyName
+          );
+
+          const surgicalTime = convertDurationScoreToMinutes(score.durationScore);
+          const anaestheticTime = getAnaestheticTime(anaestheticType);
+          const turnoverTime = getTurnoverTime(score.complexityScore);
+          const totalTime = surgicalTime + anaestheticTime + turnoverTime;
+
+          return {
+            id: `case-${Date.now()}-${idx}`,
+            procedureName: proc.procedureName,
+            opcs4Codes: proc.opcs4Codes,
+            specialty: assignment.specialtyName,
+            subspecialty: assignment.subspecialtyName,
+            pcsScore: score.averageScore,
+            complexityScore: score.complexityScore,
+            durationScore: score.durationScore,
+            variabilityScore: score.variabilityScore,
+            surgeonLevelScore: score.surgeonLevelScore,
+            estimatedSurgicalTime: surgicalTime,
+            anaestheticType,
+            anaestheticTime,
+            turnoverTime,
+            totalCaseTime: totalTime,
+            surgeonInitials: surgeon.initials,
+            surgeonFullName: surgeon.fullName,
+            anaesthetistInitials: anaesthetist.initials,
+            anaesthetistFullName: anaesthetist.fullName,
+            caseOrder: idx + 1,
+            notes: `${score.complexity} complexity - ${proc.priority} priority`
+          };
+        });
+
+        // Create theatre list
+        const sessionConfig = SESSION_CONFIGS[sessionType];
+        const totalTime = cases.reduce((sum, c) => sum + c.totalCaseTime, 0);
+        const utilization = (totalTime / sessionConfig.duration) * 100;
+
+        const list: TheatreList = {
+          id: `list-${theatre.id}-${dateStr}-${sessionType}`,
+          date: dateStr,
+          dayOfWeek: dayName,
+          theatreId: theatre.id,
+          theatreName: theatre.name,
+          unitId: assignment.unitId,
+          unitName: assignment.unitName,
+          hospitalId,
+          hospitalName: await getHospitalName(hospitalId),
+          specialty: assignment.specialtyName,
+          subspecialty: assignment.subspecialtyName,
+          sessionType,
+          sessionTimes: {
+            start: sessionConfig.start,
+            end: sessionConfig.end
+          },
+          sessionDurationMinutes: sessionConfig.duration,
+          primarySurgeonInitials: surgeon.initials,
+          primarySurgeonName: surgeon.fullName,
+          primaryAnaesthetistInitials: anaesthetist.initials,
+          primaryAnaesthetistName: anaesthetist.fullName,
+          cases,
+          totalCases: cases.length,
+          totalEstimatedTime: totalTime,
+          utilizationPercentage: Math.round(utilization),
+          status: 'published',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          notes: `Generated for ${assignment.specialtyName} - ${cases.length} cases from waiting list`
+        };
+
+        lists.push(list);
+        console.log(`      ✅ Generated ${list.totalCases} cases (Smart Mode - From Procedures Pool)`);
+
+        // Show priority mix
+        const priorityMix = allocatedProcedures.map(p => p.priority).join(', ');
+        console.log(`      📊 Priority mix: ${priorityMix}`);
+      }
+    }
