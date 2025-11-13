@@ -810,7 +810,7 @@ export default function RosterBuilderPage() {
           </thead>
           <tbody>
             {(() => {
-              const rows: JSX.Element[] = [];
+              const rows: React.JSX.Element[] = [];
 
               // SECTION 1: Matrons (Band 8a)
               const matrons = staffMembers.filter(staff => staff.band === 'Band 8a');
