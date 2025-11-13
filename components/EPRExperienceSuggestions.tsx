@@ -138,7 +138,6 @@ export default function EPRExperienceSuggestions({
                 <div className="flex-1 p-4 bg-gray-50 rounded-lg border border-gray-200">
                   <div className="text-xs text-gray-600 mb-2">Current Level</div>
                   <div className="flex items-center gap-2">
-                    <span className="text-2xl">{currentLevelData.icon}</span>
                     <div>
                       <div className="font-semibold text-gray-900">{currentLevelData.label}</div>
                       <div className="text-xs text-gray-600">{currentLevelData.description}</div>
@@ -159,7 +158,6 @@ export default function EPRExperienceSuggestions({
                     <div className="flex-1 p-4 bg-green-50 rounded-lg border border-green-200">
                       <div className="text-xs text-green-800 mb-2">Suggested Level</div>
                       <div className="flex items-center gap-2">
-                        <span className="text-2xl">{suggestedLevelData.icon}</span>
                         <div>
                           <div className="font-semibold text-green-900">{suggestedLevelData.label}</div>
                           <div className="text-xs text-green-700">{suggestedLevelData.description}</div>
