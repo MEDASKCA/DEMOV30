@@ -6,8 +6,8 @@ import TomLogo from './TomLogo';
 import { useListening } from '@/contexts/ListeningContext';
 
 interface AdminBottomNavProps {
-  currentPage: 'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu';
-  onNavigate: (page: 'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu') => void;
+  currentPage: 'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu' | 'workforce' | 'inventory';
+  onNavigate: (page: 'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu' | 'workforce' | 'inventory') => void;
 }
 
 export default function AdminBottomNav({ currentPage, onNavigate }: AdminBottomNavProps) {
