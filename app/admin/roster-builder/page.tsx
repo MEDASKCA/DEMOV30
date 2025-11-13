@@ -744,12 +744,11 @@ export default function RosterBuilderPage() {
                   </button>
                   <AutoFillButton
                     currentWeekStart={currentWeekStart}
-                    onAutoFill={(result) => {
+                    onAutoFill={async (startDate, endDate) => {
                       setShowTomMenu(false);
-                      handleAutoFill(result);
+                      return await handleAutoFill(startDate, endDate);
                     }}
                     onComplete={() => loadData()}
-                    asMenuItem={true}
                   />
                 </div>
               )}
