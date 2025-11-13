@@ -94,8 +94,8 @@ export default function AdminDrawer({ isOpen, onClose, drawerType, onNavigate }:
               AM
             </div>
             <div>
-              <p className="text-sm sm:text-base font-bold text-gray-900">Alexander Monterubio</p>
-              <p className="text-xs sm:text-sm text-gray-600">Theatre Manager</p>
+              <p className="text-sm sm:text-base font-bold !text-gray-900">Alexander Monterubio</p>
+              <p className="text-xs sm:text-sm !text-gray-700">Theatre Manager</p>
             </div>
           </div>
         </div>
@@ -180,10 +180,10 @@ export default function AdminDrawer({ isOpen, onClose, drawerType, onNavigate }:
                 <Icon className={`w-4 h-4 sm:w-4.5 sm:h-4.5 md:w-5 md:h-5 ${colorClasses.iconColor}`} />
               </div>
               <div className="flex-1 text-left min-w-0">
-                <p className="text-xs sm:text-sm font-bold text-gray-900 truncate leading-tight sm:leading-normal">{item.label}</p>
-                <p className="text-[10px] sm:text-[11px] text-gray-600 leading-tight line-clamp-1 sm:line-clamp-none">{item.description}</p>
+                <p className="text-xs sm:text-sm font-bold !text-gray-900 truncate leading-tight sm:leading-normal">{item.label}</p>
+                <p className="text-[10px] sm:text-[11px] !text-gray-700 leading-tight line-clamp-1 sm:line-clamp-none">{item.description}</p>
               </div>
-              <svg className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3 h-3 sm:w-4 sm:h-4 !text-gray-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </button>

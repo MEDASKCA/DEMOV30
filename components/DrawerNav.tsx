@@ -88,14 +88,14 @@ export default function DrawerNav({ isOpen, onClose, title, children }: DrawerNa
           {/* Header */}
           <div className="flex items-center justify-between px-5 py-4 bg-gradient-to-r from-blue-50 via-teal-50 to-purple-50 border-b border-gray-200">
             <div>
-              <h2 className="text-xl font-bold bg-gradient-to-r from-blue-600 via-teal-600 to-purple-600 bg-clip-text text-transparent">{title}</h2>
-              <p className="text-xs text-gray-600 mt-0.5">Select an option below</p>
+              <h2 className="text-xl font-bold bg-gradient-to-r from-blue-600 via-teal-600 to-purple-600 bg-clip-text text-transparent !text-gray-900">{title}</h2>
+              <p className="text-xs !text-gray-700 mt-0.5">Select an option below</p>
             </div>
             <button
               onClick={onClose}
               className="w-10 h-10 flex items-center justify-center rounded-full bg-white hover:bg-gray-100 transition-all shadow-sm hover:shadow-md active:scale-95"
             >
-              <X className="w-5 h-5 text-gray-700" />
+              <X className="w-5 h-5 !text-gray-800" />
             </button>
           </div>
 
