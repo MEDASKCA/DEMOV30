@@ -19,10 +19,13 @@ export class TomAIService {
    */
   static async processQuery(userQuery: string): Promise<AIQueryResult> {
     const queryLower = userQuery.toLowerCase();
+    console.log('🔍 TOM AI Query:', userQuery);
+    console.log('🔍 Query (lowercase):', queryLower);
 
     try {
       // Check if in demo mode
       if ((db as any).type === 'demo') {
+        console.log('⚠️ Database in demo mode');
         return {
           success: false,
           message: "I'm currently in demo mode. Please configure Firebase credentials to access real-time theatre operations data. You can add your Firebase config in the .env.local file."
@@ -31,6 +34,7 @@ export class TomAIService {
 
       // Try Azure OpenAI RAG first if configured
       try {
+        console.log('🤖 Trying Azure OpenAI RAG...');
         const response = await fetch('/api/chat', {
           method: 'POST',
           headers: {
@@ -41,30 +45,42 @@ export class TomAIService {
 
         if (response.ok) {
           const result = await response.json();
+          console.log('✅ Azure OpenAI Response:', result);
           if (result.success) {
             return result;
           }
         }
 
         // If Azure OpenAI fails, fall back to rule-based system
-        console.log('Azure OpenAI not available, using fallback rule-based system');
+        console.log('⚠️ Azure OpenAI not available, using fallback rule-based system');
       } catch (error) {
-        console.log('Azure OpenAI error, using fallback rule-based system:', error);
+        console.log('❌ Azure OpenAI error, using fallback rule-based system:', error);
       }
+
+      console.log('🔄 Using rule-based pattern matching...');
 
       // Today's schedule queries
       if (queryLower.includes('today') && (queryLower.includes('schedule') || queryLower.includes('cases') || queryLower.includes('list'))) {
+        console.log('✓ Matched: Today schedule query');
         return await this.getTodaySchedule();
       }
 
       // Tomorrow's schedule queries
-      if (queryLower.includes('tomorrow') && (queryLower.includes('schedule') || queryLower.includes('cases') || queryLower.includes('list'))) {
+      if (queryLower.includes('tomorrow')) {
+        console.log('✓ Matched: Tomorrow schedule query');
         return await this.getTomorrowSchedule();
       }
 
-      // Generic schedule queries without "today" or "tomorrow" - default to today
-      if ((queryLower.includes('schedule') || queryLower.includes('list')) && !queryLower.includes('staff')) {
-        return await this.getTomorrowSchedule(); // Assume they're asking about future
+      // Generic "list" queries - assume they want tomorrow
+      if (queryLower.includes('list') && !queryLower.includes('staff')) {
+        console.log('✓ Matched: Generic list query (defaulting to tomorrow)');
+        return await this.getTomorrowSchedule();
+      }
+
+      // Generic schedule queries
+      if (queryLower.includes('schedule') && !queryLower.includes('staff')) {
+        console.log('✓ Matched: Generic schedule query (defaulting to tomorrow)');
+        return await this.getTomorrowSchedule();
       }
 
       // Staff availability queries

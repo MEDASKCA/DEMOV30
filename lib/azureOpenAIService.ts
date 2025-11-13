@@ -47,8 +47,11 @@ export class AzureOpenAIService {
    */
   static async processQuery(userQuery: string): Promise<RAGResponse> {
     try {
+      console.log('🔵 Azure OpenAI Service - Processing query:', userQuery);
+
       // Check if in demo mode
       if ((db as any).type === 'demo') {
+        console.log('⚠️ Azure OpenAI Service - Database in demo mode');
         return {
           success: false,
           message: "I'm currently in demo mode. Please configure Firebase credentials to access real-time theatre operations data."
@@ -57,6 +60,7 @@ export class AzureOpenAIService {
 
       const client = this.getClient();
       const deploymentName = process.env.AZURE_OPENAI_DEPLOYMENT_NAME || 'gpt-4';
+      console.log('🔵 Azure OpenAI Deployment:', deploymentName);
 
       // Define available functions for the AI to call
       const functions = [
@@ -197,9 +201,11 @@ Current date: ${format(new Date(), 'EEEE, d MMMM yyyy')}`
       while (assistantMessage.functionCall) {
         const functionName = assistantMessage.functionCall.name;
         const functionArgs = JSON.parse(assistantMessage.functionCall.arguments || '{}');
+        console.log(`🔵 Azure OpenAI - Calling function: ${functionName}`, functionArgs);
 
         // Execute the requested function
         const functionResult = await this.executeFunction(functionName, functionArgs);
+        console.log(`🔵 Azure OpenAI - Function result:`, functionResult);
 
         // Add function call and result to messages
         messages.push({
@@ -229,13 +235,16 @@ Current date: ${format(new Date(), 'EEEE, d MMMM yyyy')}`
         assistantMessage = response.choices[0].message;
       }
 
+      const finalMessage = assistantMessage.content || 'I apologize, but I was unable to generate a response.';
+      console.log('🔵 Azure OpenAI - Final response:', finalMessage);
+
       return {
         success: true,
-        message: assistantMessage.content || 'I apologize, but I was unable to generate a response.'
+        message: finalMessage
       };
 
     } catch (error: any) {
-      console.error('Azure OpenAI RAG Error:', error);
+      console.error('❌ Azure OpenAI RAG Error:', error);
 
       if (error.message?.includes('credentials not configured')) {
         return {
