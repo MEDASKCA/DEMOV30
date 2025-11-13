@@ -93,9 +93,9 @@ export default function DrawerNav({ isOpen, onClose, title, children }: DrawerNa
             </div>
             <button
               onClick={onClose}
-              className="w-10 h-10 flex items-center justify-center rounded-full bg-white hover:bg-gray-100 transition-all shadow-sm hover:shadow-md active:scale-95"
+              className="p-2 hover:opacity-70 transition-opacity active:scale-95"
             >
-              <X className="w-5 h-5 !text-gray-800" />
+              <X className="w-6 h-6 text-gray-800 dark:text-gray-200" />
             </button>
           </div>
 

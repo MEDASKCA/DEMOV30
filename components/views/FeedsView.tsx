@@ -245,32 +245,17 @@ export default function FeedsView() {
 
                   {/* Action Buttons */}
                   <div className="px-4 py-2 flex items-center gap-2 border-t border-gray-100">
-                    <div className="relative flex-1">
-                      <button
-                        onClick={() => setShowReactions(showReactions === post.id ? null : post.id)}
-                        className={`w-full flex items-center justify-center gap-2 py-2 rounded-lg transition-colors ${
-                          hasLiked ? 'text-red-600 bg-red-50' : 'text-gray-600 hover:bg-gray-100'
-                        }`}
-                      >
-                        <Heart className={`w-5 h-5 ${hasLiked ? 'fill-current' : ''}`} />
-                        <span className="text-sm font-medium">React</span>
-                      </button>
-
-                      {/* Reaction Picker */}
-                      {showReactions === post.id && (
-                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-full shadow-xl border border-gray-200 px-3 py-2 flex gap-2 z-10">
-                          {reactionEmojis.map((reaction) => (
-                            <button
-                              key={reaction.emoji}
-                              onClick={() => handleLike(post.id)}
-                              className="text-2xl hover:scale-125 transition-transform"
-                              title={reaction.label}
-                            >
-                              {reaction.emoji}
-                            </button>
-                          ))}
-                        </div>
-                      )}
+                    <div className="flex-1 flex items-center justify-center gap-1">
+                      {reactionEmojis.map((reaction) => (
+                        <button
+                          key={reaction.emoji}
+                          onClick={() => handleLike(post.id)}
+                          className="text-xl hover:scale-110 transition-transform p-1"
+                          title={reaction.label}
+                        >
+                          {reaction.emoji}
+                        </button>
+                      ))}
                     </div>
 
                     <button
@@ -466,30 +451,17 @@ export default function FeedsView() {
 
                   {/* Action Buttons */}
                   <div className="px-3 py-2 flex items-center gap-1 border-t border-gray-100">
-                    <div className="relative flex-1">
-                      <button
-                        onClick={() => setShowReactions(showReactions === post.id ? null : post.id)}
-                        className={`w-full flex items-center justify-center gap-1.5 py-2 rounded-lg transition-colors ${
-                          hasLiked ? 'text-red-600 bg-red-50' : 'text-gray-600 active:bg-gray-100'
-                        }`}
-                      >
-                        <Heart className={`w-4 h-4 ${hasLiked ? 'fill-current' : ''}`} />
-                        <span className="text-xs font-medium">React</span>
-                      </button>
-
-                      {showReactions === post.id && (
-                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-full shadow-xl border border-gray-200 px-2 py-1.5 flex gap-1.5 z-10">
-                          {reactionEmojis.map((reaction) => (
-                            <button
-                              key={reaction.emoji}
-                              onClick={() => handleLike(post.id)}
-                              className="text-xl active:scale-110 transition-transform"
-                            >
-                              {reaction.emoji}
-                            </button>
-                          ))}
-                        </div>
-                      )}
+                    <div className="flex-1 flex items-center justify-center gap-0.5 overflow-x-auto">
+                      {reactionEmojis.map((reaction) => (
+                        <button
+                          key={reaction.emoji}
+                          onClick={() => handleLike(post.id)}
+                          className="text-base active:scale-110 transition-transform p-1 flex-shrink-0"
+                          title={reaction.label}
+                        >
+                          {reaction.emoji}
+                        </button>
+                      ))}
                     </div>
 
                     <button
