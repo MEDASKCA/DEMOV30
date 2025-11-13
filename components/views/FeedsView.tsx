@@ -146,7 +146,7 @@ export default function FeedsView() {
           </div>
 
           <div className="flex-1 overflow-y-auto bg-gray-50">
-          <div className="max-w-2xl mx-auto py-6 px-4 space-y-4">
+          <div className="py-6 px-4 space-y-4">
             {/* Stories Section */}
             <div className="bg-white rounded-xl border border-gray-200 p-4">
               <div className="flex gap-3 overflow-x-auto pb-2">
