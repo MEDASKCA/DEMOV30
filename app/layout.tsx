@@ -17,12 +17,7 @@ export const metadata: Metadata = {
   title: "TOM by MEDASKCA™",
   description: "Theatre Operations Manager - Intelligent theatre operations management for NHS trusts",
   icons: {
-    icon: [
-      {
-        url: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="%2306B6D4"/><text x="50" y="70" font-size="60" font-weight="bold" text-anchor="middle" fill="white" font-family="sans-serif">T</text></svg>',
-        type: 'image/svg+xml',
-      },
-    ],
+    icon: 'https://raw.githubusercontent.com/MEDASKCA/OPS/main/logo-medaskca.png',
   },
 };
 
