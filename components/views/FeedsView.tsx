@@ -42,6 +42,7 @@ export default function FeedsView() {
   const [showReactions, setShowReactions] = useState<string | null>(null);
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [postToShare, setPostToShare] = useState<PostType | null>(null);
+  const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(null);
 
   // Mock stories data
   const stories: Story[] = [
@@ -92,6 +93,34 @@ export default function FeedsView() {
       return post;
     }));
     setShowReactions(null); // Close the popup after selecting
+  };
+
+  const handleLongPressStart = (postId: string) => {
+    const timer = setTimeout(() => {
+      setShowReactions(postId);
+    }, 500); // 500ms for long press
+    setLongPressTimer(timer);
+  };
+
+  const handleLongPressEnd = (postId: string) => {
+    if (longPressTimer) {
+      clearTimeout(longPressTimer);
+      setLongPressTimer(null);
+    }
+  };
+
+  const handleQuickReact = (postId: string) => {
+    if (longPressTimer) {
+      clearTimeout(longPressTimer);
+      setLongPressTimer(null);
+    }
+    // If no reaction, show picker. If already reacted, toggle off
+    const post = posts.find(p => p.id === postId);
+    const userReaction = post?.reactions?.[currentUserId];
+
+    if (!userReaction) {
+      setShowReactions(showReactions === postId ? null : postId);
+    }
   };
 
   const handleAddComment = (postId: string) => {
@@ -263,8 +292,21 @@ export default function FeedsView() {
                   {/* Action Buttons */}
                   <div className="px-4 pb-3 pt-2 flex items-center gap-2 border-t border-gray-100">
                     <div className="relative flex-1">
+                      {/* Backdrop to close popup when clicking outside */}
+                      {showReactions === post.id && (
+                        <div
+                          className="fixed inset-0 z-[5]"
+                          onClick={() => setShowReactions(null)}
+                        />
+                      )}
+
                       <button
-                        onClick={() => setShowReactions(showReactions === post.id ? null : post.id)}
+                        onClick={() => handleQuickReact(post.id)}
+                        onMouseDown={() => handleLongPressStart(post.id)}
+                        onMouseUp={() => handleLongPressEnd(post.id)}
+                        onMouseLeave={() => handleLongPressEnd(post.id)}
+                        onTouchStart={() => handleLongPressStart(post.id)}
+                        onTouchEnd={() => handleLongPressEnd(post.id)}
                         className="w-full flex items-center justify-center gap-2 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
                       >
                         {userReaction ? (
@@ -278,17 +320,18 @@ export default function FeedsView() {
                       {/* Reaction Picker Popup */}
                       {showReactions === post.id && (
                         <div
-                          className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-full shadow-xl border border-gray-200 px-3 py-2 flex gap-1 z-10"
+                          className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-full shadow-xl border border-gray-200 px-3 py-2 flex gap-1 z-10 animate-in fade-in slide-in-from-bottom-2 duration-200"
                           onClick={(e) => e.stopPropagation()}
                         >
-                          {reactionEmojis.map((reaction) => (
+                          {reactionEmojis.map((reaction, index) => (
                             <button
                               key={reaction.emoji}
                               onClick={(e) => {
                                 e.stopPropagation();
                                 handleReaction(post.id, reaction.emoji);
                               }}
-                              className="text-2xl hover:scale-125 transition-transform cursor-pointer"
+                              className="text-2xl hover:scale-150 hover:-translate-y-1 transition-all duration-200 cursor-pointer animate-in zoom-in"
+                              style={{ animationDelay: `${index * 30}ms` }}
                               title={reaction.label}
                               type="button"
                             >
@@ -493,8 +536,21 @@ export default function FeedsView() {
                   {/* Action Buttons */}
                   <div className="px-3 pb-2 pt-1.5 flex items-center gap-1 border-t border-gray-100">
                     <div className="relative flex-1">
+                      {/* Backdrop to close popup when clicking outside */}
+                      {showReactions === post.id && (
+                        <div
+                          className="fixed inset-0 z-[5]"
+                          onClick={() => setShowReactions(null)}
+                        />
+                      )}
+
                       <button
-                        onClick={() => setShowReactions(showReactions === post.id ? null : post.id)}
+                        onClick={() => handleQuickReact(post.id)}
+                        onMouseDown={() => handleLongPressStart(post.id)}
+                        onMouseUp={() => handleLongPressEnd(post.id)}
+                        onMouseLeave={() => handleLongPressEnd(post.id)}
+                        onTouchStart={() => handleLongPressStart(post.id)}
+                        onTouchEnd={() => handleLongPressEnd(post.id)}
                         className="w-full flex items-center justify-center gap-1.5 py-2 rounded-lg text-gray-600 active:bg-gray-100 transition-colors"
                       >
                         {userReaction ? (
@@ -508,17 +564,18 @@ export default function FeedsView() {
                       {/* Reaction Picker Popup */}
                       {showReactions === post.id && (
                         <div
-                          className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-full shadow-xl border border-gray-200 px-2 py-1.5 flex gap-0.5 z-10 max-w-[90vw] overflow-x-auto"
+                          className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-full shadow-xl border border-gray-200 px-2 py-1.5 flex gap-0.5 z-10 max-w-[90vw] overflow-x-auto animate-in fade-in slide-in-from-bottom-2 duration-200"
                           onClick={(e) => e.stopPropagation()}
                         >
-                          {reactionEmojis.map((reaction) => (
+                          {reactionEmojis.map((reaction, index) => (
                             <button
                               key={reaction.emoji}
                               onClick={(e) => {
                                 e.stopPropagation();
                                 handleReaction(post.id, reaction.emoji);
                               }}
-                              className="text-xl active:scale-110 transition-transform cursor-pointer flex-shrink-0"
+                              className="text-xl active:scale-125 hover:scale-125 hover:-translate-y-1 transition-all duration-200 cursor-pointer flex-shrink-0 animate-in zoom-in"
+                              style={{ animationDelay: `${index * 30}ms` }}
                               title={reaction.label}
                               type="button"
                             >
