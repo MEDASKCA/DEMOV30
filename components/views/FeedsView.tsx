@@ -18,10 +18,18 @@ interface Story {
 const reactionEmojis = [
   { emoji: '❤️', label: 'Love' },
   { emoji: '👍', label: 'Like' },
+  { emoji: '👏', label: 'Clap' },
+  { emoji: '🙌', label: 'Celebrate' },
+  { emoji: '👌', label: 'OK' },
+  { emoji: '🤝', label: 'Handshake' },
+  { emoji: '💪', label: 'Strong' },
+  { emoji: '🙏', label: 'Thank You' },
   { emoji: '😂', label: 'Laugh' },
   { emoji: '😮', label: 'Wow' },
   { emoji: '😢', label: 'Sad' },
-  { emoji: '😡', label: 'Angry' }
+  { emoji: '😡', label: 'Angry' },
+  { emoji: '🔥', label: 'Fire' },
+  { emoji: '⭐', label: 'Star' }
 ];
 
 export default function FeedsView() {
@@ -253,13 +261,13 @@ export default function FeedsView() {
 
                   {/* Action Buttons */}
                   <div className="px-4 pb-3 pt-2 flex items-center gap-2">
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-1 bg-gray-50 dark:bg-gray-800 rounded-full px-2 py-1 border border-gray-200 dark:border-gray-700">
                       {reactionEmojis.map((reaction) => (
                         <button
                           key={reaction.emoji}
                           onClick={() => handleReaction(post.id, reaction.emoji)}
                           className={`text-xl hover:scale-125 active:scale-95 transition-transform cursor-pointer p-1 ${
-                            userReaction === reaction.emoji ? 'scale-125' : ''
+                            userReaction === reaction.emoji ? 'scale-125 bg-white dark:bg-gray-600 rounded-full' : ''
                           }`}
                           title={reaction.label}
                           type="button"
@@ -462,13 +470,13 @@ export default function FeedsView() {
 
                   {/* Action Buttons */}
                   <div className="px-3 pb-2 pt-1.5 flex items-center gap-1">
-                    <div className="flex items-center gap-0.5 overflow-x-auto">
+                    <div className="flex items-center gap-0.5 bg-gray-50 dark:bg-gray-800 rounded-full px-1.5 py-0.5 border border-gray-200 dark:border-gray-700">
                       {reactionEmojis.map((reaction) => (
                         <button
                           key={reaction.emoji}
                           onClick={() => handleReaction(post.id, reaction.emoji)}
-                          className={`text-lg active:scale-110 transition-transform flex-shrink-0 cursor-pointer p-1 ${
-                            userReaction === reaction.emoji ? 'scale-110' : ''
+                          className={`text-lg active:scale-110 transition-transform flex-shrink-0 cursor-pointer p-0.5 ${
+                            userReaction === reaction.emoji ? 'scale-110 bg-white dark:bg-gray-600 rounded-full' : ''
                           }`}
                           title={reaction.label}
                           type="button"
