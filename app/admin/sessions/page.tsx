@@ -1102,7 +1102,7 @@ export default function AdminSchedulePage() {
                           colSpan={weekDays.length + 1}
                           className={`${viewMode === 'month' ? 'px-2 py-1.5 text-base' : 'px-2 py-2 md:px-4 md:py-3 text-sm md:text-xl'} font-bold sticky left-0 z-10 text-center`}
                         >
-                          {viewMode === 'month' ? `${unitData?.abbreviation || displayUnitName.split(' ')[0]} (${theatreCount})` : `${displayUnitName} (${theatreCount})`}
+                          {viewMode === 'month' ? `${(unitData as any)?.abbreviation || displayUnitName.split(' ')[0]} (${theatreCount})` : `${displayUnitName} (${theatreCount})`}
                         </td>
                       </tr>
 
