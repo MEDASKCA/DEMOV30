@@ -130,11 +130,11 @@ export default function FeedsView() {
   };
 
   return (
-    <div className="h-full flex flex-col bg-gray-50 dark:bg-gray-900 overflow-hidden">
+    <div className="h-full flex flex-col bg-gray-50 overflow-hidden">
       {/* Desktop View - Split with TOM AI */}
       <div className="hidden md:grid md:grid-cols-4 flex-1 overflow-hidden">
         {/* TOM AI Panel - Left Side (Desktop) */}
-        <div className="col-span-1 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col overflow-hidden">
+        <div className="col-span-1 bg-white border-r border-gray-200 flex flex-col overflow-hidden">
           <TomAIChatPanel />
         </div>
 
@@ -155,7 +155,7 @@ export default function FeedsView() {
                   <button className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 border-2 border-dashed border-blue-300 flex items-center justify-center hover:from-blue-200 hover:to-purple-200 transition-all">
                     <Plus className="w-6 h-6 text-blue-600" />
                   </button>
-                  <span className="text-xs text-gray-600 dark:text-gray-300 font-medium">Your Story</span>
+                  <span className="text-xs text-gray-600 font-medium">Your Story</span>
                 </div>
 
                 {/* Stories from other users */}
@@ -171,7 +171,7 @@ export default function FeedsView() {
                           </div>
                         </div>
                       </button>
-                      <span className="text-xs text-gray-600 dark:text-gray-300 font-medium truncate w-16 text-center">
+                      <span className="text-xs text-gray-600 font-medium truncate w-16 text-center">
                         {user.firstName}
                       </span>
                     </div>
@@ -181,7 +181,7 @@ export default function FeedsView() {
             </div>
 
             {/* Create Post */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+            <div className="bg-white rounded-xl border border-gray-200 p-4">
               <div className="flex gap-3">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold flex-shrink-0">
                   {getStaffById(currentUserId)?.initials}
@@ -191,11 +191,11 @@ export default function FeedsView() {
                     value={newPostContent}
                     onChange={(e) => setNewPostContent(e.target.value)}
                     placeholder="What's on your mind?"
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm bg-white text-gray-900 placeholder-gray-500"
                     rows={3}
                   />
                   <div className="flex items-center justify-between mt-2">
-                    <button className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors px-3 py-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <button className="flex items-center gap-2 text-sm text-gray-600 hover:text-blue-600 transition-colors px-3 py-1.5 rounded-lg hover:bg-gray-100">
                       <ImageIcon className="w-4 h-4" />
                       <span>Photo</span>
                     </button>
@@ -220,36 +220,36 @@ export default function FeedsView() {
               const isCommentsOpen = showComments === post.id;
 
               return (
-                <div key={post.id} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow">
+                <div key={post.id} className="bg-white rounded-xl border border-gray-200 hover:shadow-md transition-shadow">
                   {/* Post Header */}
                   <div className="p-4 flex items-start gap-3">
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold flex-shrink-0">
                       {author.initials}
                     </div>
                     <div className="flex-1">
-                      <p className="font-semibold text-gray-900 dark:text-gray-100">{author.firstName} {author.lastName}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{author.role} • {getTimeAgo(post.timestamp)}</p>
+                      <p className="font-semibold text-gray-900">{author.firstName} {author.lastName}</p>
+                      <p className="text-xs text-gray-500">{author.role} • {getTimeAgo(post.timestamp)}</p>
                     </div>
                   </div>
 
                   {/* Post Content */}
                   <div className="px-4 pb-3">
-                    <p className="text-gray-900 dark:text-gray-100 whitespace-pre-wrap">{post.content}</p>
+                    <p className="text-gray-900 whitespace-pre-wrap">{post.content}</p>
                   </div>
 
                   {/* Post Stats */}
-                  <div className="px-4 py-2 flex items-center justify-between text-sm text-gray-600 dark:text-gray-300 border-t border-gray-100 dark:border-gray-800">
+                  <div className="px-4 py-2 flex items-center justify-between text-sm text-gray-600 border-t border-gray-100">
                     <span>{post.likes.length} {post.likes.length === 1 ? 'reaction' : 'reactions'}</span>
                     <span>{post.comments.length} {post.comments.length === 1 ? 'comment' : 'comments'}</span>
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="px-4 py-2 flex items-center gap-2 border-t border-gray-100 dark:border-gray-800">
+                  <div className="px-4 py-2 flex items-center gap-2 border-t border-gray-100">
                     <div className="relative flex-1">
                       <button
                         onClick={() => setShowReactions(showReactions === post.id ? null : post.id)}
                         className={`w-full flex items-center justify-center gap-2 py-2 rounded-lg transition-colors ${
-                          hasLiked ? 'text-red-600 bg-red-50' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                          hasLiked ? 'text-red-600 bg-red-50' : 'text-gray-600 hover:bg-gray-100'
                         }`}
                       >
                         <Heart className={`w-5 h-5 ${hasLiked ? 'fill-current' : ''}`} />
@@ -258,7 +258,7 @@ export default function FeedsView() {
 
                       {/* Reaction Picker */}
                       {showReactions === post.id && (
-                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white dark:bg-gray-700 rounded-full shadow-xl border border-gray-200 dark:border-gray-600 px-3 py-2 flex gap-2 z-10">
+                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-full shadow-xl border border-gray-200 px-3 py-2 flex gap-2 z-10">
                           {reactionEmojis.map((reaction) => (
                             <button
                               key={reaction.emoji}
@@ -275,7 +275,7 @@ export default function FeedsView() {
 
                     <button
                       onClick={() => setShowComments(isCommentsOpen ? null : post.id)}
-                      className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                      className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
                     >
                       <MessageSquare className="w-5 h-5" />
                       <span className="text-sm font-medium">Comment</span>
@@ -283,7 +283,7 @@ export default function FeedsView() {
 
                     <button
                       onClick={() => handleShare(post)}
-                      className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                      className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
                     >
                       <Share2 className="w-5 h-5" />
                       <span className="text-sm font-medium">Share</span>
@@ -292,7 +292,7 @@ export default function FeedsView() {
 
                   {/* Comments Section */}
                   {isCommentsOpen && (
-                    <div className="border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 px-4 py-3 space-y-3">
+                    <div className="border-t border-gray-100 bg-gray-50 px-4 py-3 space-y-3">
                       {/* Existing Comments */}
                       {post.comments.map((comment) => {
                         const commentAuthor = getStaffById(comment.authorId);
@@ -306,24 +306,24 @@ export default function FeedsView() {
                               {commentAuthor.initials}
                             </div>
                             <div className="flex-1">
-                              <div className="bg-white dark:bg-gray-700 rounded-lg px-3 py-2">
-                                <p className="font-semibold text-sm text-gray-900 dark:text-gray-100">
+                              <div className="bg-white rounded-lg px-3 py-2">
+                                <p className="font-semibold text-sm text-gray-900">
                                   {commentAuthor.firstName} {commentAuthor.lastName}
                                 </p>
-                                <p className="text-sm text-gray-700 dark:text-gray-200 mt-0.5">{comment.content}</p>
+                                <p className="text-sm text-gray-700 mt-0.5">{comment.content}</p>
                               </div>
                               <div className="flex items-center gap-3 mt-1 px-2">
                                 <button
                                   onClick={() => handleLikeComment(post.id, comment.id)}
                                   className={`text-xs font-semibold ${
-                                    hasLikedComment ? 'text-red-600' : 'text-gray-600 dark:text-gray-300 hover:text-red-600'
+                                    hasLikedComment ? 'text-red-600' : 'text-gray-600 hover:text-red-600'
                                   }`}
                                 >
                                   {hasLikedComment ? 'Liked' : 'Like'}
                                 </button>
-                                <span className="text-xs text-gray-500 dark:text-gray-400">{getTimeAgo(comment.timestamp)}</span>
+                                <span className="text-xs text-gray-500">{getTimeAgo(comment.timestamp)}</span>
                                 {comment.likes.length > 0 && (
-                                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                                  <span className="text-xs text-gray-500">
                                     ❤️ {comment.likes.length}
                                   </span>
                                 )}
@@ -345,7 +345,7 @@ export default function FeedsView() {
                             onChange={(e) => setCommentInputs({ ...commentInputs, [post.id]: e.target.value })}
                             onKeyPress={(e) => e.key === 'Enter' && handleAddComment(post.id)}
                             placeholder="Write a comment..."
-                            className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-full focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+                            className="flex-1 px-3 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white text-gray-900 placeholder-gray-500"
                           />
                           <button
                             onClick={() => handleAddComment(post.id)}
@@ -366,7 +366,7 @@ export default function FeedsView() {
         </div>
 
         {/* Adverts Panel - Right Side (Desktop) */}
-        <div className="col-span-1 bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 flex flex-col overflow-hidden">
+        <div className="col-span-1 bg-white border-l border-gray-200 flex flex-col overflow-hidden">
           <AdvertsPanel />
         </div>
       </div>
