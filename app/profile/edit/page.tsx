@@ -32,6 +32,7 @@ export default function ProfileEditPage() {
 
   // Basic Profile Data
   const [profileData, setProfileData] = useState({
+    id: 'demo-user-001',
     firstName: 'Alexander',
     lastName: 'Monterubio',
     department: 'Main Theatres',
