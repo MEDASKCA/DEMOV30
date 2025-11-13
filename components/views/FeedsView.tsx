@@ -320,7 +320,7 @@ export default function FeedsView() {
                       {/* Reaction Picker Popup */}
                       {showReactions === post.id && (
                         <div
-                          className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-full shadow-xl border border-gray-200 px-3 py-2 flex gap-1 z-10 animate-in fade-in slide-in-from-bottom-2 duration-200"
+                          className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 bg-white rounded-full shadow-2xl border border-gray-200 px-4 py-3 flex gap-2 z-10 animate-in fade-in zoom-in-95 slide-in-from-bottom-4 duration-300"
                           onClick={(e) => e.stopPropagation()}
                         >
                           {reactionEmojis.map((reaction, index) => (
@@ -330,8 +330,12 @@ export default function FeedsView() {
                                 e.stopPropagation();
                                 handleReaction(post.id, reaction.emoji);
                               }}
-                              className="text-2xl hover:scale-150 hover:-translate-y-1 transition-all duration-200 cursor-pointer animate-in zoom-in"
-                              style={{ animationDelay: `${index * 30}ms` }}
+                              className="text-5xl hover:scale-125 hover:-translate-y-2 active:scale-110 transition-all duration-300 cursor-pointer animate-in zoom-in-0 bounce-in"
+                              style={{
+                                animationDelay: `${index * 50}ms`,
+                                animationDuration: '500ms',
+                                animationTimingFunction: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)'
+                              }}
                               title={reaction.label}
                               type="button"
                             >
@@ -564,7 +568,7 @@ export default function FeedsView() {
                       {/* Reaction Picker Popup */}
                       {showReactions === post.id && (
                         <div
-                          className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-full shadow-xl border border-gray-200 px-2 py-1.5 flex gap-0.5 z-10 max-w-[90vw] overflow-x-auto animate-in fade-in slide-in-from-bottom-2 duration-200"
+                          className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-full shadow-2xl border border-gray-200 px-3 py-2 flex gap-1 z-10 max-w-[90vw] overflow-x-auto animate-in fade-in zoom-in-95 slide-in-from-bottom-4 duration-300"
                           onClick={(e) => e.stopPropagation()}
                         >
                           {reactionEmojis.map((reaction, index) => (
@@ -574,8 +578,12 @@ export default function FeedsView() {
                                 e.stopPropagation();
                                 handleReaction(post.id, reaction.emoji);
                               }}
-                              className="text-xl active:scale-125 hover:scale-125 hover:-translate-y-1 transition-all duration-200 cursor-pointer flex-shrink-0 animate-in zoom-in"
-                              style={{ animationDelay: `${index * 30}ms` }}
+                              className="text-4xl active:scale-110 hover:scale-125 hover:-translate-y-2 transition-all duration-300 cursor-pointer flex-shrink-0 animate-in zoom-in-0 bounce-in"
+                              style={{
+                                animationDelay: `${index * 50}ms`,
+                                animationDuration: '500ms',
+                                animationTimingFunction: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)'
+                              }}
                               title={reaction.label}
                               type="button"
                             >
