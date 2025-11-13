@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Upload, Download, Save, Printer, List, X, Sparkles, Loader2 } from 'lucide-react';
+import { Upload, Download, Save, Printer, List, X, Sparkles, Loader2, ChevronDown, ChevronUp } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import {
   getTheatreUnits,
@@ -147,6 +147,7 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
   const [autoRosterMode, setAutoRosterMode] = useState<'single' | 'range'>('single');
   const [autoRosterEndDate, setAutoRosterEndDate] = useState<string>(new Date().toISOString().split('T')[0]);
   const [rosterProgress, setRosterProgress] = useState<{ current: number; total: number } | null>(null);
+  const [showExtraControls, setShowExtraControls] = useState(false);
 
   // Use specialty and session type data from configuration
   const specialties = ALL_SPECIALTIES;
@@ -1302,6 +1303,33 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
 
           {/* Action Buttons */}
           <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => window.print()}
+              className="px-3 py-1.5 text-white text-xs sm:text-sm font-medium rounded transition-all flex items-center gap-1"
+              style={{ background: '#2C5F5D' }}
+            >
+              <Printer className="w-3 h-3 sm:w-4 sm:h-4" />
+              Print
+            </button>
+
+            <button className="px-3 py-1.5 text-white text-xs sm:text-sm font-medium rounded transition-all flex items-center gap-1" style={{ background: '#2C5F5D' }}>
+              <Save className="w-3 h-3 sm:w-4 sm:h-4" />
+              Save
+            </button>
+
+            {/* Toggle Extra Controls Button */}
+            <button
+              onClick={() => setShowExtraControls(!showExtraControls)}
+              className="px-3 py-1.5 bg-gray-600 text-white text-xs sm:text-sm font-medium rounded hover:bg-gray-700 transition-all flex items-center gap-1"
+            >
+              {showExtraControls ? <ChevronUp className="w-3 h-3 sm:w-4 sm:h-4" /> : <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4" />}
+              {showExtraControls ? 'Hide' : 'More'}
+            </button>
+          </div>
+
+          {/* Extra Controls (Collapsible) */}
+          {showExtraControls && (
+          <div className="flex flex-wrap gap-2">
             <label className="px-3 py-1.5 text-white text-xs sm:text-sm font-medium rounded transition-all cursor-pointer flex items-center gap-1" style={{ background: '#2C5F5D' }}>
               <Upload className="w-3 h-3 sm:w-4 sm:h-4" />
               Upload Scrub
@@ -1393,26 +1421,13 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
             </button>
 
             <button
-              onClick={() => window.print()}
-              className="px-3 py-1.5 text-white text-xs sm:text-sm font-medium rounded transition-all flex items-center gap-1"
-              style={{ background: '#2C5F5D' }}
-            >
-              <Printer className="w-3 h-3 sm:w-4 sm:h-4" />
-              Print
-            </button>
-
-            <button className="px-3 py-1.5 text-white text-xs sm:text-sm font-medium rounded transition-all flex items-center gap-1" style={{ background: '#2C5F5D' }}>
-              <Save className="w-3 h-3 sm:w-4 sm:h-4" />
-              Save
-            </button>
-
-            <button
               onClick={handleInitializeConfig}
               className="px-3 py-1.5 bg-gray-600 text-white text-xs sm:text-sm font-medium rounded hover:bg-gray-700 transition-all"
             >
               Initialize
             </button>
           </div>
+          )}
         </div>
 
         {/* Staff Summary */}
