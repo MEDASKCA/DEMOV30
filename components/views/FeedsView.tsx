@@ -52,6 +52,7 @@ export default function FeedsView() {
       content: newPostContent,
       timestamp: new Date(),
       likes: [],
+      reactions: {},
       comments: [],
       shares: 0,
       type: 'text'
@@ -61,20 +62,27 @@ export default function FeedsView() {
     setNewPostContent('');
   };
 
-  const handleLike = (postId: string) => {
+  const handleReaction = (postId: string, emoji: string) => {
     setPosts(posts.map(post => {
       if (post.id === postId) {
-        const hasLiked = post.likes.includes(currentUserId);
+        const newReactions = { ...post.reactions };
+
+        // If user already reacted with same emoji, remove it
+        if (newReactions[currentUserId] === emoji) {
+          delete newReactions[currentUserId];
+        } else {
+          // Otherwise, set/update their reaction
+          newReactions[currentUserId] = emoji;
+        }
+
         return {
           ...post,
-          likes: hasLiked
-            ? post.likes.filter(id => id !== currentUserId)
-            : [...post.likes, currentUserId]
+          reactions: newReactions,
+          likes: Object.keys(newReactions) // Keep likes in sync for compatibility
         };
       }
       return post;
     }));
-    setShowReactions(null);
   };
 
   const handleAddComment = (postId: string) => {
@@ -216,7 +224,7 @@ export default function FeedsView() {
               const author = getStaffById(post.authorId);
               if (!author) return null;
 
-              const hasLiked = post.likes.includes(currentUserId);
+              const userReaction = post.reactions?.[currentUserId];
               const isCommentsOpen = showComments === post.id;
 
               return (
@@ -244,13 +252,15 @@ export default function FeedsView() {
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="px-4 py-2 flex items-center gap-2 border-t border-gray-100">
-                    <div className="flex-1 flex items-center justify-center gap-1">
+                  <div className="px-4 pb-3 pt-2 flex items-center gap-2">
+                    <div className="flex items-center gap-1.5">
                       {reactionEmojis.map((reaction) => (
                         <button
                           key={reaction.emoji}
-                          onClick={() => handleLike(post.id)}
-                          className="text-xl hover:scale-110 transition-transform p-1"
+                          onClick={() => handleReaction(post.id, reaction.emoji)}
+                          className={`text-xl hover:scale-125 active:scale-95 transition-transform ${
+                            userReaction === reaction.emoji ? 'scale-125' : ''
+                          }`}
                           title={reaction.label}
                         >
                           {reaction.emoji}
@@ -422,7 +432,7 @@ export default function FeedsView() {
               const author = getStaffById(post.authorId);
               if (!author) return null;
 
-              const hasLiked = post.likes.includes(currentUserId);
+              const userReaction = post.reactions?.[currentUserId];
               const isCommentsOpen = showComments === post.id;
 
               return (
@@ -450,13 +460,15 @@ export default function FeedsView() {
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="px-3 py-2 flex items-center gap-1 border-t border-gray-100">
-                    <div className="flex-1 flex items-center justify-center gap-0.5 overflow-x-auto">
+                  <div className="px-3 pb-2 pt-1.5 flex items-center gap-1">
+                    <div className="flex items-center gap-1 overflow-x-auto">
                       {reactionEmojis.map((reaction) => (
                         <button
                           key={reaction.emoji}
-                          onClick={() => handleLike(post.id)}
-                          className="text-base active:scale-110 transition-transform p-1 flex-shrink-0"
+                          onClick={() => handleReaction(post.id, reaction.emoji)}
+                          className={`text-base active:scale-110 transition-transform flex-shrink-0 ${
+                            userReaction === reaction.emoji ? 'scale-110' : ''
+                          }`}
                           title={reaction.label}
                         >
                           {reaction.emoji}
