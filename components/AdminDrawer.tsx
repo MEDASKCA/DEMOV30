@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 interface AdminDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  drawerType: 'theatres' | 'menu' | 'workforce' | 'inventory' | 'ops' | 'alerts' | null;
+  drawerType: 'theatres' | 'menu' | 'workforce' | 'inventory' | 'ops' | 'alerts' | 'lists' | null;
   onNavigate: (page: string) => void;
 }
 
