@@ -25,6 +25,7 @@ import { StaffRequirementMapper } from '@/lib/types/waitingListTypes';
 import {
   generateAutoRoster,
   saveAutoRosterAllocations,
+  loadAutoRosterAllocations,
   SessionAllocation,
   RoleAllocation,
   StaffAssignment
@@ -300,6 +301,19 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
       loadTheatreListsForDate();
     }
   }, [selectedDate, currentHospital?.id]);
+
+  // Load staff allocations for selected date
+  useEffect(() => {
+    const loadAllocations = async () => {
+      if (selectedDate && currentHospital?.id && !templateMode) {
+        console.log('🔄 Loading allocations for date:', selectedDate);
+        const allocations = await loadAutoRosterAllocations(selectedDate, currentHospital.id);
+        setAutoRosterAllocations(allocations);
+        console.log(`📊 Loaded ${allocations.size} allocations into state`);
+      }
+    };
+    loadAllocations();
+  }, [selectedDate, currentHospital?.id, templateMode]);
 
   // Load theatre staff roles and requirement mappers (needed for both template mode AND auto-roster)
   useEffect(() => {

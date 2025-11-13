@@ -398,3 +398,30 @@ export async function saveAutoRosterAllocations(allocations: Map<string, Session
 
   console.log(`✅ All allocations saved to Firebase`);
 }
+
+/**
+ * Load auto-roster allocations for a specific date
+ */
+export async function loadAutoRosterAllocations(date: string, hospitalId: string): Promise<Map<string, SessionAllocation>> {
+  console.log(`📖 Loading allocations for ${date} from Firebase...`);
+
+  try {
+    // Query allocations for this date
+    const allocationsRef = collection(db, 'staffAllocations');
+    const q = query(allocationsRef, where('date', '==', date));
+    const snapshot = await getDocs(q);
+
+    const allocations = new Map<string, SessionAllocation>();
+
+    snapshot.forEach((doc) => {
+      const data = doc.data() as SessionAllocation;
+      allocations.set(doc.id, data);
+    });
+
+    console.log(`✅ Loaded ${allocations.size} allocations from Firebase for ${date}`);
+    return allocations;
+  } catch (error) {
+    console.error('❌ Error loading allocations:', error);
+    return new Map();
+  }
+}
