@@ -1,0 +1,596 @@
+'use client';
+
+import React, { useState, useRef, useEffect } from 'react';
+import { Send, MessageSquare, Heart, Share2, Plus, Image as ImageIcon, Smile, ThumbsUp, ThumbsDown, X, Shield } from 'lucide-react';
+import { mockStaffProfiles, mockPosts, getStaffById, getTimeAgo, type Post as PostType, type Comment as CommentType } from '@/lib/socialMockData';
+import TomAIChatPanel from '@/components/TomAIChatPanel';
+import ShareModal from '@/components/ShareModal';
+import AdvertsPanel from '@/components/AdvertsPanel';
+import { useRouter } from 'next/navigation';
+
+interface Story {
+  id: string;
+  userId: string;
+  imageUrl?: string;
+  timestamp: Date;
+}
+
+const reactionEmojis = [
+  { emoji: '❤️', label: 'Love' },
+  { emoji: '👍', label: 'Like' },
+  { emoji: '😂', label: 'Laugh' },
+  { emoji: '😮', label: 'Wow' },
+  { emoji: '😢', label: 'Sad' },
+  { emoji: '😡', label: 'Angry' }
+];
+
+export default function FeedsView() {
+  const router = useRouter();
+  const currentUserId = 'user-1';
+  const [posts, setPosts] = useState<PostType[]>(mockPosts);
+  const [newPostContent, setNewPostContent] = useState('');
+  const [showComments, setShowComments] = useState<string | null>(null);
+  const [commentInputs, setCommentInputs] = useState<{ [key: string]: string }>({});
+  const [showReactions, setShowReactions] = useState<string | null>(null);
+  const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [postToShare, setPostToShare] = useState<PostType | null>(null);
+
+  // Mock stories data
+  const stories: Story[] = [
+    { id: 'story-1', userId: 'user-2', timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000) },
+    { id: 'story-2', userId: 'user-3', timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000) },
+    { id: 'story-3', userId: 'user-5', timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000) },
+    { id: 'story-4', userId: 'user-7', timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000) }
+  ];
+
+  const handleCreatePost = () => {
+    if (!newPostContent.trim()) return;
+
+    const newPost: PostType = {
+      id: `post-${Date.now()}`,
+      authorId: currentUserId,
+      content: newPostContent,
+      timestamp: new Date(),
+      likes: [],
+      comments: [],
+      shares: 0,
+      type: 'text'
+    };
+
+    setPosts([newPost, ...posts]);
+    setNewPostContent('');
+  };
+
+  const handleLike = (postId: string) => {
+    setPosts(posts.map(post => {
+      if (post.id === postId) {
+        const hasLiked = post.likes.includes(currentUserId);
+        return {
+          ...post,
+          likes: hasLiked
+            ? post.likes.filter(id => id !== currentUserId)
+            : [...post.likes, currentUserId]
+        };
+      }
+      return post;
+    }));
+    setShowReactions(null);
+  };
+
+  const handleAddComment = (postId: string) => {
+    const commentText = commentInputs[postId]?.trim();
+    if (!commentText) return;
+
+    setPosts(posts.map(post => {
+      if (post.id === postId) {
+        const newComment: CommentType = {
+          id: `comment-${Date.now()}`,
+          authorId: currentUserId,
+          content: commentText,
+          timestamp: new Date(),
+          likes: []
+        };
+        return {
+          ...post,
+          comments: [...post.comments, newComment]
+        };
+      }
+      return post;
+    }));
+
+    setCommentInputs({ ...commentInputs, [postId]: '' });
+  };
+
+  const handleLikeComment = (postId: string, commentId: string) => {
+    setPosts(posts.map(post => {
+      if (post.id === postId) {
+        return {
+          ...post,
+          comments: post.comments.map(comment => {
+            if (comment.id === commentId) {
+              const hasLiked = comment.likes.includes(currentUserId);
+              return {
+                ...comment,
+                likes: hasLiked
+                  ? comment.likes.filter(id => id !== currentUserId)
+                  : [...comment.likes, currentUserId]
+              };
+            }
+            return comment;
+          })
+        };
+      }
+      return post;
+    }));
+  };
+
+  const handleShare = (post: PostType) => {
+    setPostToShare(post);
+    setShareModalOpen(true);
+  };
+
+  return (
+    <div className="h-full flex flex-col bg-gray-50 dark:bg-gray-900 overflow-hidden">
+      {/* Desktop View - Split with TOM AI */}
+      <div className="hidden md:grid md:grid-cols-4 flex-1 overflow-hidden">
+        {/* TOM AI Panel - Left Side (Desktop) */}
+        <div className="col-span-1 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col overflow-hidden">
+          <TomAIChatPanel />
+        </div>
+
+        {/* Posts Feed - Middle (Desktop) */}
+        <div className="col-span-2 flex flex-col overflow-hidden bg-white dark:bg-gray-900">
+          <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Posts & Updates</h2>
+            <p className="text-sm text-gray-600 dark:text-gray-300">Theatre staff collaboration and news</p>
+          </div>
+
+          <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900">
+          <div className="max-w-2xl mx-auto py-6 px-4 space-y-4">
+            {/* Stories Section */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+              <div className="flex gap-3 overflow-x-auto pb-2">
+                {/* Add Your Story */}
+                <div className="flex flex-col items-center gap-2 flex-shrink-0">
+                  <button className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 border-2 border-dashed border-blue-300 flex items-center justify-center hover:from-blue-200 hover:to-purple-200 transition-all">
+                    <Plus className="w-6 h-6 text-blue-600" />
+                  </button>
+                  <span className="text-xs text-gray-600 dark:text-gray-300 font-medium">Your Story</span>
+                </div>
+
+                {/* Stories from other users */}
+                {stories.map(story => {
+                  const user = getStaffById(story.userId);
+                  if (!user) return null;
+                  return (
+                    <div key={story.id} className="flex flex-col items-center gap-2 flex-shrink-0">
+                      <button className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 via-teal-500 to-purple-500 p-0.5 hover:scale-105 transition-transform">
+                        <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
+                          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center text-white font-bold">
+                            {user.initials}
+                          </div>
+                        </div>
+                      </button>
+                      <span className="text-xs text-gray-600 dark:text-gray-300 font-medium truncate w-16 text-center">
+                        {user.firstName}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Create Post */}
+            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+              <div className="flex gap-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold flex-shrink-0">
+                  {getStaffById(currentUserId)?.initials}
+                </div>
+                <div className="flex-1">
+                  <textarea
+                    value={newPostContent}
+                    onChange={(e) => setNewPostContent(e.target.value)}
+                    placeholder="What's on your mind?"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+                    rows={3}
+                  />
+                  <div className="flex items-center justify-between mt-2">
+                    <button className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors px-3 py-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                      <ImageIcon className="w-4 h-4" />
+                      <span>Photo</span>
+                    </button>
+                    <button
+                      onClick={handleCreatePost}
+                      disabled={!newPostContent.trim()}
+                      className="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm font-semibold"
+                    >
+                      Post
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Posts Feed */}
+            {posts.map((post) => {
+              const author = getStaffById(post.authorId);
+              if (!author) return null;
+
+              const hasLiked = post.likes.includes(currentUserId);
+              const isCommentsOpen = showComments === post.id;
+
+              return (
+                <div key={post.id} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow">
+                  {/* Post Header */}
+                  <div className="p-4 flex items-start gap-3">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold flex-shrink-0">
+                      {author.initials}
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-semibold text-gray-900 dark:text-gray-100">{author.firstName} {author.lastName}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">{author.role} • {getTimeAgo(post.timestamp)}</p>
+                    </div>
+                  </div>
+
+                  {/* Post Content */}
+                  <div className="px-4 pb-3">
+                    <p className="text-gray-900 dark:text-gray-100 whitespace-pre-wrap">{post.content}</p>
+                  </div>
+
+                  {/* Post Stats */}
+                  <div className="px-4 py-2 flex items-center justify-between text-sm text-gray-600 dark:text-gray-300 border-t border-gray-100 dark:border-gray-800">
+                    <span>{post.likes.length} {post.likes.length === 1 ? 'reaction' : 'reactions'}</span>
+                    <span>{post.comments.length} {post.comments.length === 1 ? 'comment' : 'comments'}</span>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="px-4 py-2 flex items-center gap-2 border-t border-gray-100 dark:border-gray-800">
+                    <div className="relative flex-1">
+                      <button
+                        onClick={() => setShowReactions(showReactions === post.id ? null : post.id)}
+                        className={`w-full flex items-center justify-center gap-2 py-2 rounded-lg transition-colors ${
+                          hasLiked ? 'text-red-600 bg-red-50' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                        }`}
+                      >
+                        <Heart className={`w-5 h-5 ${hasLiked ? 'fill-current' : ''}`} />
+                        <span className="text-sm font-medium">React</span>
+                      </button>
+
+                      {/* Reaction Picker */}
+                      {showReactions === post.id && (
+                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white dark:bg-gray-700 rounded-full shadow-xl border border-gray-200 dark:border-gray-600 px-3 py-2 flex gap-2 z-10">
+                          {reactionEmojis.map((reaction) => (
+                            <button
+                              key={reaction.emoji}
+                              onClick={() => handleLike(post.id)}
+                              className="text-2xl hover:scale-125 transition-transform"
+                              title={reaction.label}
+                            >
+                              {reaction.emoji}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    <button
+                      onClick={() => setShowComments(isCommentsOpen ? null : post.id)}
+                      className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    >
+                      <MessageSquare className="w-5 h-5" />
+                      <span className="text-sm font-medium">Comment</span>
+                    </button>
+
+                    <button
+                      onClick={() => handleShare(post)}
+                      className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    >
+                      <Share2 className="w-5 h-5" />
+                      <span className="text-sm font-medium">Share</span>
+                    </button>
+                  </div>
+
+                  {/* Comments Section */}
+                  {isCommentsOpen && (
+                    <div className="border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 px-4 py-3 space-y-3">
+                      {/* Existing Comments */}
+                      {post.comments.map((comment) => {
+                        const commentAuthor = getStaffById(comment.authorId);
+                        if (!commentAuthor) return null;
+
+                        const hasLikedComment = comment.likes.includes(currentUserId);
+
+                        return (
+                          <div key={comment.id} className="flex gap-2">
+                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                              {commentAuthor.initials}
+                            </div>
+                            <div className="flex-1">
+                              <div className="bg-white dark:bg-gray-700 rounded-lg px-3 py-2">
+                                <p className="font-semibold text-sm text-gray-900 dark:text-gray-100">
+                                  {commentAuthor.firstName} {commentAuthor.lastName}
+                                </p>
+                                <p className="text-sm text-gray-700 dark:text-gray-200 mt-0.5">{comment.content}</p>
+                              </div>
+                              <div className="flex items-center gap-3 mt-1 px-2">
+                                <button
+                                  onClick={() => handleLikeComment(post.id, comment.id)}
+                                  className={`text-xs font-semibold ${
+                                    hasLikedComment ? 'text-red-600' : 'text-gray-600 dark:text-gray-300 hover:text-red-600'
+                                  }`}
+                                >
+                                  {hasLikedComment ? 'Liked' : 'Like'}
+                                </button>
+                                <span className="text-xs text-gray-500 dark:text-gray-400">{getTimeAgo(comment.timestamp)}</span>
+                                {comment.likes.length > 0 && (
+                                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                                    ❤️ {comment.likes.length}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+
+                      {/* Add Comment */}
+                      <div className="flex gap-2 pt-2">
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                          {getStaffById(currentUserId)?.initials}
+                        </div>
+                        <div className="flex-1 flex gap-2">
+                          <input
+                            type="text"
+                            value={commentInputs[post.id] || ''}
+                            onChange={(e) => setCommentInputs({ ...commentInputs, [post.id]: e.target.value })}
+                            onKeyPress={(e) => e.key === 'Enter' && handleAddComment(post.id)}
+                            placeholder="Write a comment..."
+                            className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-full focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+                          />
+                          <button
+                            onClick={() => handleAddComment(post.id)}
+                            disabled={!commentInputs[post.id]?.trim()}
+                            className="p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            <Send className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+          </div>
+        </div>
+
+        {/* Adverts Panel - Right Side (Desktop) */}
+        <div className="col-span-1 bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 flex flex-col overflow-hidden">
+          <AdvertsPanel />
+        </div>
+      </div>
+
+      {/* Mobile View */}
+      <div className="md:hidden flex flex-col h-full overflow-hidden bg-gray-50 dark:bg-gray-900">
+        {/* Header */}
+        <div className="text-white px-4 py-4 flex-shrink-0" style={{background: 'linear-gradient(135deg, #3B82F6 0%, #06B6D4 50%, #8B5CF6 100%)'}}>
+          <div>
+            <h2 className="text-lg font-bold">Posts & Updates</h2>
+            <p className="text-xs text-white/80 mt-0.5">Theatre staff collaboration</p>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto">
+          {/* Stories Section */}
+          <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-3">
+            <div className="flex gap-3 overflow-x-auto">
+              {/* Add Your Story */}
+              <div className="flex flex-col items-center gap-1.5 flex-shrink-0">
+                <button className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 border-2 border-dashed border-blue-300 flex items-center justify-center">
+                  <Plus className="w-5 h-5 text-blue-600" />
+                </button>
+                <span className="text-xs text-gray-600 dark:text-gray-300">You</span>
+              </div>
+
+              {/* Stories */}
+              {stories.map(story => {
+                const user = getStaffById(story.userId);
+                if (!user) return null;
+                return (
+                  <div key={story.id} className="flex flex-col items-center gap-1.5 flex-shrink-0">
+                    <button className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 via-teal-500 to-purple-500 p-0.5">
+                      <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
+                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center text-white text-xs font-bold">
+                          {user.initials}
+                        </div>
+                      </div>
+                    </button>
+                    <span className="text-xs text-gray-600 dark:text-gray-300 truncate w-14 text-center">
+                      {user.firstName}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Create Post Mobile */}
+          <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-3">
+            <div className="flex gap-2">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                {getStaffById(currentUserId)?.initials}
+              </div>
+              <button
+                onClick={() => {/* Open post composer modal */}}
+                className="flex-1 px-3 py-2 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-full text-left text-sm text-gray-500 dark:text-gray-400"
+              >
+                What's on your mind?
+              </button>
+            </div>
+          </div>
+
+          {/* Posts Feed Mobile */}
+          <div className="space-y-2 p-3 pb-6">
+            {posts.map((post) => {
+              const author = getStaffById(post.authorId);
+              if (!author) return null;
+
+              const hasLiked = post.likes.includes(currentUserId);
+              const isCommentsOpen = showComments === post.id;
+
+              return (
+                <div key={post.id} className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                  {/* Post Header */}
+                  <div className="p-3 flex items-start gap-2">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                      {author.initials}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-sm text-gray-900 dark:text-gray-100">{author.firstName} {author.lastName}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">{author.role} • {getTimeAgo(post.timestamp)}</p>
+                    </div>
+                  </div>
+
+                  {/* Post Content */}
+                  <div className="px-3 pb-2">
+                    <p className="text-sm text-gray-900 dark:text-gray-100 whitespace-pre-wrap">{post.content}</p>
+                  </div>
+
+                  {/* Post Stats */}
+                  <div className="px-3 py-1.5 flex items-center justify-between text-xs text-gray-600 dark:text-gray-300">
+                    <span>{post.likes.length} reactions</span>
+                    <span>{post.comments.length} comments</span>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="px-3 py-2 flex items-center gap-1 border-t border-gray-100 dark:border-gray-800">
+                    <div className="relative flex-1">
+                      <button
+                        onClick={() => setShowReactions(showReactions === post.id ? null : post.id)}
+                        className={`w-full flex items-center justify-center gap-1.5 py-2 rounded-lg transition-colors ${
+                          hasLiked ? 'text-red-600 bg-red-50' : 'text-gray-600 dark:text-gray-300 active:bg-gray-100'
+                        }`}
+                      >
+                        <Heart className={`w-4 h-4 ${hasLiked ? 'fill-current' : ''}`} />
+                        <span className="text-xs font-medium">React</span>
+                      </button>
+
+                      {showReactions === post.id && (
+                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white dark:bg-gray-700 rounded-full shadow-xl border border-gray-200 dark:border-gray-600 px-2 py-1.5 flex gap-1.5 z-10">
+                          {reactionEmojis.map((reaction) => (
+                            <button
+                              key={reaction.emoji}
+                              onClick={() => handleLike(post.id)}
+                              className="text-xl active:scale-110 transition-transform"
+                            >
+                              {reaction.emoji}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    <button
+                      onClick={() => setShowComments(isCommentsOpen ? null : post.id)}
+                      className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-gray-600 dark:text-gray-300 active:bg-gray-100 transition-colors"
+                    >
+                      <MessageSquare className="w-4 h-4" />
+                      <span className="text-xs font-medium">Comment</span>
+                    </button>
+
+                    <button
+                      onClick={() => handleShare(post)}
+                      className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-gray-600 dark:text-gray-300 active:bg-gray-100 transition-colors"
+                    >
+                      <Share2 className="w-4 h-4" />
+                      <span className="text-xs font-medium">Share</span>
+                    </button>
+                  </div>
+
+                  {/* Comments Section Mobile */}
+                  {isCommentsOpen && (
+                    <div className="border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 px-3 py-2 space-y-2">
+                      {/* Existing Comments */}
+                      {post.comments.map((comment) => {
+                        const commentAuthor = getStaffById(comment.authorId);
+                        if (!commentAuthor) return null;
+
+                        const hasLikedComment = comment.likes.includes(currentUserId);
+
+                        return (
+                          <div key={comment.id} className="flex gap-2">
+                            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                              {commentAuthor.initials}
+                            </div>
+                            <div className="flex-1">
+                              <div className="bg-white dark:bg-gray-700 rounded-lg px-2.5 py-1.5">
+                                <p className="font-semibold text-xs text-gray-900 dark:text-gray-100">
+                                  {commentAuthor.firstName} {commentAuthor.lastName}
+                                </p>
+                                <p className="text-xs text-gray-700 dark:text-gray-200 mt-0.5">{comment.content}</p>
+                              </div>
+                              <div className="flex items-center gap-2 mt-1 px-2">
+                                <button
+                                  onClick={() => handleLikeComment(post.id, comment.id)}
+                                  className={`text-xs font-semibold ${
+                                    hasLikedComment ? 'text-red-600' : 'text-gray-600 dark:text-gray-300'
+                                  }`}
+                                >
+                                  {hasLikedComment ? 'Liked' : 'Like'}
+                                </button>
+                                <span className="text-xs text-gray-500 dark:text-gray-400">{getTimeAgo(comment.timestamp)}</span>
+                                {comment.likes.length > 0 && (
+                                  <span className="text-xs text-gray-500 dark:text-gray-400">❤️ {comment.likes.length}</span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+
+                      {/* Add Comment Mobile */}
+                      <div className="flex gap-2 pt-1">
+                        <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                          {getStaffById(currentUserId)?.initials}
+                        </div>
+                        <div className="flex-1 flex gap-1.5">
+                          <input
+                            type="text"
+                            value={commentInputs[post.id] || ''}
+                            onChange={(e) => setCommentInputs({ ...commentInputs, [post.id]: e.target.value })}
+                            onKeyPress={(e) => e.key === 'Enter' && handleAddComment(post.id)}
+                            placeholder="Write a comment..."
+                            className="flex-1 px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-full focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+                          />
+                          <button
+                            onClick={() => handleAddComment(post.id)}
+                            disabled={!commentInputs[post.id]?.trim()}
+                            className="p-1.5 bg-blue-600 text-white rounded-full disabled:opacity-50"
+                          >
+                            <Send className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Share Modal */}
+      <ShareModal
+        isOpen={shareModalOpen}
+        onClose={() => {
+          setShareModalOpen(false);
+          setPostToShare(null);
+        }}
+        postContent={postToShare?.content || ''}
+      />
+    </div>
+  );
+}
