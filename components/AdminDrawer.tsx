@@ -131,7 +131,7 @@ export default function AdminDrawer({ isOpen, onClose, drawerType, onNavigate }:
                   router.push('/admin/sessions');
                   onClose();
                 } else if (item.id === 'lists') {
-                  router.push('/admin/schedule?tab=list');
+                  router.push('/admin/lists');
                   onClose();
                 } else if (item.id === 'schedule') {
                   router.push('/admin/schedule');
