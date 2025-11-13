@@ -372,7 +372,7 @@ export default function FeedsView() {
       </div>
 
       {/* Mobile View */}
-      <div className="md:hidden flex flex-col h-full overflow-hidden bg-gray-50 dark:bg-gray-900">
+      <div className="md:hidden flex flex-col h-full overflow-hidden bg-gray-50">
         {/* Header */}
         <div className="text-white px-4 py-4 flex-shrink-0" style={{background: 'linear-gradient(135deg, #3B82F6 0%, #06B6D4 50%, #8B5CF6 100%)'}}>
           <div>
@@ -384,14 +384,14 @@ export default function FeedsView() {
         {/* Content */}
         <div className="flex-1 overflow-y-auto">
           {/* Stories Section */}
-          <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-3">
+          <div className="bg-white border-b border-gray-200 p-3">
             <div className="flex gap-3 overflow-x-auto">
               {/* Add Your Story */}
               <div className="flex flex-col items-center gap-1.5 flex-shrink-0">
                 <button className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 border-2 border-dashed border-blue-300 flex items-center justify-center">
                   <Plus className="w-5 h-5 text-blue-600" />
                 </button>
-                <span className="text-xs text-gray-600 dark:text-gray-300">You</span>
+                <span className="text-xs text-gray-600">You</span>
               </div>
 
               {/* Stories */}
@@ -407,7 +407,7 @@ export default function FeedsView() {
                         </div>
                       </div>
                     </button>
-                    <span className="text-xs text-gray-600 dark:text-gray-300 truncate w-14 text-center">
+                    <span className="text-xs text-gray-600 truncate w-14 text-center">
                       {user.firstName}
                     </span>
                   </div>
@@ -417,14 +417,14 @@ export default function FeedsView() {
           </div>
 
           {/* Create Post Mobile */}
-          <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-3">
+          <div className="bg-white border-b border-gray-200 p-3">
             <div className="flex gap-2">
               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
                 {getStaffById(currentUserId)?.initials}
               </div>
               <button
                 onClick={() => {/* Open post composer modal */}}
-                className="flex-1 px-3 py-2 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-full text-left text-sm text-gray-500 dark:text-gray-400"
+                className="flex-1 px-3 py-2 bg-gray-100 border border-gray-300 rounded-full text-left text-sm text-gray-500"
               >
                 What's on your mind?
               </button>
@@ -441,36 +441,36 @@ export default function FeedsView() {
               const isCommentsOpen = showComments === post.id;
 
               return (
-                <div key={post.id} className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                <div key={post.id} className="bg-white rounded-lg border border-gray-200">
                   {/* Post Header */}
                   <div className="p-3 flex items-start gap-2">
                     <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
                       {author.initials}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-sm text-gray-900 dark:text-gray-100">{author.firstName} {author.lastName}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{author.role} • {getTimeAgo(post.timestamp)}</p>
+                      <p className="font-semibold text-sm text-gray-900">{author.firstName} {author.lastName}</p>
+                      <p className="text-xs text-gray-500">{author.role} • {getTimeAgo(post.timestamp)}</p>
                     </div>
                   </div>
 
                   {/* Post Content */}
                   <div className="px-3 pb-2">
-                    <p className="text-sm text-gray-900 dark:text-gray-100 whitespace-pre-wrap">{post.content}</p>
+                    <p className="text-sm text-gray-900 whitespace-pre-wrap">{post.content}</p>
                   </div>
 
                   {/* Post Stats */}
-                  <div className="px-3 py-1.5 flex items-center justify-between text-xs text-gray-600 dark:text-gray-300">
+                  <div className="px-3 py-1.5 flex items-center justify-between text-xs text-gray-600">
                     <span>{post.likes.length} reactions</span>
                     <span>{post.comments.length} comments</span>
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="px-3 py-2 flex items-center gap-1 border-t border-gray-100 dark:border-gray-800">
+                  <div className="px-3 py-2 flex items-center gap-1 border-t border-gray-100">
                     <div className="relative flex-1">
                       <button
                         onClick={() => setShowReactions(showReactions === post.id ? null : post.id)}
                         className={`w-full flex items-center justify-center gap-1.5 py-2 rounded-lg transition-colors ${
-                          hasLiked ? 'text-red-600 bg-red-50' : 'text-gray-600 dark:text-gray-300 active:bg-gray-100'
+                          hasLiked ? 'text-red-600 bg-red-50' : 'text-gray-600 active:bg-gray-100'
                         }`}
                       >
                         <Heart className={`w-4 h-4 ${hasLiked ? 'fill-current' : ''}`} />
@@ -478,7 +478,7 @@ export default function FeedsView() {
                       </button>
 
                       {showReactions === post.id && (
-                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white dark:bg-gray-700 rounded-full shadow-xl border border-gray-200 dark:border-gray-600 px-2 py-1.5 flex gap-1.5 z-10">
+                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-full shadow-xl border border-gray-200 px-2 py-1.5 flex gap-1.5 z-10">
                           {reactionEmojis.map((reaction) => (
                             <button
                               key={reaction.emoji}
@@ -494,7 +494,7 @@ export default function FeedsView() {
 
                     <button
                       onClick={() => setShowComments(isCommentsOpen ? null : post.id)}
-                      className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-gray-600 dark:text-gray-300 active:bg-gray-100 transition-colors"
+                      className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-gray-600 active:bg-gray-100 transition-colors"
                     >
                       <MessageSquare className="w-4 h-4" />
                       <span className="text-xs font-medium">Comment</span>
@@ -502,7 +502,7 @@ export default function FeedsView() {
 
                     <button
                       onClick={() => handleShare(post)}
-                      className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-gray-600 dark:text-gray-300 active:bg-gray-100 transition-colors"
+                      className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-gray-600 active:bg-gray-100 transition-colors"
                     >
                       <Share2 className="w-4 h-4" />
                       <span className="text-xs font-medium">Share</span>
@@ -511,7 +511,7 @@ export default function FeedsView() {
 
                   {/* Comments Section Mobile */}
                   {isCommentsOpen && (
-                    <div className="border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 px-3 py-2 space-y-2">
+                    <div className="border-t border-gray-100 bg-gray-50 px-3 py-2 space-y-2">
                       {/* Existing Comments */}
                       {post.comments.map((comment) => {
                         const commentAuthor = getStaffById(comment.authorId);
@@ -525,24 +525,24 @@ export default function FeedsView() {
                               {commentAuthor.initials}
                             </div>
                             <div className="flex-1">
-                              <div className="bg-white dark:bg-gray-700 rounded-lg px-2.5 py-1.5">
-                                <p className="font-semibold text-xs text-gray-900 dark:text-gray-100">
+                              <div className="bg-white rounded-lg px-2.5 py-1.5">
+                                <p className="font-semibold text-xs text-gray-900">
                                   {commentAuthor.firstName} {commentAuthor.lastName}
                                 </p>
-                                <p className="text-xs text-gray-700 dark:text-gray-200 mt-0.5">{comment.content}</p>
+                                <p className="text-xs text-gray-700 mt-0.5">{comment.content}</p>
                               </div>
                               <div className="flex items-center gap-2 mt-1 px-2">
                                 <button
                                   onClick={() => handleLikeComment(post.id, comment.id)}
                                   className={`text-xs font-semibold ${
-                                    hasLikedComment ? 'text-red-600' : 'text-gray-600 dark:text-gray-300'
+                                    hasLikedComment ? 'text-red-600' : 'text-gray-600'
                                   }`}
                                 >
                                   {hasLikedComment ? 'Liked' : 'Like'}
                                 </button>
-                                <span className="text-xs text-gray-500 dark:text-gray-400">{getTimeAgo(comment.timestamp)}</span>
+                                <span className="text-xs text-gray-500">{getTimeAgo(comment.timestamp)}</span>
                                 {comment.likes.length > 0 && (
-                                  <span className="text-xs text-gray-500 dark:text-gray-400">❤️ {comment.likes.length}</span>
+                                  <span className="text-xs text-gray-500">❤️ {comment.likes.length}</span>
                                 )}
                               </div>
                             </div>
@@ -562,7 +562,7 @@ export default function FeedsView() {
                             onChange={(e) => setCommentInputs({ ...commentInputs, [post.id]: e.target.value })}
                             onKeyPress={(e) => e.key === 'Enter' && handleAddComment(post.id)}
                             placeholder="Write a comment..."
-                            className="flex-1 px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-full focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+                            className="flex-1 px-3 py-1.5 border border-gray-300 rounded-full focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs bg-white text-gray-900 placeholder-gray-500"
                           />
                           <button
                             onClick={() => handleAddComment(post.id)}
