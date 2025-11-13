@@ -10,12 +10,12 @@ import AdminDrawer from '@/components/AdminDrawer';
 
 export default function PreferenceCardsPage() {
   const router = useRouter();
-  const [currentPage, setCurrentPage] = useState<'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu'>('theatres');
+  const [currentPage, setCurrentPage] = useState<'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu' | 'workforce' | 'inventory'>('theatres');
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [showDrawer, setShowDrawer] = useState(false);
   const [drawerType, setDrawerType] = useState<'theatres' | 'menu' | 'workforce' | 'inventory' | 'ops' | 'alerts' | null>(null);
 
-  const handleBottomNavClick = (page: 'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu') => {
+  const handleBottomNavClick = (page: 'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu' | 'workforce' | 'inventory') => {
     setCurrentPage(page);
 
     if (page === 'home') {

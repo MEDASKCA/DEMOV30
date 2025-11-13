@@ -51,7 +51,7 @@ export default function AdminSchedulePage() {
   const [selectedSurgeon, setSelectedSurgeon] = useState<string>('all');
   const [specialtyAbbreviations, setSpecialtyAbbreviations] = useState<{ [key: string]: string }>({});
   const [subspecialtyAbbreviations, setSubspecialtyAbbreviations] = useState<{ [key: string]: string }>({});
-  const [currentPage, setCurrentPage] = useState<'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu'>('ops');
+  const [currentPage, setCurrentPage] = useState<'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu' | 'workforce' | 'inventory'>('ops');
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [showDrawer, setShowDrawer] = useState(false);
   const [drawerType, setDrawerType] = useState<'theatres' | 'menu' | 'workforce' | 'inventory' | 'ops' | 'alerts' | null>(null);
@@ -59,7 +59,7 @@ export default function AdminSchedulePage() {
   const [expandedTheatres, setExpandedTheatres] = useState<Set<string>>(new Set());
   const [activeTab, setActiveTab] = useState<'schedule' | 'consultants' | 'profiles'>('schedule');
 
-  const handleBottomNavClick = (page: 'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu') => {
+  const handleBottomNavClick = (page: 'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu' | 'workforce' | 'inventory') => {
     setCurrentPage(page);
 
     if (page === 'home') {

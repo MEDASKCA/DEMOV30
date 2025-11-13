@@ -40,7 +40,7 @@ export default function SchedulePage() {
   const [configSubTab, setConfigSubTab] = useState<ConfigSubTab>('specialties');
   const [requirementsSubTab, setRequirementsSubTab] = useState<RequirementsSubTab>('roles');
   const [listSubTab, setListSubTab] = useState<ListSubTab>('waiting-list');
-  const [currentPage, setCurrentPage] = useState<'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu'>('ops');
+  const [currentPage, setCurrentPage] = useState<'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu' | 'workforce' | 'inventory'>('ops');
   const [hospitalName, setHospitalName] = useState('');
   const [savingHospital, setSavingHospital] = useState(false);
   const [hospitalSaveStatus, setHospitalSaveStatus] = useState<'idle' | 'success' | 'error'>('idle');
@@ -49,7 +49,7 @@ export default function SchedulePage() {
   const [showDrawer, setShowDrawer] = useState(false);
   const [drawerType, setDrawerType] = useState<'theatres' | 'menu' | 'workforce' | 'inventory' | 'ops' | 'alerts' | null>(null);
 
-  const handleBottomNavClick = (page: 'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu') => {
+  const handleBottomNavClick = (page: 'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu' | 'workforce' | 'inventory') => {
     setCurrentPage(page);
 
     if (page === 'home') {

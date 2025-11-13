@@ -67,7 +67,7 @@ export default function OPCS4DatabasePage() {
   const [showDatabaseMgmt, setShowDatabaseMgmt] = useState(false);
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'success' | 'error'>('idle');
   const [uploadProgress, setUploadProgress] = useState<string>('');
-  const [currentPage, setCurrentPage] = useState<'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu'>('theatres');
+  const [currentPage, setCurrentPage] = useState<'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu' | 'workforce' | 'inventory'>('theatres');
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [showDrawer, setShowDrawer] = useState(false);
   const [drawerType, setDrawerType] = useState<'theatres' | 'menu' | 'workforce' | 'inventory' | 'ops' | 'alerts' | null>(null);
@@ -94,7 +94,7 @@ export default function OPCS4DatabasePage() {
     loadProcedureCount();
   }, []);
 
-  const handleBottomNavClick = (page: 'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu') => {
+  const handleBottomNavClick = (page: 'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu' | 'workforce' | 'inventory') => {
     setCurrentPage(page);
 
     if (page === 'home') {

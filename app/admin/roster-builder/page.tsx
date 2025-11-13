@@ -123,10 +123,10 @@ export default function RosterBuilderPage() {
   const [tomRequirement, setTomRequirement] = useState<ShiftRequirement | null>(null);
   const [tomLoading, setTomLoading] = useState(false);
   const [showTomMenu, setShowTomMenu] = useState(false);
-  const [currentPage, setCurrentPage] = useState<'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu'>('ops');
+  const [currentPage, setCurrentPage] = useState<'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu' | 'workforce' | 'inventory'>('ops');
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
 
-  const handleBottomNavClick = (page: 'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu') => {
+  const handleBottomNavClick = (page: 'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu' | 'workforce' | 'inventory') => {
     if (page === 'home') {
       router.push('/admin');
     } else if (page === 'ai') {
