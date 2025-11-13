@@ -273,51 +273,57 @@ export default function DashboardView() {
       {/* content container aligned with header; wide enough so names fit */}
       <div className="mx-auto w-full max-w-[1440px] px-3 sm:px-4 lg:px-6">
         {/* Top bar */}
-        <div className="border-b border-gray-200 py-2 flex flex-wrap items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1 bg-gray-100 rounded p-1">
-              <button onClick={() => changeDate(-1)} className="p-1 hover:bg-white rounded" title="Previous day">
-                <ChevronLeft className="w-4 h-4 text-gray-700" />
+        <div className="border-b border-gray-200 py-3 sm:py-2 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex items-center gap-1 bg-gray-50 border border-gray-200 rounded-lg p-1">
+              <button onClick={() => changeDate(-1)} className="p-1.5 hover:bg-white rounded transition-colors" title="Previous day">
+                <ChevronLeft className="w-4 h-4 sm:w-4 sm:h-4 text-gray-600" />
               </button>
-              <div className="flex items-center gap-2 px-2" suppressHydrationWarning>
-                <Calendar className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
+              <div className="flex items-center gap-2 px-3" suppressHydrationWarning>
+                <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
                 <div className="flex flex-col sm:flex-row sm:items-end sm:gap-2">
-                  <span className="text-xs sm:text-2xl font-semibold text-gray-700 leading-tight">
+                  <span className="text-sm sm:text-xl font-normal text-gray-900 leading-tight">
                     {new Date(selectedDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
                   </span>
-                  <span className="text-[10px] sm:text-sm text-gray-500 leading-tight">{relativeDateLabel()}</span>
+                  <span className="text-xs sm:text-sm text-gray-500 leading-tight font-normal">{relativeDateLabel()}</span>
                 </div>
               </div>
-              <button onClick={() => changeDate(1)} className="p-1 hover:bg-white rounded" title="Next day">
-                <ChevronRight className="w-4 h-4 text-gray-700" />
+              <button onClick={() => changeDate(1)} className="p-1.5 hover:bg-white rounded transition-colors" title="Next day">
+                <ChevronRight className="w-4 h-4 sm:w-4 sm:h-4 text-gray-600" />
               </button>
             </div>
 
             {!isTodaySelected ? (
-              <button onClick={goToToday} className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded hover:bg-blue-200">
-                Go to Today
+              <button onClick={goToToday} className="px-3 py-1.5 text-xs font-normal bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 border border-gray-200 transition-colors">
+                Today
               </button>
             ) : (
-              <div className="flex items-center gap-2 text-xs sm:text-xl text-gray-600" suppressHydrationWarning>
-                <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
-                <span className="font-mono font-medium sm:font-bold">{formatTime()}</span>
+              <div className="flex items-center gap-2 text-sm sm:text-lg text-gray-700 bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-lg" suppressHydrationWarning>
+                <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
+                <span className="font-mono font-normal">{formatTime()}</span>
               </div>
             )}
           </div>
 
-          {/* Removed the Live/Not live pill per request */}
-          <div />
+          {isTodaySelected && (
+            <div className="flex items-center gap-1.5 px-2.5 py-1 bg-green-50 border border-green-200 rounded-full">
+              <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
+              <span className="text-xs font-normal text-green-700">Live</span>
+            </div>
+          )}
         </div>
 
         {/* Unit filters */}
-        <div className="border-b border-gray-200 py-2">
+        <div className="border-b border-gray-200 py-3">
           <div className="grid grid-cols-4 gap-2">
             {(['all','main','acad','recovery'] as const).map(k => (
               <button
                 key={k}
                 onClick={() => setSelectedUnit(k)}
-                className={`px-2 py-2 sm:px-6 sm:py-3 rounded-md text-xs sm:text-base font-semibold transition-all ${
-                  selectedUnit === k ? 'bg-blue-600 text-white' : 'bg-white text-gray-900 border border-gray-300'
+                className={`px-3 py-2.5 sm:px-6 sm:py-3 rounded-lg text-sm sm:text-base font-normal transition-all ${
+                  selectedUnit === k
+                    ? 'bg-gray-900 text-white shadow-sm'
+                    : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
                 }`}
               >
                 {k === 'all' ? 'All' : k === 'main' ? 'Main' : k === 'acad' ? 'DSU' : 'Rec'}
@@ -327,65 +333,64 @@ export default function DashboardView() {
         </div>
 
         {/* KPIs – now clickable */}
-        <div className="py-3">
+        <div className="py-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {/* Theatres */}
             <button
               type="button"
               onClick={() => setShowTheatreOpsModal(true)}
-              className="text-left bg-white border border-gray-200 p-3 sm:p-6 rounded-lg hover:shadow-md hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 cursor-pointer transition-all"
+              className="text-left bg-white border border-gray-200 p-4 sm:p-5 rounded-xl hover:shadow-sm hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 cursor-pointer transition-all active:scale-[0.98]"
               aria-label="Open theatres operational details"
             >
-              <div className="flex items-center justify-between mb-1 sm:mb-3">
-                <Activity className="w-5 h-5 text-gray-700" />
-                {/* removed secondary Live chip to avoid duplication */}
+              <div className="flex items-center justify-between mb-2 sm:mb-3">
+                <Activity className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500" />
               </div>
-              <h3 className="text-xl sm:text-4xl font-bold text-gray-900">
+              <h3 className="text-2xl sm:text-3xl font-light text-gray-900 mb-1">
                 {selectedUnit === 'recovery' ? 'N/A' : `${theatreStats.running}/${theatreStats.total}`}
               </h3>
-              <p className="text-gray-600 font-medium mt-1 sm:mt-2 text-sm sm:text-base">Theatres</p>
+              <p className="text-gray-500 font-normal text-xs sm:text-sm">Theatres</p>
             </button>
 
             {/* Staff */}
             <button
               type="button"
               onClick={() => setShowStaffDutyModal(true)}
-              className="text-left bg-white border border-gray-200 p-3 sm:p-6 rounded-lg hover:shadow-md hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 cursor-pointer transition-all"
+              className="text-left bg-white border border-gray-200 p-4 sm:p-5 rounded-xl hover:shadow-sm hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 cursor-pointer transition-all active:scale-[0.98]"
               aria-label="Open staff-on-duty details"
             >
-              <div className="flex items-center justify-between mb-1 sm:mb-3">
-                <Users className="w-5 h-5 text-gray-700" />
+              <div className="flex items-center justify-between mb-2 sm:mb-3">
+                <Users className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500" />
               </div>
-              <h3 className="text-xl sm:text-4xl font-bold text-gray-900">{staffCount}</h3>
-              <p className="text-gray-600 font-medium mt-1 sm:mt-2 text-sm sm:text-base">Staff</p>
+              <h3 className="text-2xl sm:text-3xl font-light text-gray-900 mb-1">{staffCount}</h3>
+              <p className="text-gray-500 font-normal text-xs sm:text-sm">Staff</p>
             </button>
 
             {/* Turnover */}
             <button
               type="button"
               onClick={() => setShowTurnoverModal(true)}
-              className="text-left bg-white border border-gray-200 p-3 sm:p-6 rounded-lg hover:shadow-md hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 cursor-pointer transition-all"
+              className="text-left bg-white border border-gray-200 p-4 sm:p-5 rounded-xl hover:shadow-sm hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 cursor-pointer transition-all active:scale-[0.98]"
               aria-label="Open turnover time details"
             >
-              <div className="flex items-center justify-between mb-1 sm:mb-3">
-                <Clock className="w-5 h-5 text-gray-700" />
+              <div className="flex items-center justify-between mb-2 sm:mb-3">
+                <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500" />
               </div>
-              <h3 className="text-xl sm:text-4xl font-bold text-gray-900">{avgTurnover > 0 ? `${avgTurnover}m` : 'N/A'}</h3>
-              <p className="text-gray-600 font-medium mt-1 sm:mt-2 text-sm sm:text-base">Turnover</p>
+              <h3 className="text-2xl sm:text-3xl font-light text-gray-900 mb-1">{avgTurnover > 0 ? `${avgTurnover}m` : 'N/A'}</h3>
+              <p className="text-gray-500 font-normal text-xs sm:text-sm">Turnover</p>
             </button>
 
             {/* Efficiency */}
             <button
               type="button"
               onClick={() => setShowEfficiencyModal(true)}
-              className="text-left bg-white border border-gray-200 p-3 sm:p-6 rounded-lg hover:shadow-md hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 cursor-pointer transition-all"
+              className="text-left bg-white border border-gray-200 p-4 sm:p-5 rounded-xl hover:shadow-sm hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 cursor-pointer transition-all active:scale-[0.98]"
               aria-label="Open efficiency score details"
             >
-              <div className="flex items-center justify-between mb-1 sm:mb-3">
-                <TrendingUp className="w-5 h-5 text-gray-700" />
+              <div className="flex items-center justify-between mb-2 sm:mb-3">
+                <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500" />
               </div>
-              <h3 className="text-xl sm:text-4xl font-bold text-gray-900">{avgEfficiency > 0 ? `${avgEfficiency}%` : 'N/A'}</h3>
-              <p className="text-gray-600 font-medium mt-1 sm:mt-2 text-sm sm:text-base">Efficiency</p>
+              <h3 className="text-2xl sm:text-3xl font-light text-gray-900 mb-1">{avgEfficiency > 0 ? `${avgEfficiency}%` : 'N/A'}</h3>
+              <p className="text-gray-500 font-normal text-xs sm:text-sm">Efficiency</p>
             </button>
           </div>
         </div>
@@ -396,18 +401,11 @@ export default function DashboardView() {
           <div className="w-full md:flex-1">
             {selectedUnit !== 'recovery' && (
               <section className="border-t md:border-t-0 md:border-r border-gray-200">
-                <div className="py-3 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Users className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
-                    <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
+                <div className="py-4 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <h2 className="text-lg sm:text-xl font-normal text-gray-900">
                       {selectedUnit === 'all' ? 'All Theatres' : selectedUnit === 'main' ? 'Main Theatres' : 'DSU Theatres'}
                     </h2>
-                    {isTodaySelected && (
-                      <div className="flex items-center gap-1.5 px-2 py-1 bg-green-50 border border-green-200 rounded-full">
-                        <Radio className="w-3 h-3 text-green-600 animate-pulse" />
-                        <span className="text-xs font-semibold text-green-700">Live</span>
-                      </div>
-                    )}
                   </div>
                 </div>
 
@@ -416,17 +414,17 @@ export default function DashboardView() {
                     {filteredTheatres.map((allocation, idx) => (
                       <div
                         key={idx}
-                        className={`p-4 sm:p-5 border border-gray-200 ${idx % 3 !== 2 ? 'lg:border-r' : ''} ${idx >= 1 ? 'border-t' : ''} cursor-pointer hover:bg-teal-50/30`}
+                        className={`p-5 sm:p-5 border border-gray-200 ${idx % 3 !== 2 ? 'lg:border-r' : ''} ${idx >= 1 ? 'border-t' : ''} cursor-pointer hover:bg-gray-50 transition-colors`}
                         onClick={() => handleTheatreClick(allocation.theatre)}
                       >
-                        <div className="mb-3">
+                        <div className="mb-4">
                           <div className="flex items-center justify-between mb-2">
-                            <p className="font-bold text-base sm:text-lg text-gray-900 flex items-center">
+                            <p className="font-normal text-base sm:text-lg text-gray-900 flex items-center">
                               {allocation.theatre}
-                              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 ml-1 text-gray-400" />
+                              <ChevronRight className="w-4 h-4 sm:w-4 sm:h-4 ml-1 text-gray-400" />
                             </p>
                             <span
-                              className={`text-xs sm:text-sm px-2 py-1 rounded font-bold ${
+                              className={`text-xs px-2.5 py-1 rounded-full font-normal ${
                                 allocation.status === 'surgery_started'
                                   ? 'bg-green-100 text-green-700'
                                   : allocation.status === 'anaesthetic_room'
@@ -454,14 +452,14 @@ export default function DashboardView() {
                                 : allocation.status === 'ready' ? 'READY' : 'OTHER'}
                             </span>
                           </div>
-                          <p className="text-sm sm:text-base text-gray-700 font-semibold mb-1">{allocation.specialty}</p>
-                          <p className="text-xs sm:text-sm text-gray-600">
+                          <p className="text-sm sm:text-base text-gray-700 font-normal mb-1">{allocation.specialty}</p>
+                          <p className="text-xs sm:text-sm text-gray-500 font-normal">
                             {allocation.session}
                             {allocation.sessionsCount > 0 && ` • ${allocation.casesCompleted || 0}/${allocation.sessionsCount}`}
                           </p>
                         </div>
 
-                        <div className="space-y-1 sm:space-y-1.5">
+                        <div className="space-y-2">
                           {Object.entries({
                             'Cons': { ...allocation.team.surgeon, role: allocation.team.surgeon?.role || 'Consultant Surgeon', fullLabel: 'Consultant' },
                             'Assist': { ...allocation.team.assistant, role: allocation.team.assistant?.role || 'Assistant Surgeon', fullLabel: 'Assistant' },
@@ -482,21 +480,21 @@ export default function DashboardView() {
                             const indicator = shiftStatus ? getShiftIndicator(shiftStatus) : null;
 
                             return (
-                              <div key={label} className="flex items-center justify-between">
+                              <div key={label} className="flex items-center justify-between text-sm">
                                 <div className="flex items-center flex-1 min-w-0">
-                                  <span className={`text-[10px] sm:text-sm mr-2 min-w-[66px] sm:min-w-[100px] font-semibold ${staff.name === 'VACANT' ? 'text-gray-400' : 'text-gray-700'}`}>
+                                  <span className={`text-xs mr-2 min-w-[70px] sm:min-w-[90px] font-normal ${staff.name === 'VACANT' ? 'text-gray-400' : 'text-gray-500'}`}>
                                     <span className="lg:hidden">{label}:</span>
                                     <span className="hidden lg:inline">{staff.fullLabel || label}:</span>
                                   </span>
                                   {staff.name === 'VACANT' ? (
-                                    <span className="text-gray-400 italic text-[10px] sm:text-sm">Vacant</span>
+                                    <span className="text-gray-400 italic text-xs">Vacant</span>
                                   ) : (
-                                    <div className="flex items-center gap-1 min-w-0 flex-wrap">
+                                    <div className="flex items-center gap-1.5 min-w-0 flex-wrap">
                                       <span
-                                        className={`cursor-pointer font-medium text-[10px] sm:text-sm ${
+                                        className={`cursor-pointer font-normal text-xs sm:text-sm ${
                                           shiftStatus?.isPast ? 'text-gray-400 line-through' :
                                           shiftStatus?.isFuture ? 'text-gray-500 italic' :
-                                          indicator?.color || 'text-blue-600'
+                                          indicator?.color || 'text-gray-900'
                                         } hover:underline ${staff.notes ? 'underline decoration-dotted' : ''}`}
                                         onClick={(e) => { e.stopPropagation(); handleStaffClick(staff.name.replace(/[☕⚠️]/g, '').trim(), staff.role, allocation.theatre); }}
                                         onContextMenu={(e) => handleStaffRightClick(e, staff, allocation)}
@@ -511,7 +509,7 @@ export default function DashboardView() {
                                       {/* Real-time status badge */}
                                       {indicator && isTodaySelected && (
                                         <span
-                                          className={`text-[8px] sm:text-[10px] px-1.5 py-0.5 rounded font-bold ${
+                                          className={`text-[9px] px-2 py-0.5 rounded-full font-normal ${
                                             indicator.badge === 'BREAK' ? 'bg-blue-100 text-blue-700' :
                                             indicator.badge === 'RELIEF' ? 'bg-orange-100 text-orange-700' :
                                             indicator.badge === 'ACTIVE' ? 'bg-green-100 text-green-700' :
@@ -525,10 +523,10 @@ export default function DashboardView() {
 
                                       {staff.scrubbed && (
                                         <span
-                                          className="italic text-[9px] sm:text-xs text-teal-700 bg-teal-50 px-1 py-0.5 rounded"
+                                          className="text-[9px] text-teal-700 bg-teal-50 px-2 py-0.5 rounded-full font-normal"
                                           title={allocation.surgeryStartTime && staff.etf ? `ETF: ${staff.etf} (${calculateDuration(allocation.surgeryStartTime, staff.etf)})` : 'Scrubbed in'}
                                         >
-                                          Scrubbed in
+                                          Scrubbed
                                         </span>
                                       )}
                                       {(shiftStatus?.needsRelief || staff.name.includes('⚠️')) && (
@@ -544,11 +542,11 @@ export default function DashboardView() {
                                   )}
                                 </div>
                                 {staff.shift && staff.name !== 'VACANT' && (
-                                  <span className={`text-[9px] sm:text-xs ml-2 px-1.5 py-0.5 rounded ${
-                                    indicator?.badge === 'RELIEF' ? 'bg-orange-50 text-orange-700 font-bold' :
+                                  <span className={`text-[9px] ml-2 px-2 py-0.5 rounded-full font-normal ${
+                                    indicator?.badge === 'RELIEF' ? 'bg-orange-50 text-orange-700' :
                                     indicator?.badge === 'ACTIVE' ? 'bg-green-50 text-green-700' :
                                     indicator?.badge === 'BREAK' ? 'bg-blue-50 text-blue-700' :
-                                    'bg-gray-100 text-gray-700'
+                                    'bg-gray-100 text-gray-600'
                                   }`}>
                                     {staff.shift}
                                   </span>
@@ -559,7 +557,7 @@ export default function DashboardView() {
                         </div>
 
                         {allocation.alerts && (
-                          <div className={`mt-2 text-xs px-2 py-1 rounded ${allocation.status === 'closed' ? 'text-red-700 bg-red-50 font-medium' : 'text-orange-600 bg-orange-50'}`}>
+                          <div className={`mt-3 text-xs px-3 py-2 rounded-lg border ${allocation.status === 'closed' ? 'text-red-700 bg-red-50 border-red-200 font-normal' : 'text-orange-700 bg-orange-50 border-orange-200 font-normal'}`}>
                             {allocation.status === 'closed' ? '⛔' : '⚠️'} {allocation.alerts}
                           </div>
                         )}
