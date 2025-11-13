@@ -11,13 +11,18 @@ export interface StaffProfile {
   initials: string;
 }
 
+export interface Reaction {
+  emoji: string;
+  timestamp: Date;
+}
+
 export interface Post {
   id: string;
   authorId: string;
   content: string;
   timestamp: Date;
   likes: string[]; // Array of user IDs who liked
-  reactions: { [userId: string]: string }; // Map of user IDs to their selected emoji
+  reactions: { [userId: string]: Reaction }; // Map of user IDs to their reaction details
   comments: Comment[];
   shares: number;
   type: 'text' | 'announcement' | 'shift-swap' | 'achievement';
@@ -30,6 +35,8 @@ export interface Comment {
   content: string;
   timestamp: Date;
   likes: string[];
+  replies?: Comment[];
+  parentId?: string;
 }
 
 export interface Message {
@@ -135,7 +142,13 @@ export const mockPosts: Post[] = [
     content: 'Fantastic teamwork in Theatre 3 today! Successfully completed a complex total knee replacement 45 minutes ahead of schedule. Huge thanks to the entire team - this is what excellent collaboration looks like! 💙',
     timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
     likes: ['user-1', 'user-3', 'user-4', 'user-5', 'user-6'],
-    reactions: { 'user-1': '❤️', 'user-3': '👍', 'user-4': '❤️', 'user-5': '😂', 'user-6': '👍' },
+    reactions: {
+      'user-1': { emoji: '❤️', timestamp: new Date(Date.now() - 1.5 * 60 * 60 * 1000) },
+      'user-3': { emoji: '👍', timestamp: new Date(Date.now() - 1.8 * 60 * 60 * 1000) },
+      'user-4': { emoji: '❤️', timestamp: new Date(Date.now() - 1.7 * 60 * 60 * 1000) },
+      'user-5': { emoji: '😂', timestamp: new Date(Date.now() - 1.6 * 60 * 60 * 1000) },
+      'user-6': { emoji: '👍', timestamp: new Date(Date.now() - 1.9 * 60 * 60 * 1000) }
+    },
     comments: [
       {
         id: 'comment-1',
@@ -161,7 +174,13 @@ export const mockPosts: Post[] = [
     content: '📢 Theatre Efficiency Review Meeting - Friday 2pm, Boardroom A. All team leads please attend. Agenda: Q4 performance metrics, new staffing protocols, and equipment upgrade proposals.',
     timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000), // 4 hours ago
     likes: ['user-1', 'user-2', 'user-3', 'user-7', 'user-8'],
-    reactions: { 'user-1': '👍', 'user-2': '👍', 'user-3': '👍', 'user-7': '👍', 'user-8': '❤️' },
+    reactions: {
+      'user-1': { emoji: '👍', timestamp: new Date(Date.now() - 3.5 * 60 * 60 * 1000) },
+      'user-2': { emoji: '👍', timestamp: new Date(Date.now() - 3.8 * 60 * 60 * 1000) },
+      'user-3': { emoji: '👍', timestamp: new Date(Date.now() - 3.7 * 60 * 60 * 1000) },
+      'user-7': { emoji: '👍', timestamp: new Date(Date.now() - 3.6 * 60 * 60 * 1000) },
+      'user-8': { emoji: '❤️', timestamp: new Date(Date.now() - 3.9 * 60 * 60 * 1000) }
+    },
     comments: [
       {
         id: 'comment-3',
