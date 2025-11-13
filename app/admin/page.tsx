@@ -33,7 +33,7 @@ import FloatingMessenger from '@/components/FloatingMessenger';
 export default function AdminPage() {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
-  const [currentPage, setCurrentPage] = useState<'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu'>('home');
+  const [currentPage, setCurrentPage] = useState<'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu' | 'workforce' | 'inventory'>('home');
   const [currentView, setCurrentView] = useState<string>('feeds');
   const [showDrawer, setShowDrawer] = useState(false);
   const [drawerType, setDrawerType] = useState<'theatres' | 'menu' | 'workforce' | 'inventory' | 'ops' | 'alerts' | null>(null);
@@ -60,7 +60,7 @@ export default function AdminPage() {
   const [sessionGenerationStatus, setSessionGenerationStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   // Bottom nav handler
-  const handleBottomNavClick = (page: 'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu') => {
+  const handleBottomNavClick = (page: 'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu' | 'workforce' | 'inventory') => {
     setCurrentPage(page);
 
     if (page === 'ai') {
