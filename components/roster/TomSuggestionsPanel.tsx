@@ -2,45 +2,7 @@
 
 import React from 'react';
 import { X, CheckCircle, AlertCircle, Trophy, Clock, Users, Briefcase, MapPin } from 'lucide-react';
-
-interface ScoredCandidate {
-  staff: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    band: string;
-    specialty: string;
-    employmentType: string;
-    professionalQualification: string;
-  };
-  totalScore: number;
-  breakdown: {
-    specialtyMatch: number;
-    bandMatch: number;
-    roleMatch: number;
-    availabilityScore: number;
-    workloadScore: number;
-    employmentTypeScore: number;
-    distanceScore: number;
-  };
-  reasoning: string[];
-  conflicts: string[];
-  available: boolean;
-  weeklyHours?: number;
-  rank?: number;
-}
-
-interface ShiftRequirement {
-  date: string;
-  theatreId: string;
-  specialty: string;
-  role: string;
-  band: string;
-  sessionType: string;
-  startTime: string;
-  endTime: string;
-  hours: number;
-}
+import type { ScoredCandidate, ShiftRequirement } from '@/lib/roster/aiScoringService';
 
 interface TomSuggestionsPanelProps {
   suggestions: ScoredCandidate[];
@@ -173,7 +135,7 @@ export default function TomSuggestionsPanel({
                           <span>{candidate.staff.professionalQualification || 'RN'}</span>
                           <span>•</span>
                           <span className={candidate.staff.employmentType === 'bank' ? 'text-amber-600 font-medium' : 'text-green-600 font-medium'}>
-                            {candidate.staff.employmentType === 'bank' ? 'Bank' : 'Permanent'}
+                            {candidate.staff.employmentType === 'bank' ? 'Bank' : candidate.staff.employmentType === 'permanent' ? 'Permanent' : 'Permanent'}
                           </span>
                         </div>
                         <div className="text-xs text-gray-500 mt-0.5">

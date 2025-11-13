@@ -31,6 +31,8 @@ export interface StaffCandidate {
   band: string;
   roles: string[];
   specialtyTree: Array<{ name: string; subcategories: any[] }>;
+  specialty?: string;
+  professionalQualification?: string;
   employmentType?: 'permanent' | 'bank';
   location?: {
     willingToTravel?: number;
