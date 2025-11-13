@@ -368,7 +368,7 @@ export default function SpecialtyManager() {
             <div key={specialty.id} className="border border-gray-300 rounded overflow-hidden">
               {/* Specialty Bar */}
               {editingId === specialty.id ? (
-                <div className="bg-white p-3">
+                <div className="bg-white py-2 px-3">
                   <div className="flex flex-col gap-2">
                     <div className="flex flex-col sm:flex-row gap-2">
                       <input
@@ -426,7 +426,7 @@ export default function SpecialtyManager() {
                 </div>
               ) : (
                 <div
-                  className="bg-white hover:bg-gray-50 transition-colors p-3 cursor-pointer flex items-center justify-between"
+                  className="bg-white hover:bg-gray-50 transition-colors py-2 px-3 cursor-pointer flex items-center justify-between"
                   onClick={() => toggleExpanded(specialty.id)}
                 >
                   <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -446,15 +446,15 @@ export default function SpecialtyManager() {
                         handleStartEdit(specialty);
                       }}
                       disabled={saving}
-                      className="p-1.5 text-cyan-600 hover:bg-cyan-50 rounded transition-colors disabled:opacity-50"
+                      className="p-1 text-cyan-600 hover:bg-cyan-50 rounded transition-colors disabled:opacity-50"
                       title="Edit"
                     >
                       <Edit2 className="w-4 h-4" />
                     </button>
                     {expandedSpecialties.has(specialty.id) ? (
-                      <ChevronDown className="w-5 h-5 text-gray-400" />
+                      <ChevronDown className="w-4 h-4 text-gray-400" />
                     ) : (
-                      <ChevronRight className="w-5 h-5 text-gray-400" />
+                      <ChevronRight className="w-4 h-4 text-gray-400" />
                     )}
                   </div>
                 </div>
@@ -591,7 +591,7 @@ export default function SpecialtyManager() {
                               </div>
                             ) : (
                               // Display mode
-                              <div className="flex items-center justify-between p-2 bg-white border border-gray-200 rounded hover:bg-gray-50 transition-colors">
+                              <div className="flex items-center justify-between py-1.5 px-2 bg-white border border-gray-200 rounded hover:bg-gray-50 transition-colors">
                                 <div className="flex-1 min-w-0">
                                   <div className="text-sm text-gray-900 truncate">{sub.name}</div>
                                   <div className="text-xs text-gray-600 uppercase">{sub.abbreviation}</div>
@@ -603,7 +603,7 @@ export default function SpecialtyManager() {
                                     className="p-1 text-teal-600 hover:bg-teal-50 rounded transition-colors disabled:opacity-50"
                                     title="Edit subspecialty"
                                   >
-                                    <Edit2 className="w-4 h-4" />
+                                    <Edit2 className="w-3.5 h-3.5" />
                                   </button>
                                   <button
                                     onClick={() => handleDeleteSubspecialty(specialty.id, sub.name)}
@@ -611,7 +611,7 @@ export default function SpecialtyManager() {
                                     className="p-1 text-red-600 hover:bg-red-50 rounded transition-colors disabled:opacity-50"
                                     title="Delete subspecialty"
                                   >
-                                    <Trash2 className="w-4 h-4" />
+                                    <Trash2 className="w-3.5 h-3.5" />
                                   </button>
                                 </div>
                               </div>
