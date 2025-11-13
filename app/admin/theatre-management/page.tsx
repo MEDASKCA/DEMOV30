@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { ArrowLeft, Building2, Calendar, Users, ClipboardList, Settings, CheckCircle, AlertCircle, Loader2, ChevronDown, User, HelpCircle, LogOut } from 'lucide-react';
 import {
   getHospitalConfig,
@@ -24,8 +24,7 @@ type ConfigSubTab = 'specialties' | 'sessionTypes' | 'units' | 'mapping' | 'thea
 
 export default function TheatreManagementPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const [activeTab, setActiveTab] = useState<TabType>((searchParams?.get('tab') as TabType) || 'configurations');
+  const [activeTab, setActiveTab] = useState<TabType>('configurations');
   const [configSubTab, setConfigSubTab] = useState<ConfigSubTab>('specialties');
   const [currentPage, setCurrentPage] = useState<'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu' | 'workforce' | 'inventory'>('theatres');
   const [showDrawer, setShowDrawer] = useState(false);
@@ -95,14 +94,6 @@ export default function TheatreManagementPage() {
   useEffect(() => {
     loadHospitalConfig();
   }, []);
-
-  useEffect(() => {
-    // Sync activeTab with URL parameter changes
-    const tabParam = searchParams?.get('tab') as TabType;
-    if (tabParam && tabParam !== activeTab) {
-      setActiveTab(tabParam);
-    }
-  }, [searchParams]);
 
   useEffect(() => {
     // Update URL when tab changes
