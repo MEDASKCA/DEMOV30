@@ -2187,7 +2187,7 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
                       <button
                         key={`${specialtyId}-${sub.name}`}
                         onClick={() => handleSelectAuxUnitSpecialty(auxUnitContextMenu.auxUnitId, subAbbr)}
-                        className="w-full text-left px-3 py-1 text-xs hover:bg-green-50 rounded transition-colors border-l-2 border-green-400 ml-2"
+                        className="w-full text-left px-3 py-1 text-xs hover:bg-cyan-50 rounded transition-colors border-l-2 border-cyan-400 ml-2"
                       >
                         <div className="font-medium text-gray-900 text-[11px]">{sub.name}</div>
                         <div className="text-[10px] text-gray-600">Abbr: {subAbbr}</div>
@@ -2264,14 +2264,14 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
                   <h3 className="text-lg font-bold text-blue-700 mb-3">Scrub N/P Staff ({scrubStaff.length})</h3>
                   <div className="space-y-2">
                     {scrubStaff.map(staff => (
-                      <div key={staff.id} className={`p-3 rounded border ${staff.allocated ? 'bg-green-50 border-green-300' : 'bg-gray-50 border-gray-300'}`}>
+                      <div key={staff.id} className={`p-3 rounded border ${staff.allocated ? 'bg-cyan-50 border-cyan-300' : 'bg-gray-50 border-gray-300'}`}>
                         <p className="font-semibold text-gray-900">{staff.name}</p>
                         <p className="text-xs text-gray-600">
                           Band {staff.band} • {staff.shiftStart}-{staff.shiftEnd}
                           {staff.team && ` • ${staff.team}`}
                         </p>
                         <p className="text-xs mt-1">
-                          <span className={`font-medium ${staff.allocated ? 'text-green-700' : 'text-amber-700'}`}>
+                          <span className={`font-medium ${staff.allocated ? 'text-cyan-700' : 'text-amber-700'}`}>
                             {staff.allocated ? '✓ Allocated' : '○ Available'}
                           </span>
                         </p>
@@ -2285,14 +2285,14 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
                   <h3 className="text-lg font-bold text-purple-700 mb-3">Anaes N/P Staff ({anaesStaff.length})</h3>
                   <div className="space-y-2">
                     {anaesStaff.map(staff => (
-                      <div key={staff.id} className={`p-3 rounded border ${staff.allocated ? 'bg-green-50 border-green-300' : 'bg-gray-50 border-gray-300'}`}>
+                      <div key={staff.id} className={`p-3 rounded border ${staff.allocated ? 'bg-cyan-50 border-cyan-300' : 'bg-gray-50 border-gray-300'}`}>
                         <p className="font-semibold text-gray-900">{staff.name}</p>
                         <p className="text-xs text-gray-600">
                           Band {staff.band} • {staff.shiftStart}-{staff.shiftEnd}
                           {staff.team && ` • ${staff.team}`}
                         </p>
                         <p className="text-xs mt-1">
-                          <span className={`font-medium ${staff.allocated ? 'text-green-700' : 'text-amber-700'}`}>
+                          <span className={`font-medium ${staff.allocated ? 'text-cyan-700' : 'text-amber-700'}`}>
                             {staff.allocated ? '✓ Allocated' : '○ Available'}
                           </span>
                         </p>
