@@ -10,10 +10,12 @@ export interface AIQueryResult {
 
 /**
  * TOM AI Service - Handles natural language queries and retrieves data from Firebase
+ * Now uses Azure OpenAI RAG for intelligent responses
  */
 export class TomAIService {
   /**
    * Process a user query and return relevant information
+   * Uses Azure OpenAI RAG system with fallback to rule-based system
    */
   static async processQuery(userQuery: string): Promise<AIQueryResult> {
     const queryLower = userQuery.toLowerCase();
@@ -25,6 +27,29 @@ export class TomAIService {
           success: false,
           message: "I'm currently in demo mode. Please configure Firebase credentials to access real-time theatre operations data. You can add your Firebase config in the .env.local file."
         };
+      }
+
+      // Try Azure OpenAI RAG first if configured
+      try {
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ message: userQuery })
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          if (result.success) {
+            return result;
+          }
+        }
+
+        // If Azure OpenAI fails, fall back to rule-based system
+        console.log('Azure OpenAI not available, using fallback rule-based system');
+      } catch (error) {
+        console.log('Azure OpenAI error, using fallback rule-based system:', error);
       }
 
       // Today's schedule queries

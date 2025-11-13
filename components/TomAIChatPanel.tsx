@@ -19,7 +19,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
     {
       id: '1',
       role: 'assistant',
-      content: "Hello Alexander! How can I help you today?",
+      content: "Hello Alexander! How can I help you with theatre operations today? Just start speaking when you're ready.",
       timestamp: new Date()
     }
   ]);
@@ -62,12 +62,15 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       recognitionRef.current.lang = 'en-GB';
 
       let autoSendTimeout: NodeJS.Timeout | null = null;
+      let accumulatedText = '';
 
       recognitionRef.current.onresult = (event: any) => {
+        // Cancel any ongoing speech when user starts talking
         if (window.speechSynthesis.speaking) {
           window.speechSynthesis.cancel();
         }
 
+        // Clear previous auto-send timer
         if (autoSendTimeout) {
           clearTimeout(autoSendTimeout);
           autoSendTimeout = null;
@@ -76,38 +79,38 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
         let finalTranscript = '';
         let interimTranscript = '';
 
+        // Collect all transcripts
         for (let i = event.resultIndex; i < event.results.length; i++) {
           const transcript = event.results[i][0].transcript;
           if (event.results[i].isFinal) {
-            finalTranscript += transcript;
+            finalTranscript += transcript + ' ';
           } else {
             interimTranscript += transcript;
           }
         }
 
-        const combined = (finalTranscript + interimTranscript).toLowerCase();
-        if (combined.includes('hey tom') || combined.includes('hey time') || combined.includes('a tom')) {
-          const query = combined.replace(/hey tom|hey time|a tom/gi, '').trim();
-          if (query) {
-            setInputMessage(query);
-            autoSendTimeout = setTimeout(() => {
-              handleSendMessage();
-              setInputMessage('');
-            }, 300);
-          }
-          return;
+        // Accumulate final text
+        if (finalTranscript) {
+          accumulatedText += finalTranscript;
         }
 
-        if (finalTranscript) {
-          setInputMessage(finalTranscript);
+        // Show current text (accumulated + interim)
+        const currentText = (accumulatedText + interimTranscript).trim();
+        setInputMessage(currentText);
+
+        // Auto-send after 1.5 seconds of silence (when final transcript detected)
+        if (finalTranscript.trim()) {
+          console.log('Detected speech, will auto-send in 1.5s...');
           autoSendTimeout = setTimeout(() => {
-            if (finalTranscript.trim()) {
+            const textToSend = accumulatedText.trim();
+            console.log('Auto-sending:', textToSend);
+            if (textToSend) {
+              // Reset accumulated text
+              accumulatedText = '';
+              // Send the message (handleSendMessage reads from inputMessage state)
               handleSendMessage();
-              setInputMessage('');
             }
-          }, 500);
-        } else if (interimTranscript) {
-          setInputMessage(interimTranscript);
+          }, 1500); // Wait 1.5 seconds after user stops talking
         }
       };
 
@@ -161,107 +164,198 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       const query = inputMessage;
       setInputMessage('');
 
-      const typingMessage: Message = {
-        id: 'typing',
+      // Create a streaming message
+      const streamingMessageId = 'streaming-' + Date.now();
+      const streamingMessage: Message = {
+        id: streamingMessageId,
         role: 'assistant',
-        content: '...',
+        content: '',
         timestamp: new Date()
       };
-      setMessages(prev => [...prev, typingMessage]);
+      setMessages(prev => [...prev, streamingMessage]);
 
       try {
-        const { TomAIService } = await import('@/lib/tomAIService');
-        const result = await TomAIService.processQuery(query);
-
-        setMessages(prev => {
-          const filtered = prev.filter(m => m.id !== 'typing');
-          return [
-            ...filtered,
-            {
-              id: (Date.now() + 1).toString(),
-              role: 'assistant',
-              content: result.message,
-              timestamp: new Date()
-            }
-          ];
+        // Try streaming first
+        const response = await fetch('/api/chat/stream', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: query })
         });
 
-        if ('speechSynthesis' in window && result.success && voicesLoaded) {
-          window.speechSynthesis.cancel();
+        if (response.ok && response.body) {
+          const reader = response.body.getReader();
+          const decoder = new TextDecoder();
+          let accumulatedContent = '';
 
-          setTimeout(() => {
-            const utterance = new SpeechSynthesisUtterance(result.message);
-            const voices = window.speechSynthesis.getVoices();
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
 
-            let selectedVoice = null;
-            const preferredMaleVoices = [
-              'Google UK English Male',
-              'Microsoft David - English (United Kingdom)',
-              'Daniel (Enhanced)',
-              'Daniel',
-              'Google US English',
-              'Microsoft Mark - English (United States)'
-            ];
+            const chunk = decoder.decode(value, { stream: true });
+            accumulatedContent += chunk;
 
-            for (const prefName of preferredMaleVoices) {
-              selectedVoice = voices.find(v => v.name === prefName);
-              if (selectedVoice) break;
-            }
+            // Update the streaming message
+            setMessages(prev => prev.map(m =>
+              m.id === streamingMessageId
+                ? { ...m, content: accumulatedContent }
+                : m
+            ));
+          }
 
-            if (!selectedVoice) {
-              selectedVoice = voices.find(voice =>
-                voice.lang.startsWith('en') &&
-                voice.name.toLowerCase().includes('male')
-              );
-            }
+          // Speak the complete response
+          if ('speechSynthesis' in window && voicesLoaded && accumulatedContent) {
+            speakMessage(accumulatedContent);
+          }
 
-            if (!selectedVoice) {
-              const maleVoiceNames = ['daniel', 'david', 'mark', 'alex', 'james', 'thomas', 'ryan', 'aaron'];
-              selectedVoice = voices.find(voice =>
-                voice.lang.startsWith('en') &&
-                maleVoiceNames.some(name => voice.name.toLowerCase().includes(name))
-              );
-            }
+        } else {
+          // Fallback to non-streaming
+          const { TomAIService } = await import('@/lib/tomAIService');
+          const result = await TomAIService.processQuery(query);
 
-            if (selectedVoice) {
-              utterance.voice = selectedVoice;
-              utterance.lang = selectedVoice.lang;
+          setMessages(prev => prev.map(m =>
+            m.id === streamingMessageId
+              ? { ...m, content: result.message }
+              : m
+          ));
 
-              if (selectedVoice.name.includes('Google')) {
-                utterance.rate = 1.0;
-                utterance.pitch = 0.9;
-              } else if (selectedVoice.name.includes('Microsoft')) {
-                utterance.rate = 1.05;
-                utterance.pitch = 0.85;
-              } else {
-                utterance.rate = 1.1;
-                utterance.pitch = 0.9;
-              }
-            } else {
-              utterance.lang = 'en-GB';
-              utterance.rate = 1.05;
-              utterance.pitch = 0.85;
-            }
+          // Always try to speak, even if voices not loaded yet
+          console.log('Attempting to speak message:', result.message.substring(0, 50) + '...');
+          console.log('Speech synthesis available:', 'speechSynthesis' in window);
+          console.log('Voices loaded:', voicesLoaded);
 
-            utterance.volume = 1.0;
-            window.speechSynthesis.speak(utterance);
-          }, 100);
+          if ('speechSynthesis' in window && result.message) {
+            speakMessage(result.message);
+          }
         }
       } catch (error) {
-        setMessages(prev => {
-          const filtered = prev.filter(m => m.id !== 'typing');
-          return [
-            ...filtered,
-            {
-              id: (Date.now() + 1).toString(),
-              role: 'assistant',
-              content: 'I encountered an error processing your request. Please try again.',
-              timestamp: new Date()
-            }
-          ];
-        });
+        console.error('Chat error:', error);
+        setMessages(prev => prev.map(m =>
+          m.id === streamingMessageId
+            ? { ...m, content: 'I encountered an error processing your request. Please try again.' }
+            : m
+        ));
       }
     }
+  };
+
+  const speakMessage = async (text: string) => {
+    // Cancel any ongoing speech
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
+
+    // Try Azure TTS first for realistic voice
+    try {
+      const response = await fetch('/api/tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text,
+          voice: 'onyx' // Deep, professional male voice (ChatGPT-like)
+        })
+      });
+
+      if (response.ok && response.headers.get('Content-Type')?.includes('audio')) {
+        // Play the Azure TTS audio
+        const audioBlob = await response.blob();
+        const audioUrl = URL.createObjectURL(audioBlob);
+        const audio = new Audio(audioUrl);
+
+        audio.play().catch(error => {
+          console.log('Audio playback failed, using browser fallback:', error);
+          speakWithBrowserVoice(text);
+        });
+
+        // Clean up URL after playing
+        audio.onended = () => {
+          URL.revokeObjectURL(audioUrl);
+        };
+
+        return; // Successfully using Azure TTS
+      }
+    } catch (error) {
+      console.log('Azure TTS not available, using browser fallback');
+    }
+
+    // Fallback to browser speech synthesis
+    speakWithBrowserVoice(text);
+  };
+
+  const speakWithBrowserVoice = (text: string) => {
+    if (typeof window === 'undefined' || !window.speechSynthesis) {
+      console.log('Browser speech synthesis not available');
+      return;
+    }
+
+    console.log('Using browser voice fallback');
+
+    setTimeout(() => {
+      const utterance = new SpeechSynthesisUtterance(text);
+      const voices = window.speechSynthesis.getVoices();
+
+      console.log('Available voices:', voices.length);
+
+      let selectedVoice = null;
+      const preferredMaleVoices = [
+        'Google UK English Male',
+        'Microsoft David - English (United Kingdom)',
+        'Daniel (Enhanced)',
+        'Daniel',
+        'Google US English',
+        'Microsoft Mark - English (United States)'
+      ];
+
+      for (const prefName of preferredMaleVoices) {
+        selectedVoice = voices.find(v => v.name === prefName);
+        if (selectedVoice) break;
+      }
+
+      if (!selectedVoice) {
+        selectedVoice = voices.find(voice =>
+          voice.lang.startsWith('en') &&
+          voice.name.toLowerCase().includes('male')
+        );
+      }
+
+      if (!selectedVoice) {
+        const maleVoiceNames = ['daniel', 'david', 'mark', 'alex', 'james', 'thomas', 'ryan', 'aaron'];
+        selectedVoice = voices.find(voice =>
+          voice.lang.startsWith('en') &&
+          maleVoiceNames.some(name => voice.name.toLowerCase().includes(name))
+        );
+      }
+
+      if (selectedVoice) {
+        utterance.voice = selectedVoice;
+        utterance.lang = selectedVoice.lang;
+        console.log('Selected voice:', selectedVoice.name);
+
+        if (selectedVoice.name.includes('Google')) {
+          utterance.rate = 1.0;
+          utterance.pitch = 0.9;
+        } else if (selectedVoice.name.includes('Microsoft')) {
+          utterance.rate = 1.05;
+          utterance.pitch = 0.85;
+        } else {
+          utterance.rate = 1.1;
+          utterance.pitch = 0.9;
+        }
+      } else {
+        utterance.lang = 'en-GB';
+        utterance.rate = 1.05;
+        utterance.pitch = 0.85;
+        console.log('No specific voice found, using default en-GB');
+      }
+
+      utterance.volume = 1.0;
+
+      utterance.onstart = () => console.log('Speech started');
+      utterance.onend = () => console.log('Speech ended');
+      utterance.onerror = (event) => console.error('Speech error:', event);
+
+      console.log('Starting speech...');
+      window.speechSynthesis.speak(utterance);
+    }, 100);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -335,9 +429,14 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
           </button>
         </div>
         {isListening && (
-          <p className="text-xs text-red-500 mt-2 flex items-center gap-1">
-            <span className="animate-pulse">●</span> Listening...
-          </p>
+          <div className="mt-2 space-y-1">
+            <p className="text-xs text-red-500 flex items-center gap-1">
+              <span className="animate-pulse">●</span> Listening... (Speak naturally, I'll auto-send when you stop)
+            </p>
+            <p className="text-xs text-gray-500 italic">
+              Tip: Wait 1.5 seconds after speaking for auto-send, or click Send button
+            </p>
+          </div>
         )}
       </div>
     </div>
