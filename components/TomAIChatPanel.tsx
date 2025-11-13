@@ -177,19 +177,28 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       setMessages(prev => [...prev, streamingMessage]);
 
       try {
-        // Use RAG-enabled endpoint with database access
-        const { TomAIService } = await import('@/lib/tomAIService');
-        const result = await TomAIService.processQuery(query);
+        // Try Azure OpenAI endpoint first
+        const response = await fetch('/api/tom-chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: query })
+        });
 
-        setMessages(prev => prev.map(m =>
-          m.id === streamingMessageId
-            ? { ...m, content: result.message }
-            : m
-        ));
+        if (response.ok) {
+          const result = await response.json();
 
-        // Speak the response
-        if ('speechSynthesis' in window && result.message) {
-          speakMessage(result.message);
+          setMessages(prev => prev.map(m =>
+            m.id === streamingMessageId
+              ? { ...m, content: result.message }
+              : m
+          ));
+
+          // Speak the response
+          if ('speechSynthesis' in window && result.message) {
+            speakMessage(result.message);
+          }
+        } else {
+          throw new Error('Azure OpenAI request failed');
         }
       } catch (error) {
         console.error('Chat error:', error);
