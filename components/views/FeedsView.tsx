@@ -91,6 +91,7 @@ export default function FeedsView() {
       }
       return post;
     }));
+    setShowReactions(null); // Close the popup after selecting
   };
 
   const handleAddComment = (postId: string) => {
@@ -260,21 +261,38 @@ export default function FeedsView() {
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="px-4 pb-3 pt-2 flex items-center gap-2">
-                    <div className="flex items-center gap-1 bg-gray-50 dark:bg-gray-800 rounded-full px-2 py-1 border border-gray-200 dark:border-gray-700">
-                      {reactionEmojis.map((reaction) => (
-                        <button
-                          key={reaction.emoji}
-                          onClick={() => handleReaction(post.id, reaction.emoji)}
-                          className={`text-xl hover:scale-125 active:scale-95 transition-transform cursor-pointer p-1 ${
-                            userReaction === reaction.emoji ? 'scale-125 bg-white dark:bg-gray-600 rounded-full' : ''
-                          }`}
-                          title={reaction.label}
-                          type="button"
-                        >
-                          {reaction.emoji}
-                        </button>
-                      ))}
+                  <div className="px-4 pb-3 pt-2 flex items-center gap-2 border-t border-gray-100">
+                    <div className="relative flex-1">
+                      <button
+                        onClick={() => setShowReactions(showReactions === post.id ? null : post.id)}
+                        className={`w-full flex items-center justify-center gap-2 py-2 rounded-lg transition-colors ${
+                          userReaction ? 'text-red-600 bg-red-50' : 'text-gray-600 hover:bg-gray-100'
+                        }`}
+                      >
+                        {userReaction ? (
+                          <span className="text-xl">{userReaction}</span>
+                        ) : (
+                          <Heart className="w-5 h-5" />
+                        )}
+                        <span className="text-sm font-medium">{userReaction ? 'Reacted' : 'React'}</span>
+                      </button>
+
+                      {/* Reaction Picker Popup */}
+                      {showReactions === post.id && (
+                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-full shadow-xl border border-gray-200 px-3 py-2 flex gap-1 z-10">
+                          {reactionEmojis.map((reaction) => (
+                            <button
+                              key={reaction.emoji}
+                              onClick={() => handleReaction(post.id, reaction.emoji)}
+                              className="text-2xl hover:scale-125 transition-transform cursor-pointer"
+                              title={reaction.label}
+                              type="button"
+                            >
+                              {reaction.emoji}
+                            </button>
+                          ))}
+                        </div>
+                      )}
                     </div>
 
                     <button
@@ -469,21 +487,38 @@ export default function FeedsView() {
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="px-3 pb-2 pt-1.5 flex items-center gap-1">
-                    <div className="flex items-center gap-0.5 bg-gray-50 dark:bg-gray-800 rounded-full px-1.5 py-0.5 border border-gray-200 dark:border-gray-700">
-                      {reactionEmojis.map((reaction) => (
-                        <button
-                          key={reaction.emoji}
-                          onClick={() => handleReaction(post.id, reaction.emoji)}
-                          className={`text-lg active:scale-110 transition-transform flex-shrink-0 cursor-pointer p-0.5 ${
-                            userReaction === reaction.emoji ? 'scale-110 bg-white dark:bg-gray-600 rounded-full' : ''
-                          }`}
-                          title={reaction.label}
-                          type="button"
-                        >
-                          {reaction.emoji}
-                        </button>
-                      ))}
+                  <div className="px-3 pb-2 pt-1.5 flex items-center gap-1 border-t border-gray-100">
+                    <div className="relative flex-1">
+                      <button
+                        onClick={() => setShowReactions(showReactions === post.id ? null : post.id)}
+                        className={`w-full flex items-center justify-center gap-1.5 py-2 rounded-lg transition-colors ${
+                          userReaction ? 'text-red-600 bg-red-50' : 'text-gray-600 active:bg-gray-100'
+                        }`}
+                      >
+                        {userReaction ? (
+                          <span className="text-base">{userReaction}</span>
+                        ) : (
+                          <Heart className="w-4 h-4" />
+                        )}
+                        <span className="text-xs font-medium">{userReaction ? 'Reacted' : 'React'}</span>
+                      </button>
+
+                      {/* Reaction Picker Popup */}
+                      {showReactions === post.id && (
+                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-full shadow-xl border border-gray-200 px-2 py-1.5 flex gap-0.5 z-10 max-w-[90vw] overflow-x-auto">
+                          {reactionEmojis.map((reaction) => (
+                            <button
+                              key={reaction.emoji}
+                              onClick={() => handleReaction(post.id, reaction.emoji)}
+                              className="text-xl active:scale-110 transition-transform cursor-pointer flex-shrink-0"
+                              title={reaction.label}
+                              type="button"
+                            >
+                              {reaction.emoji}
+                            </button>
+                          ))}
+                        </div>
+                      )}
                     </div>
 
                     <button
