@@ -203,10 +203,11 @@ export default function DefaultTheatreStaffing() {
         </div>
         <button
           onClick={handleAddRole}
-          className="flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors"
+          className="flex items-center gap-1 px-2 py-1 md:px-4 md:py-2 bg-teal-600 text-white text-xs md:text-sm rounded hover:bg-teal-700 transition-colors"
         >
-          <Plus className="w-4 h-4" />
-          Add Role
+          <Plus className="w-3 h-3 md:w-4 md:h-4" />
+          <span className="hidden sm:inline">Add Role</span>
+          <span className="sm:hidden">Add</span>
         </button>
       </div>
 
@@ -288,23 +289,23 @@ export default function DefaultTheatreStaffing() {
         </div>
       )}
 
-      {/* Add/Edit Modal */}
+      {/* Add/Edit Form */}
       {showModal && editingRole && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
-            <div className="flex items-center justify-between p-4 border-b">
-              <h3 className="text-lg font-semibold">
+        <div className="mt-4 bg-white border-2 border-teal-200 rounded-lg shadow-lg">
+          <div className="bg-white rounded-lg max-w-full">
+            <div className="flex items-center justify-between p-2 md:p-4 border-b bg-gradient-to-r from-teal-50 to-blue-50">
+              <h3 className="text-sm md:text-lg font-semibold">
                 {editingRole.id ? 'Edit' : 'Add'} Theatre Staff Role
               </h3>
               <button
                 onClick={() => setShowModal(false)}
                 className="text-gray-400 hover:text-gray-600"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4 md:w-5 md:h-5" />
               </button>
             </div>
 
-            <div className="p-4 space-y-4">
+            <div className="p-2 md:p-4 space-y-2 md:space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Role Name <span className="text-red-500">*</span>
@@ -377,10 +378,10 @@ export default function DefaultTheatreStaffing() {
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-3 p-4 border-t bg-gray-50">
+            <div className="flex items-center justify-end gap-2 p-2 md:p-4 border-t bg-gray-50">
               <button
                 onClick={() => setShowModal(false)}
-                className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+                className="px-2 py-1 md:px-4 md:py-2 text-xs md:text-sm text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50"
                 disabled={saving}
               >
                 Cancel
@@ -388,7 +389,7 @@ export default function DefaultTheatreStaffing() {
               <button
                 onClick={handleSaveRole}
                 disabled={saving || !editingRole.roleName}
-                className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="px-2 py-1 md:px-4 md:py-2 text-xs md:text-sm bg-teal-600 text-white rounded hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 md:gap-2"
               >
                 {saving ? (
                   <>

@@ -1328,14 +1328,13 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => window.print()}
-              className="px-3 py-1.5 text-white text-xs sm:text-sm font-medium rounded transition-all flex items-center gap-1"
-              className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700"
+              className="px-2 py-1 bg-gray-200 text-gray-700 text-xs rounded hover:bg-gray-300 flex items-center gap-1"
             >
               <Printer className="w-3 h-3 sm:w-4 sm:h-4" />
               Print
             </button>
 
-            <button className="px-3 py-1.5 text-white text-xs sm:text-sm font-medium rounded transition-all flex items-center gap-1" className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700">
+            <button className="px-2 py-1 bg-gray-200 text-gray-700 text-xs rounded hover:bg-gray-300 flex items-center gap-1">
               <Save className="w-3 h-3 sm:w-4 sm:h-4" />
               Save
             </button>
