@@ -139,16 +139,16 @@ export default function FeedsView() {
         </div>
 
         {/* Posts Feed - Middle (Desktop) */}
-        <div className="col-span-2 flex flex-col overflow-hidden bg-white dark:bg-gray-900">
-          <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Posts & Updates</h2>
-            <p className="text-sm text-gray-600 dark:text-gray-300">Theatre staff collaboration and news</p>
+        <div className="col-span-2 flex flex-col overflow-hidden bg-white">
+          <div className="bg-white border-b border-gray-200 p-4">
+            <h2 className="text-xl font-bold text-gray-900">Posts & Updates</h2>
+            <p className="text-sm text-gray-600">Theatre staff collaboration and news</p>
           </div>
 
-          <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900">
+          <div className="flex-1 overflow-y-auto bg-gray-50">
           <div className="max-w-2xl mx-auto py-6 px-4 space-y-4">
             {/* Stories Section */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+            <div className="bg-white rounded-xl border border-gray-200 p-4">
               <div className="flex gap-3 overflow-x-auto pb-2">
                 {/* Add Your Story */}
                 <div className="flex flex-col items-center gap-2 flex-shrink-0">
