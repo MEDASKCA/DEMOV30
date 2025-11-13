@@ -1077,6 +1077,32 @@ export default function AdminPage() {
             }} />
           </div>
         )}
+
+        {/* Alert Views */}
+        {(currentView === 'critical-alerts' || currentView === 'pending-tasks' || currentView === 'incidents') && (
+          <div className="h-full p-4 bg-gray-50">
+            <div className="bg-white rounded-lg shadow p-6">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">
+                {currentView === 'critical-alerts' && 'Critical Alerts'}
+                {currentView === 'pending-tasks' && 'Pending Tasks'}
+                {currentView === 'incidents' && 'Incidents'}
+              </h2>
+              <p className="text-gray-600">
+                This feature is coming soon. Check back later for updates.
+              </p>
+              <button
+                onClick={() => {
+                  setCurrentPage('alerts');
+                  setDrawerType('alerts');
+                  setShowDrawer(true);
+                }}
+                className="mt-4 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700"
+              >
+                Back to Alerts
+              </button>
+            </div>
+          </div>
+        )}
         </div>
       </div>
 
