@@ -331,14 +331,14 @@ export default function AdminPage() {
         <p className="text-sm font-bold whitespace-nowrap">ADMIN DEMO ACCOUNT</p>
       </div>
 
-      {/* Header Banner - Mobile: Only on chat, Desktop: Always visible */}
-      <div className={`text-white flex-shrink-0 shadow-lg ${currentView === 'chat' ? '' : 'hidden md:block'}`} style={{background: 'linear-gradient(135deg, #3B82F6 0%, #06B6D4 50%, #8B5CF6 100%)'}}>
-        <div className="px-3 md:px-6 py-2 md:py-3 flex items-center justify-between" style={{display: currentView === 'dashboard' ? 'none' : 'flex'}}>
+      {/* Header Banner - Always visible on all screens */}
+      <div className="text-white flex-shrink-0 shadow-lg bg-white border-b border-gray-200">
+        <div className="px-3 md:px-6 py-2 md:py-3 flex items-center justify-between">
           {/* Left: Branding */}
           <div>
-            <h1 className="text-xl font-bold">TOM by MEDASKCA</h1>
-            <p className="text-sm text-white/90">Theatre Operations Manager</p>
-            <p className="text-xs italic text-white/80">Demo for NHSCEP Cohort 10</p>
+            <h1 className="text-lg md:text-xl font-normal text-gray-900">TOM by MEDASKCA</h1>
+            <p className="text-xs md:text-sm text-gray-600 font-normal">Theatre Operations Manager</p>
+            <p className="text-[10px] md:text-xs text-gray-500 font-normal">Demo for NHSCEP Cohort 10</p>
           </div>
 
           {/* Right: User Profile & Hospital Selector (Desktop Only) */}
