@@ -1335,14 +1335,14 @@ function TheatreModal({ theatre, onClose, onSave }: TheatreModalProps) {
             <h3 className="font-medium text-gray-900">Specialties</h3>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
               {ALL_SPECIALTIES.map((specialty) => (
-                <label key={specialty} className="flex items-center gap-2 text-sm">
+                <label key={specialty.id} className="flex items-center gap-2 text-sm">
                   <input
                     type="checkbox"
-                    checked={formData.specialties.includes(specialty)}
-                    onChange={() => toggleSpecialty(specialty)}
+                    checked={formData.specialties.includes(specialty.name)}
+                    onChange={() => toggleSpecialty(specialty.name)}
                     className="rounded border-gray-300 text-cyan-600 focus:ring-cyan-500"
                   />
-                  <span className="text-gray-700">{specialty}</span>
+                  <span className="text-gray-700">{specialty.name}</span>
                 </label>
               ))}
             </div>
