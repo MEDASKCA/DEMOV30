@@ -175,7 +175,7 @@ export default function ProcedureExperienceSelector({
     const subcategory = specialty.subcategories[selectedSubcategory as keyof typeof specialty.subcategories];
     if (!subcategory) return [];
 
-    const procedures = subcategory.procedures;
+    const procedures = (subcategory as any).procedures;
 
     if (!searchTerm) return procedures;
 
