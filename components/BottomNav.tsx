@@ -23,7 +23,7 @@ export default function BottomNav({ currentPage, onNavigate, alertCount = 0 }: B
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-[60] safe-area-inset-bottom shadow-lg">
+    <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 z-[60] safe-area-inset-bottom shadow-lg">
       <div className="grid grid-cols-6 h-16">
         {navItems.map((item) => {
           const isActive = currentPage === item.id;
@@ -33,7 +33,7 @@ export default function BottomNav({ currentPage, onNavigate, alertCount = 0 }: B
               key={item.id}
               onClick={() => onNavigate(item.id)}
               className={`flex flex-col items-center justify-center space-y-1 transition-colors relative ${
-                isActive ? 'text-teal-600' : 'text-gray-600'
+                isActive ? 'text-teal-600 dark:text-teal-400' : 'text-gray-600 dark:text-gray-400'
               }`}
             >
               <div className="relative">
@@ -47,7 +47,7 @@ export default function BottomNav({ currentPage, onNavigate, alertCount = 0 }: B
                 ) : (
                   <>
                     {React.createElement(item.icon as any, {
-                      className: `w-6 h-6 ${isActive ? 'text-teal-600' : 'text-gray-600'}`
+                      className: `w-6 h-6 ${isActive ? 'text-teal-600 dark:text-teal-400' : 'text-gray-600 dark:text-gray-400'}`
                     })}
                     {item.badge !== undefined && (
                       <span className="absolute -top-1 -right-2 bg-red-500 text-white text-[8px] font-semibold rounded-full min-w-[12px] h-3 flex items-center justify-center px-0.5 shadow-sm">
@@ -57,7 +57,7 @@ export default function BottomNav({ currentPage, onNavigate, alertCount = 0 }: B
                   </>
                 )}
               </div>
-              <span className={`text-[10px] font-semibold ${isActive ? 'text-teal-600' : 'text-gray-600'}`}>
+              <span className={`text-[10px] font-semibold ${isActive ? 'text-teal-600 dark:text-teal-400' : 'text-gray-600 dark:text-gray-400'}`}>
                 {item.label}
               </span>
             </button>
