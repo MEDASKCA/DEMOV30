@@ -217,10 +217,11 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
   const speakWithBrowserVoice = (text: string) => {
     if (typeof window === 'undefined' || !window.speechSynthesis) {
       console.log('Browser speech synthesis not available');
+      setIsSpeaking(false);
       return;
     }
 
-    console.log('Using browser voice fallback');
+    console.log('Using browser voice');
 
     setTimeout(() => {
       const utterance = new SpeechSynthesisUtterance(text);
@@ -228,58 +229,60 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
 
       console.log('Available voices:', voices.length);
 
+      // Prioritize natural-sounding voices
       let selectedVoice = null;
-      const preferredMaleVoices = [
+      const preferredVoices = [
+        // Premium voices (most natural)
+        'Samantha',
+        'Alex',
+        'Google UK English Female',
         'Google UK English Male',
-        'Microsoft David - English (United Kingdom)',
-        'Daniel (Enhanced)',
-        'Daniel',
         'Google US English',
-        'Microsoft Mark - English (United States)'
+        'Microsoft Zira - English (United States)',
+        'Microsoft David - English (United States)',
+        'Microsoft Mark - English (United States)',
+        // Enhanced voices
+        'Daniel (Enhanced)',
+        'Fiona (Enhanced)',
+        'Karen (Enhanced)',
+        // Standard voices
+        'Daniel',
+        'Fiona',
+        'Karen',
+        'Moira',
+        'Tessa'
       ];
 
-      for (const prefName of preferredMaleVoices) {
+      for (const prefName of preferredVoices) {
         selectedVoice = voices.find(v => v.name === prefName);
         if (selectedVoice) break;
       }
 
+      // Fallback: find any English voice
       if (!selectedVoice) {
         selectedVoice = voices.find(voice =>
-          voice.lang.startsWith('en') &&
-          voice.name.toLowerCase().includes('male')
+          voice.lang.startsWith('en-') &&
+          (voice.name.includes('Google') || voice.name.includes('Microsoft'))
         );
       }
 
+      // Last resort: any English voice
       if (!selectedVoice) {
-        const maleVoiceNames = ['daniel', 'david', 'mark', 'alex', 'james', 'thomas', 'ryan', 'aaron'];
-        selectedVoice = voices.find(voice =>
-          voice.lang.startsWith('en') &&
-          maleVoiceNames.some(name => voice.name.toLowerCase().includes(name))
-        );
+        selectedVoice = voices.find(voice => voice.lang.startsWith('en'));
       }
 
       if (selectedVoice) {
         utterance.voice = selectedVoice;
         utterance.lang = selectedVoice.lang;
         console.log('Selected voice:', selectedVoice.name);
-
-        if (selectedVoice.name.includes('Google')) {
-          utterance.rate = 1.0;
-          utterance.pitch = 0.9;
-        } else if (selectedVoice.name.includes('Microsoft')) {
-          utterance.rate = 1.05;
-          utterance.pitch = 0.85;
-        } else {
-          utterance.rate = 1.1;
-          utterance.pitch = 0.9;
-        }
       } else {
         utterance.lang = 'en-GB';
-        utterance.rate = 1.05;
-        utterance.pitch = 0.85;
         console.log('No specific voice found, using default en-GB');
       }
 
+      // Natural speech settings
+      utterance.rate = 0.95;  // Slightly slower for clarity
+      utterance.pitch = 1.0;  // Normal pitch (not robotic)
       utterance.volume = 1.0;
 
       utterance.onstart = () => {

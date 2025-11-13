@@ -110,9 +110,22 @@ export class TomAIService {
   private static async getTodaySchedule(): Promise<AIQueryResult> {
     try {
       const today = format(new Date(), 'yyyy-MM-dd');
+      console.log('📅 Querying today schedule:', today);
+
       const casesRef = collection(db, 'cases');
-      const q = query(casesRef, where('date', '==', today), orderBy('scheduledTime'));
-      const snapshot = await getDocs(q);
+
+      // Try without orderBy first to avoid index issues
+      let snapshot;
+      try {
+        const q = query(casesRef, where('date', '==', today));
+        snapshot = await getDocs(q);
+        console.log('✓ Query successful, found', snapshot.size, 'cases');
+      } catch (queryError) {
+        console.error('❌ Query error:', queryError);
+        // If query fails, try just getting all cases
+        snapshot = await getDocs(casesRef);
+        console.log('⚠️ Fallback: Retrieved all cases, total:', snapshot.size);
+      }
 
       if (snapshot.empty) {
         return {
@@ -121,14 +134,34 @@ export class TomAIService {
         };
       }
 
-      const cases = snapshot.docs.map(doc => doc.data());
+      // Filter and sort in memory
+      let cases = snapshot.docs
+        .map(doc => ({ id: doc.id, ...doc.data() }))
+        .filter((c: any) => c.date === today);
+
+      console.log('Filtered cases for today:', cases.length);
+
+      // Sort by scheduledTime
+      cases.sort((a: any, b: any) => {
+        const timeA = a.scheduledTime || '';
+        const timeB = b.scheduledTime || '';
+        return timeA.localeCompare(timeB);
+      });
+
+      if (cases.length === 0) {
+        return {
+          success: true,
+          message: "No cases scheduled for today. The theatre schedule is clear."
+        };
+      }
+
       let message = `📅 **Today's Schedule** (${cases.length} cases):\n\n`;
 
       cases.forEach((caseItem: any, index: number) => {
-        message += `${index + 1}. **${caseItem.theatre}** - ${caseItem.scheduledTime}\n`;
-        message += `   ${caseItem.procedureName}\n`;
-        message += `   Surgeon: ${caseItem.surgeon}\n`;
-        message += `   Status: ${caseItem.status}\n\n`;
+        message += `${index + 1}. **${caseItem.theatre || 'Theatre TBA'}** - ${caseItem.scheduledTime || 'Time TBA'}\n`;
+        message += `   ${caseItem.procedureName || caseItem.procedure || 'Procedure TBA'}\n`;
+        message += `   Surgeon: ${caseItem.surgeon || caseItem.consultant || 'TBA'}\n`;
+        message += `   Status: ${caseItem.status || 'Scheduled'}\n\n`;
       });
 
       return {
@@ -136,10 +169,11 @@ export class TomAIService {
         message,
         data: cases
       };
-    } catch (error) {
+    } catch (error: any) {
+      console.error('❌ getTodaySchedule error:', error);
       return {
         success: false,
-        message: "Unable to retrieve today's schedule. Please check your database connection."
+        message: `Unable to retrieve today's schedule. Error: ${error.message || 'Unknown error'}`
       };
     }
   }
@@ -154,9 +188,22 @@ export class TomAIService {
       const tomorrowStr = format(tomorrow, 'yyyy-MM-dd');
       const tomorrowDisplay = format(tomorrow, 'EEEE, d MMMM yyyy');
 
+      console.log('📅 Querying tomorrow schedule:', tomorrowStr);
+
       const casesRef = collection(db, 'cases');
-      const q = query(casesRef, where('date', '==', tomorrowStr), orderBy('scheduledTime'));
-      const snapshot = await getDocs(q);
+
+      // Try without orderBy first to avoid index issues
+      let snapshot;
+      try {
+        const q = query(casesRef, where('date', '==', tomorrowStr));
+        snapshot = await getDocs(q);
+        console.log('✓ Query successful, found', snapshot.size, 'cases');
+      } catch (queryError) {
+        console.error('❌ Query error:', queryError);
+        // If query fails, try just getting all cases
+        snapshot = await getDocs(casesRef);
+        console.log('⚠️ Fallback: Retrieved all cases, total:', snapshot.size);
+      }
 
       if (snapshot.empty) {
         return {
@@ -165,15 +212,40 @@ export class TomAIService {
         };
       }
 
-      const cases = snapshot.docs.map(doc => doc.data());
+      // Filter and sort in memory if needed
+      let cases = snapshot.docs
+        .map(doc => ({ id: doc.id, ...doc.data() }))
+        .filter((c: any) => c.date === tomorrowStr);
+
+      console.log('Filtered cases for tomorrow:', cases.length);
+
+      // Sort by scheduledTime if available
+      cases.sort((a: any, b: any) => {
+        const timeA = a.scheduledTime || '';
+        const timeB = b.scheduledTime || '';
+        return timeA.localeCompare(timeB);
+      });
+
+      if (cases.length === 0) {
+        return {
+          success: true,
+          message: `No cases scheduled for tomorrow (${tomorrowDisplay}). The theatre schedule is clear.`
+        };
+      }
+
       let message = `📅 **Tomorrow's Schedule** - ${tomorrowDisplay} (${cases.length} cases):\n\n`;
 
       cases.forEach((caseItem: any, index: number) => {
-        message += `${index + 1}. **${caseItem.theatre}** - ${caseItem.scheduledTime}\n`;
-        message += `   ${caseItem.procedureName}\n`;
-        message += `   Surgeon: ${caseItem.surgeon}\n`;
-        message += `   Priority: ${caseItem.priority || 'Routine'}\n`;
-        message += `   Duration: ${caseItem.estimatedDuration || 'N/A'} min\n\n`;
+        message += `${index + 1}. **${caseItem.theatre || 'Theatre TBA'}** - ${caseItem.scheduledTime || 'Time TBA'}\n`;
+        message += `   ${caseItem.procedureName || caseItem.procedure || 'Procedure TBA'}\n`;
+        message += `   Surgeon: ${caseItem.surgeon || caseItem.consultant || 'TBA'}\n`;
+        if (caseItem.priority) {
+          message += `   Priority: ${caseItem.priority}\n`;
+        }
+        if (caseItem.estimatedDuration) {
+          message += `   Duration: ${caseItem.estimatedDuration} min\n`;
+        }
+        message += '\n';
       });
 
       return {
@@ -181,10 +253,11 @@ export class TomAIService {
         message,
         data: cases
       };
-    } catch (error) {
+    } catch (error: any) {
+      console.error('❌ getTomorrowSchedule error:', error);
       return {
         success: false,
-        message: "Unable to retrieve tomorrow's schedule. Please check your database connection."
+        message: `Unable to retrieve tomorrow's schedule. Error: ${error.message || 'Unknown error'}`
       };
     }
   }
