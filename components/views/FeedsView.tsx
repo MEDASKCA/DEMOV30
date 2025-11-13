@@ -75,13 +75,18 @@ export default function FeedsView() {
     setPosts(posts.map(post => {
       if (post.id === postId) {
         const newReactions = { ...post.reactions };
+        const currentReaction = newReactions[currentUserId];
+        const currentEmoji = typeof currentReaction === 'string' ? currentReaction : currentReaction?.emoji;
 
         // If user already reacted with same emoji, remove it
-        if (newReactions[currentUserId] === emoji) {
+        if (currentEmoji === emoji) {
           delete newReactions[currentUserId];
         } else {
-          // Otherwise, set/update their reaction
-          newReactions[currentUserId] = emoji;
+          // Otherwise, set/update their reaction with timestamp
+          newReactions[currentUserId] = {
+            emoji: emoji,
+            timestamp: new Date()
+          };
         }
 
         return {
@@ -511,7 +516,8 @@ export default function FeedsView() {
               const author = getStaffById(post.authorId);
               if (!author) return null;
 
-              const userReaction = post.reactions?.[currentUserId];
+              const userReactionData = post.reactions?.[currentUserId];
+              const userReaction = typeof userReactionData === 'string' ? userReactionData : userReactionData?.emoji;
               const isCommentsOpen = showComments === post.id;
 
               return (
