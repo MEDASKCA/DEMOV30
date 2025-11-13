@@ -253,15 +253,16 @@ export default function FeedsView() {
 
                   {/* Action Buttons */}
                   <div className="px-4 pb-3 pt-2 flex items-center gap-2">
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-1">
                       {reactionEmojis.map((reaction) => (
                         <button
                           key={reaction.emoji}
                           onClick={() => handleReaction(post.id, reaction.emoji)}
-                          className={`text-xl hover:scale-125 active:scale-95 transition-transform ${
+                          className={`text-xl hover:scale-125 active:scale-95 transition-transform cursor-pointer p-1 ${
                             userReaction === reaction.emoji ? 'scale-125' : ''
                           }`}
                           title={reaction.label}
+                          type="button"
                         >
                           {reaction.emoji}
                         </button>
@@ -461,15 +462,16 @@ export default function FeedsView() {
 
                   {/* Action Buttons */}
                   <div className="px-3 pb-2 pt-1.5 flex items-center gap-1">
-                    <div className="flex items-center gap-1 overflow-x-auto">
+                    <div className="flex items-center gap-0.5 overflow-x-auto">
                       {reactionEmojis.map((reaction) => (
                         <button
                           key={reaction.emoji}
                           onClick={() => handleReaction(post.id, reaction.emoji)}
-                          className={`text-base active:scale-110 transition-transform flex-shrink-0 ${
+                          className={`text-lg active:scale-110 transition-transform flex-shrink-0 cursor-pointer p-1 ${
                             userReaction === reaction.emoji ? 'scale-110' : ''
                           }`}
                           title={reaction.label}
+                          type="button"
                         >
                           {reaction.emoji}
                         </button>
