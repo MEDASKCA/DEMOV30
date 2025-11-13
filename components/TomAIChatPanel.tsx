@@ -177,57 +177,19 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       setMessages(prev => [...prev, streamingMessage]);
 
       try {
-        // Try streaming first
-        const response = await fetch('/api/chat/stream', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: query })
-        });
+        // Use RAG-enabled endpoint with database access
+        const { TomAIService } = await import('@/lib/tomAIService');
+        const result = await TomAIService.processQuery(query);
 
-        if (response.ok && response.body) {
-          const reader = response.body.getReader();
-          const decoder = new TextDecoder();
-          let accumulatedContent = '';
+        setMessages(prev => prev.map(m =>
+          m.id === streamingMessageId
+            ? { ...m, content: result.message }
+            : m
+        ));
 
-          while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-
-            const chunk = decoder.decode(value, { stream: true });
-            accumulatedContent += chunk;
-
-            // Update the streaming message
-            setMessages(prev => prev.map(m =>
-              m.id === streamingMessageId
-                ? { ...m, content: accumulatedContent }
-                : m
-            ));
-          }
-
-          // Speak the complete response
-          if ('speechSynthesis' in window && voicesLoaded && accumulatedContent) {
-            speakMessage(accumulatedContent);
-          }
-
-        } else {
-          // Fallback to non-streaming
-          const { TomAIService } = await import('@/lib/tomAIService');
-          const result = await TomAIService.processQuery(query);
-
-          setMessages(prev => prev.map(m =>
-            m.id === streamingMessageId
-              ? { ...m, content: result.message }
-              : m
-          ));
-
-          // Always try to speak, even if voices not loaded yet
-          console.log('Attempting to speak message:', result.message.substring(0, 50) + '...');
-          console.log('Speech synthesis available:', 'speechSynthesis' in window);
-          console.log('Voices loaded:', voicesLoaded);
-
-          if ('speechSynthesis' in window && result.message) {
-            speakMessage(result.message);
-          }
+        // Speak the response
+        if ('speechSynthesis' in window && result.message) {
+          speakMessage(result.message);
         }
       } catch (error) {
         console.error('Chat error:', error);
@@ -384,8 +346,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       {showHeader && (
         <div className="flex-shrink-0 border-b border-gray-200 p-4 bg-gradient-to-r from-blue-50 via-teal-50 to-purple-50">
           <div className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-blue-600" />
-            <h2 className="text-lg font-semibold bg-gradient-to-r from-blue-600 via-teal-600 to-purple-600 bg-clip-text text-transparent">TOM AI</h2>
+            <h2 className="text-lg font-semibold bg-gradient-to-r from-blue-600 via-teal-600 to-purple-600 bg-clip-text text-transparent">TOM</h2>
           </div>
           <p className="text-xs text-gray-600 mt-0.5">Your Theatre Operations Assistant</p>
         </div>
@@ -432,7 +393,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Message TOM AI..."
+            placeholder="Message TOM..."
             className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
           />
           <button

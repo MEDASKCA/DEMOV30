@@ -53,8 +53,18 @@ export class TomAIService {
       }
 
       // Today's schedule queries
-      if (queryLower.includes('today') && (queryLower.includes('schedule') || queryLower.includes('cases'))) {
+      if (queryLower.includes('today') && (queryLower.includes('schedule') || queryLower.includes('cases') || queryLower.includes('list'))) {
         return await this.getTodaySchedule();
+      }
+
+      // Tomorrow's schedule queries
+      if (queryLower.includes('tomorrow') && (queryLower.includes('schedule') || queryLower.includes('cases') || queryLower.includes('list'))) {
+        return await this.getTomorrowSchedule();
+      }
+
+      // Generic schedule queries without "today" or "tomorrow" - default to today
+      if ((queryLower.includes('schedule') || queryLower.includes('list')) && !queryLower.includes('staff')) {
+        return await this.getTomorrowSchedule(); // Assume they're asking about future
       }
 
       // Staff availability queries
@@ -138,6 +148,51 @@ export class TomAIService {
       return {
         success: false,
         message: "Unable to retrieve today's schedule. Please check your database connection."
+      };
+    }
+  }
+
+  /**
+   * Get tomorrow's theatre schedule
+   */
+  private static async getTomorrowSchedule(): Promise<AIQueryResult> {
+    try {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const tomorrowStr = format(tomorrow, 'yyyy-MM-dd');
+      const tomorrowDisplay = format(tomorrow, 'EEEE, d MMMM yyyy');
+
+      const casesRef = collection(db, 'cases');
+      const q = query(casesRef, where('date', '==', tomorrowStr), orderBy('scheduledTime'));
+      const snapshot = await getDocs(q);
+
+      if (snapshot.empty) {
+        return {
+          success: true,
+          message: `No cases scheduled for tomorrow (${tomorrowDisplay}). The theatre schedule is clear.`
+        };
+      }
+
+      const cases = snapshot.docs.map(doc => doc.data());
+      let message = `📅 **Tomorrow's Schedule** - ${tomorrowDisplay} (${cases.length} cases):\n\n`;
+
+      cases.forEach((caseItem: any, index: number) => {
+        message += `${index + 1}. **${caseItem.theatre}** - ${caseItem.scheduledTime}\n`;
+        message += `   ${caseItem.procedureName}\n`;
+        message += `   Surgeon: ${caseItem.surgeon}\n`;
+        message += `   Priority: ${caseItem.priority || 'Routine'}\n`;
+        message += `   Duration: ${caseItem.estimatedDuration || 'N/A'} min\n\n`;
+      });
+
+      return {
+        success: true,
+        message,
+        data: cases
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: "Unable to retrieve tomorrow's schedule. Please check your database connection."
       };
     }
   }

@@ -70,6 +70,29 @@ export class AzureOpenAIService {
           }
         },
         {
+          name: 'getTomorrowSchedule',
+          description: 'Get the complete schedule of all theatre cases for tomorrow',
+          parameters: {
+            type: 'object',
+            properties: {},
+            required: []
+          }
+        },
+        {
+          name: 'getScheduleForDate',
+          description: 'Get the schedule for a specific date',
+          parameters: {
+            type: 'object',
+            properties: {
+              date: {
+                type: 'string',
+                description: 'The date in format YYYY-MM-DD, or relative terms like "tomorrow", "next monday", etc.'
+              }
+            },
+            required: ['date']
+          }
+        },
+        {
           name: 'getStaffAvailability',
           description: 'Get information about available staff members, their roles, and specialties',
           parameters: {
@@ -236,6 +259,12 @@ Current date: ${format(new Date(), 'EEEE, d MMMM yyyy')}`
       case 'getTodaySchedule':
         return await this.getTodaySchedule();
 
+      case 'getTomorrowSchedule':
+        return await this.getTomorrowSchedule();
+
+      case 'getScheduleForDate':
+        return await this.getScheduleForDate(args.date);
+
       case 'getStaffAvailability':
         return await this.getStaffAvailability();
 
@@ -292,6 +321,92 @@ Current date: ${format(new Date(), 'EEEE, d MMMM yyyy')}`
       };
     } catch (error) {
       return { error: 'Unable to retrieve today\'s schedule', details: String(error) };
+    }
+  }
+
+  private static async getTomorrowSchedule(): Promise<any> {
+    try {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const tomorrowStr = format(tomorrow, 'yyyy-MM-dd');
+
+      const casesRef = collection(db, 'cases');
+      const q = query(casesRef, where('date', '==', tomorrowStr), orderBy('scheduledTime'));
+      const snapshot = await getDocs(q);
+
+      if (snapshot.empty) {
+        return { message: 'No cases scheduled for tomorrow', cases: [] };
+      }
+
+      const cases = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+
+      return {
+        message: `Found ${cases.length} cases scheduled for tomorrow (${format(tomorrow, 'EEEE, d MMMM yyyy')})`,
+        date: tomorrowStr,
+        totalCases: cases.length,
+        cases: cases.map((c: any) => ({
+          theatre: c.theatre,
+          scheduledTime: c.scheduledTime,
+          procedureName: c.procedureName,
+          surgeon: c.surgeon,
+          status: c.status,
+          priority: c.priority,
+          estimatedDuration: c.estimatedDuration,
+          specialty: c.specialty
+        }))
+      };
+    } catch (error) {
+      return { error: 'Unable to retrieve tomorrow\'s schedule', details: String(error) };
+    }
+  }
+
+  private static async getScheduleForDate(dateStr: string): Promise<any> {
+    try {
+      // Parse relative dates like "tomorrow", "next week", etc.
+      let targetDate: Date;
+
+      if (dateStr.toLowerCase() === 'tomorrow') {
+        targetDate = new Date();
+        targetDate.setDate(targetDate.getDate() + 1);
+      } else {
+        // Assume it's already in YYYY-MM-DD format
+        targetDate = new Date(dateStr);
+      }
+
+      const dateFormatted = format(targetDate, 'yyyy-MM-dd');
+      const casesRef = collection(db, 'cases');
+      const q = query(casesRef, where('date', '==', dateFormatted), orderBy('scheduledTime'));
+      const snapshot = await getDocs(q);
+
+      if (snapshot.empty) {
+        return { message: `No cases scheduled for ${format(targetDate, 'EEEE, d MMMM yyyy')}`, cases: [] };
+      }
+
+      const cases = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+
+      return {
+        message: `Found ${cases.length} cases scheduled for ${format(targetDate, 'EEEE, d MMMM yyyy')}`,
+        date: dateFormatted,
+        totalCases: cases.length,
+        cases: cases.map((c: any) => ({
+          theatre: c.theatre,
+          scheduledTime: c.scheduledTime,
+          procedureName: c.procedureName,
+          surgeon: c.surgeon,
+          status: c.status,
+          priority: c.priority,
+          estimatedDuration: c.estimatedDuration,
+          specialty: c.specialty
+        }))
+      };
+    } catch (error) {
+      return { error: `Unable to retrieve schedule for ${dateStr}`, details: String(error) };
     }
   }
 
