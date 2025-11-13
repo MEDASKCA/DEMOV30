@@ -1303,10 +1303,10 @@ function TheatreModal({ theatre, onClose, onSave }: TheatreModalProps) {
                 <input
                   type="time"
                   required
-                  value={formData.openingHours.start}
+                  value={formData.openingHours?.start || '08:00'}
                   onChange={(e) => setFormData({
                     ...formData,
-                    openingHours: { ...formData.openingHours, start: e.target.value }
+                    openingHours: { ...formData.openingHours, start: e.target.value, end: formData.openingHours?.end || '18:00' }
                   })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
                 />
@@ -1319,10 +1319,10 @@ function TheatreModal({ theatre, onClose, onSave }: TheatreModalProps) {
                 <input
                   type="time"
                   required
-                  value={formData.openingHours.end}
+                  value={formData.openingHours?.end || '18:00'}
                   onChange={(e) => setFormData({
                     ...formData,
-                    openingHours: { ...formData.openingHours, end: e.target.value }
+                    openingHours: { start: formData.openingHours?.start || '08:00', ...formData.openingHours, end: e.target.value }
                   })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
                 />
