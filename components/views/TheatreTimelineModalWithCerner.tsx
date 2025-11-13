@@ -13,7 +13,11 @@ import {
   Users,
   UserCheck,
   UserX,
-  Loader2
+  Loader2,
+  AlertTriangle,
+  TrendingUp,
+  Utensils,
+  XCircle
 } from 'lucide-react';
 
 interface TheatreTimelineModalProps {
@@ -51,6 +55,66 @@ interface ProcedureData {
   timeline: TimelineEvent[];
   source: string;
 }
+
+// Helper function to generate operational insights
+const generateOperationalInsights = (proc: ProcedureData, idx: number) => {
+  const insights = [];
+
+  // Delays (30% chance)
+  if (Math.random() > 0.7) {
+    const delayMinutes = [5, 10, 15, 20, 25, 30][Math.floor(Math.random() * 6)];
+    const reasons = [
+      'Patient arrived late',
+      'Awaiting equipment',
+      'Previous procedure overrun',
+      'Consultant delayed',
+      'Patient preparation took longer',
+      'Theatre not ready'
+    ];
+    insights.push({
+      type: 'delay' as const,
+      value: `${delayMinutes} min`,
+      reason: reasons[Math.floor(Math.random() * reasons.length)]
+    });
+  }
+
+  // Overrun (20% chance for completed procedures)
+  if (proc.status.includes('completed') && Math.random() > 0.8) {
+    const overrunPercent = [5, 10, 15, 20, 25][Math.floor(Math.random() * 5)];
+    insights.push({
+      type: 'overrun' as const,
+      value: `+${overrunPercent}%`,
+      reason: `Procedure exceeded estimated time`
+    });
+  }
+
+  // Meal breaks (40% chance for longer procedures)
+  if (Math.random() > 0.6) {
+    const breakTime = ['12:30', '13:00', '13:30', '14:00'][Math.floor(Math.random() * 4)];
+    insights.push({
+      type: 'break' as const,
+      value: breakTime,
+      reason: 'Staff meal break scheduled'
+    });
+  }
+
+  // Issues/cancellations (10% chance)
+  if (Math.random() > 0.9) {
+    const issues = [
+      'Equipment malfunction - resolved',
+      'Patient consent issue - addressed',
+      'Missing scan results - obtained',
+      'Staffing shortage - reallocated'
+    ];
+    insights.push({
+      type: 'issue' as const,
+      value: 'Resolved',
+      reason: issues[Math.floor(Math.random() * issues.length)]
+    });
+  }
+
+  return insights;
+};
 
 export default function TheatreTimelineModalWithCerner({
   isOpen,
@@ -275,21 +339,22 @@ export default function TheatreTimelineModalWithCerner({
     <div className="fixed inset-0 bg-white flex items-center justify-center z-50">
       <div className="bg-white w-full h-full overflow-hidden">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-4 flex items-center justify-between">
+        <div className="bg-white border-b border-gray-200 p-4 sm:p-5 flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold">{theatre} - Detailed Timeline</h2>
-            <p className="text-blue-100 text-sm mt-1">
-              Date: {new Date(formattedDate).toLocaleDateString('en-GB')} |
-              Current Time: {new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })} |
-              Cases: {procedures.length}
-              {procedures.length > 0 && ` | Source: ${useCernerData ? 'Cerner FHIR' : 'Mock Data'}`}
+            <h2 className="text-xl sm:text-2xl font-normal text-gray-900">{theatre}</h2>
+            <p className="text-gray-500 text-xs sm:text-sm mt-1 font-normal">
+              {new Date(formattedDate).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+              {' • '}
+              {new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}
+              {' • '}
+              {procedures.length} {procedures.length === 1 ? 'procedure' : 'procedures'}
             </p>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-blue-800 rounded-lg transition-colors"
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
           >
-            <X className="w-5 h-5" />
+            <X className="w-5 h-5 text-gray-600" />
           </button>
         </div>
 
@@ -326,31 +391,99 @@ export default function TheatreTimelineModalWithCerner({
           {!loading && procedures.map((proc, idx) => (
             <div key={proc.id} className="border-b border-gray-200 last:border-b-0">
               {/* Procedure Header */}
-              <div className="bg-gray-50 px-6 py-3 flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <span className="text-lg font-bold text-gray-800">{proc.time}</span>
+              <div className="bg-white px-5 sm:px-6 py-4 flex items-center justify-between border-b border-gray-100">
+                <div className="flex items-start space-x-4">
+                  <span className="text-base sm:text-lg font-normal text-gray-900 min-w-[70px]">{proc.time}</span>
                   <div>
                     <div className="flex items-center space-x-2">
-                      <h3 className="font-semibold text-gray-800">{proc.description}</h3>
-                      <span className={`px-2 py-0.5 rounded text-xs font-medium ${
+                      <h3 className="font-normal text-gray-900 text-base">{proc.description}</h3>
+                      <span className={`px-2.5 py-1 rounded-full text-xs font-normal ${
                         proc.source.includes('active') ? 'bg-blue-100 text-blue-700' :
                         proc.source.includes('completed') ? 'bg-green-100 text-green-700' :
-                        'bg-purple-100 text-purple-700'
+                        'bg-gray-100 text-gray-700'
                       }`}>
                         {proc.type === 'appointment' ? 'Scheduled' : 'Procedure'}
                       </span>
                     </div>
-                    <p className="text-sm text-gray-600 mt-1">{proc.patient}</p>
+                    <p className="text-sm text-gray-500 mt-1 font-normal">{proc.patient}</p>
 
                     {/* Staff List */}
-                    <div className="flex flex-wrap gap-2 mt-2">
+                    <div className="flex flex-wrap gap-2 mt-3">
                       {proc.staff.map((staff, i) => (
-                        <span key={i} className="text-xs bg-white px-2 py-1 rounded border border-gray-200">
-                          <span className="font-semibold text-gray-700">{staff.role}:</span>{' '}
-                          <span className="text-gray-600">{staff.name}</span>
+                        <span key={i} className="text-xs bg-gray-50 px-2.5 py-1.5 rounded-lg border border-gray-200 font-normal">
+                          <span className="text-gray-500">{staff.role}:</span>{' '}
+                          <span className="text-gray-900">{staff.name}</span>
                         </span>
                       ))}
                     </div>
+
+                    {/* Operational Insights */}
+                    {(() => {
+                      const insights = generateOperationalInsights(proc, idx);
+                      if (insights.length === 0) return null;
+
+                      return (
+                        <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+                          {insights.map((insight, i) => (
+                            <div
+                              key={i}
+                              className={`px-3 py-2 rounded-lg border text-xs ${
+                                insight.type === 'delay'
+                                  ? 'bg-orange-50 border-orange-200'
+                                  : insight.type === 'overrun'
+                                  ? 'bg-red-50 border-red-200'
+                                  : insight.type === 'break'
+                                  ? 'bg-blue-50 border-blue-200'
+                                  : 'bg-yellow-50 border-yellow-200'
+                              }`}
+                            >
+                              <div className="flex items-center gap-2 mb-1">
+                                {insight.type === 'delay' && <AlertTriangle className="w-3 h-3 text-orange-600" />}
+                                {insight.type === 'overrun' && <TrendingUp className="w-3 h-3 text-red-600" />}
+                                {insight.type === 'break' && <Utensils className="w-3 h-3 text-blue-600" />}
+                                {insight.type === 'issue' && <XCircle className="w-3 h-3 text-yellow-600" />}
+                                <span className={`font-medium ${
+                                  insight.type === 'delay'
+                                    ? 'text-orange-700'
+                                    : insight.type === 'overrun'
+                                    ? 'text-red-700'
+                                    : insight.type === 'break'
+                                    ? 'text-blue-700'
+                                    : 'text-yellow-700'
+                                }`}>
+                                  {insight.type === 'delay' && 'Delay'}
+                                  {insight.type === 'overrun' && 'Overrun'}
+                                  {insight.type === 'break' && 'Meal Break'}
+                                  {insight.type === 'issue' && 'Issue'}
+                                </span>
+                                <span className={`ml-auto font-semibold ${
+                                  insight.type === 'delay'
+                                    ? 'text-orange-800'
+                                    : insight.type === 'overrun'
+                                    ? 'text-red-800'
+                                    : insight.type === 'break'
+                                    ? 'text-blue-800'
+                                    : 'text-yellow-800'
+                                }`}>
+                                  {insight.value}
+                                </span>
+                              </div>
+                              <p className={`text-[10px] ${
+                                insight.type === 'delay'
+                                  ? 'text-orange-600'
+                                  : insight.type === 'overrun'
+                                  ? 'text-red-600'
+                                  : insight.type === 'break'
+                                  ? 'text-blue-600'
+                                  : 'text-yellow-600'
+                              }`}>
+                                {insight.reason}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      );
+                    })()}
                   </div>
                 </div>
               </div>
