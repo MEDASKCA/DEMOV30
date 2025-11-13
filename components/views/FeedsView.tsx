@@ -43,6 +43,7 @@ export default function FeedsView() {
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [postToShare, setPostToShare] = useState<PostType | null>(null);
   const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(null);
+  const [showReactionsList, setShowReactionsList] = useState<string | null>(null);
 
   // Mock stories data
   const stories: Story[] = [
@@ -290,10 +291,46 @@ export default function FeedsView() {
                   </div>
 
                   {/* Post Stats */}
-                  <div className="px-4 py-2 flex items-center justify-between text-sm text-gray-600 border-t border-gray-100">
-                    <span>{post.likes.length} {post.likes.length === 1 ? 'reaction' : 'reactions'}</span>
-                    <span>{post.comments.length} {post.comments.length === 1 ? 'comment' : 'comments'}</span>
+                  <div className="px-4 py-2 flex items-center justify-between text-sm border-t border-gray-100">
+                    <button
+                      onClick={() => setShowReactionsList(showReactionsList === post.id ? null : post.id)}
+                      className="text-gray-600 hover:text-blue-600 hover:underline transition-colors"
+                    >
+                      {post.likes.length} {post.likes.length === 1 ? 'reaction' : 'reactions'}
+                    </button>
+                    <button
+                      onClick={() => setShowComments(showComments === post.id ? null : post.id)}
+                      className="text-gray-600 hover:text-blue-600 hover:underline transition-colors"
+                    >
+                      {post.comments.length} {post.comments.length === 1 ? 'comment' : 'comments'}
+                    </button>
                   </div>
+
+                  {/* Reactions List */}
+                  {showReactionsList === post.id && post.likes.length > 0 && (
+                    <div className="px-4 py-3 border-t border-gray-100 bg-gray-50">
+                      <p className="text-xs font-semibold text-gray-700 mb-2">Reactions</p>
+                      <div className="space-y-2">
+                        {Object.entries(post.reactions || {}).map(([userId, reactionData]) => {
+                          const user = getStaffById(userId);
+                          if (!user) return null;
+                          const reaction = typeof reactionData === 'string' ? { emoji: reactionData, timestamp: new Date() } : reactionData;
+                          return (
+                            <div key={userId} className="flex items-center justify-between text-sm">
+                              <div className="flex items-center gap-2">
+                                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold">
+                                  {user.initials}
+                                </div>
+                                <span className="text-gray-900 font-medium">{user.firstName} {user.lastName}</span>
+                                <span className="text-xl">{reaction.emoji}</span>
+                              </div>
+                              <span className="text-xs text-gray-500">{getTimeAgo(reaction.timestamp)}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
 
                   {/* Action Buttons */}
                   <div className="px-4 pb-3 pt-2 flex items-center gap-2 border-t border-gray-100">
@@ -539,10 +576,46 @@ export default function FeedsView() {
                   </div>
 
                   {/* Post Stats */}
-                  <div className="px-3 py-1.5 flex items-center justify-between text-xs text-gray-600">
-                    <span>{post.likes.length} reactions</span>
-                    <span>{post.comments.length} comments</span>
+                  <div className="px-3 py-1.5 flex items-center justify-between text-xs">
+                    <button
+                      onClick={() => setShowReactionsList(showReactionsList === post.id ? null : post.id)}
+                      className="text-gray-600 hover:text-blue-600 hover:underline transition-colors"
+                    >
+                      {post.likes.length} reactions
+                    </button>
+                    <button
+                      onClick={() => setShowComments(showComments === post.id ? null : post.id)}
+                      className="text-gray-600 hover:text-blue-600 hover:underline transition-colors"
+                    >
+                      {post.comments.length} comments
+                    </button>
                   </div>
+
+                  {/* Reactions List */}
+                  {showReactionsList === post.id && post.likes.length > 0 && (
+                    <div className="px-3 py-2 border-t border-gray-100 bg-gray-50">
+                      <p className="text-xs font-semibold text-gray-700 mb-2">Reactions</p>
+                      <div className="space-y-1.5">
+                        {Object.entries(post.reactions || {}).map(([userId, reactionData]) => {
+                          const user = getStaffById(userId);
+                          if (!user) return null;
+                          const reaction = typeof reactionData === 'string' ? { emoji: reactionData, timestamp: new Date() } : reactionData;
+                          return (
+                            <div key={userId} className="flex items-center justify-between text-xs">
+                              <div className="flex items-center gap-2">
+                                <div className="w-5 h-5 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-[10px] font-bold">
+                                  {user.initials}
+                                </div>
+                                <span className="text-gray-900 font-medium">{user.firstName} {user.lastName}</span>
+                                <span className="text-base">{reaction.emoji}</span>
+                              </div>
+                              <span className="text-[10px] text-gray-500">{getTimeAgo(reaction.timestamp)}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
 
                   {/* Action Buttons */}
                   <div className="px-3 pb-2 pt-1.5 flex items-center gap-1 border-t border-gray-100">
