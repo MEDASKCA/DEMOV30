@@ -279,11 +279,17 @@ export default function FeedsView() {
 
                       {/* Reaction Picker Popup */}
                       {showReactions === post.id && (
-                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-full shadow-xl border border-gray-200 px-3 py-2 flex gap-1 z-10">
+                        <div
+                          className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-full shadow-xl border border-gray-200 px-3 py-2 flex gap-1 z-10"
+                          onClick={(e) => e.stopPropagation()}
+                        >
                           {reactionEmojis.map((reaction) => (
                             <button
                               key={reaction.emoji}
-                              onClick={() => handleReaction(post.id, reaction.emoji)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleReaction(post.id, reaction.emoji);
+                              }}
                               className="text-2xl hover:scale-125 transition-transform cursor-pointer"
                               title={reaction.label}
                               type="button"
@@ -505,11 +511,17 @@ export default function FeedsView() {
 
                       {/* Reaction Picker Popup */}
                       {showReactions === post.id && (
-                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-full shadow-xl border border-gray-200 px-2 py-1.5 flex gap-0.5 z-10 max-w-[90vw] overflow-x-auto">
+                        <div
+                          className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-full shadow-xl border border-gray-200 px-2 py-1.5 flex gap-0.5 z-10 max-w-[90vw] overflow-x-auto"
+                          onClick={(e) => e.stopPropagation()}
+                        >
                           {reactionEmojis.map((reaction) => (
                             <button
                               key={reaction.emoji}
-                              onClick={() => handleReaction(post.id, reaction.emoji)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleReaction(post.id, reaction.emoji);
+                              }}
                               className="text-xl active:scale-110 transition-transform cursor-pointer flex-shrink-0"
                               title={reaction.label}
                               type="button"
