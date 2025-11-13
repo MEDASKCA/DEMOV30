@@ -265,16 +265,14 @@ export default function FeedsView() {
                     <div className="relative flex-1">
                       <button
                         onClick={() => setShowReactions(showReactions === post.id ? null : post.id)}
-                        className={`w-full flex items-center justify-center gap-2 py-2 rounded-lg transition-colors ${
-                          userReaction ? 'text-red-600 bg-red-50' : 'text-gray-600 hover:bg-gray-100'
-                        }`}
+                        className="w-full flex items-center justify-center gap-2 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
                       >
                         {userReaction ? (
                           <span className="text-xl">{userReaction}</span>
                         ) : (
                           <Heart className="w-5 h-5" />
                         )}
-                        <span className="text-sm font-medium">{userReaction ? 'Reacted' : 'React'}</span>
+                        <span className="text-sm font-medium">React</span>
                       </button>
 
                       {/* Reaction Picker Popup */}
@@ -497,16 +495,14 @@ export default function FeedsView() {
                     <div className="relative flex-1">
                       <button
                         onClick={() => setShowReactions(showReactions === post.id ? null : post.id)}
-                        className={`w-full flex items-center justify-center gap-1.5 py-2 rounded-lg transition-colors ${
-                          userReaction ? 'text-red-600 bg-red-50' : 'text-gray-600 active:bg-gray-100'
-                        }`}
+                        className="w-full flex items-center justify-center gap-1.5 py-2 rounded-lg text-gray-600 active:bg-gray-100 transition-colors"
                       >
                         {userReaction ? (
                           <span className="text-base">{userReaction}</span>
                         ) : (
                           <Heart className="w-4 h-4" />
                         )}
-                        <span className="text-xs font-medium">{userReaction ? 'Reacted' : 'React'}</span>
+                        <span className="text-xs font-medium">React</span>
                       </button>
 
                       {/* Reaction Picker Popup */}
