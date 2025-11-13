@@ -477,7 +477,7 @@ function AdminSchedulePageContent() {
                     <div className="space-y-6">
                       {/* Step 1: Define Roles */}
                       <div className="w-full bg-white rounded-lg shadow border border-gray-200">
-                        <div className="px-2 md:px-4 py-2 md:py-3 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-cyan-50">
+                        <div className="px-2 md:px-4 py-2 md:py-3 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-cyan-50" style={{//  'linear-gradient(135deg, #3B82F6 0%, #06B6D4 50%, #8B5CF6 100%)'}}>
                           <h2 className="text-sm md:text-base font-bold flex items-center gap-2 text-gray-900">
                             <Settings className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
                             <span>Step 1: Define Roles</span>
@@ -491,7 +491,7 @@ function AdminSchedulePageContent() {
 
                       {/* Step 2: Configure Default Theatre Staffing */}
                       <div className="w-full bg-white rounded-lg shadow border border-gray-200">
-                        <div className="px-2 md:px-4 py-2 md:py-3 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-cyan-50" >
+                        <div className="px-2 md:px-4 py-2 md:py-3 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-cyan-50" style={{//  'linear-gradient(135deg, #3B82F6 0%, #06B6D4 50%, #8B5CF6 100%)'}}>
                           <h2 className="text-sm md:text-base font-bold flex items-center gap-2 text-gray-900">
                             <Users className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
                             <span>Step 2: Configure Default Theatre Staffing</span>
@@ -505,7 +505,7 @@ function AdminSchedulePageContent() {
 
                       {/* Step 3: Map Additional Requirements */}
                       <div className="w-full bg-white rounded-lg shadow border border-gray-200">
-                        <div className="px-2 md:px-4 py-2 md:py-3 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-cyan-50" >
+                        <div className="px-2 md:px-4 py-2 md:py-3 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-cyan-50" style={{//  'linear-gradient(135deg, #3B82F6 0%, #06B6D4 50%, #8B5CF6 100%)'}}>
                           <h2 className="text-sm md:text-base font-bold flex items-center gap-2 text-gray-900">
                             <ClipboardList className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
                             <span>Step 3: Map Additional Requirements</span>
