@@ -24,11 +24,13 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
     }
   ]);
   const [inputMessage, setInputMessage] = useState('');
-  const [isListening, setIsListening] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const [isVoiceMode, setIsVoiceMode] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [voicesLoaded, setVoicesLoaded] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
+  const voiceModeRecognitionRef = useRef<any>(null);
 
   // Load voices
   useEffect(() => {
@@ -53,19 +55,56 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
     scrollToBottom();
   }, [messages]);
 
-  // Initialize Speech Recognition
+  // Initialize Recording Mode Speech Recognition (mic button)
   useEffect(() => {
     if (typeof window !== 'undefined' && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
       const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
       recognitionRef.current = new SpeechRecognition();
-      recognitionRef.current.continuous = true;
+      recognitionRef.current.continuous = false;
       recognitionRef.current.interimResults = true;
       recognitionRef.current.lang = 'en-GB';
+
+      recognitionRef.current.onresult = (event: any) => {
+        let finalTranscript = '';
+        let interimTranscript = '';
+
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const transcript = event.results[i][0].transcript;
+          if (event.results[i].isFinal) {
+            finalTranscript += transcript + ' ';
+          } else {
+            interimTranscript += transcript;
+          }
+        }
+
+        const currentText = (finalTranscript + interimTranscript).trim();
+        setInputMessage(currentText);
+      };
+
+      recognitionRef.current.onerror = (event: any) => {
+        console.error('Recording error:', event.error);
+        setIsRecording(false);
+      };
+
+      recognitionRef.current.onend = () => {
+        setIsRecording(false);
+      };
+    }
+  }, []);
+
+  // Initialize Voice Mode Speech Recognition (conversational)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+      const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
+      voiceModeRecognitionRef.current = new SpeechRecognition();
+      voiceModeRecognitionRef.current.continuous = true;
+      voiceModeRecognitionRef.current.interimResults = true;
+      voiceModeRecognitionRef.current.lang = 'en-GB';
 
       let autoSendTimeout: NodeJS.Timeout | null = null;
       let accumulatedText = '';
 
-      recognitionRef.current.onresult = (event: any) => {
+      voiceModeRecognitionRef.current.onresult = (event: any) => {
         // Cancel any ongoing speech when user starts talking
         if (window.speechSynthesis.speaking) {
           window.speechSynthesis.cancel();
@@ -80,7 +119,6 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
         let finalTranscript = '';
         let interimTranscript = '';
 
-        // Collect all transcripts
         for (let i = event.resultIndex; i < event.results.length; i++) {
           const transcript = event.results[i][0].transcript;
           if (event.results[i].isFinal) {
@@ -90,65 +128,75 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
           }
         }
 
-        // Accumulate final text
         if (finalTranscript) {
           accumulatedText += finalTranscript;
         }
 
-        // Show current text (accumulated + interim)
         const currentText = (accumulatedText + interimTranscript).trim();
         setInputMessage(currentText);
 
-        // Auto-send after 1.5 seconds of silence (when final transcript detected)
+        // Auto-send after 1.5 seconds of silence
         if (finalTranscript.trim()) {
-          console.log('Detected speech, will auto-send in 1.5s...');
           autoSendTimeout = setTimeout(() => {
             const textToSend = accumulatedText.trim();
-            console.log('Auto-sending:', textToSend);
             if (textToSend) {
-              // Reset accumulated text
               accumulatedText = '';
-              // Send the message (handleSendMessage reads from inputMessage state)
               handleSendMessage();
             }
-          }, 1500); // Wait 1.5 seconds after user stops talking
+          }, 1500);
         }
       };
 
-      recognitionRef.current.onerror = (event: any) => {
-        if (event.error === 'no-speech' && isListening) {
+      voiceModeRecognitionRef.current.onerror = (event: any) => {
+        if (event.error === 'no-speech' && isVoiceMode) {
           setTimeout(() => {
             try {
-              recognitionRef.current?.start();
+              voiceModeRecognitionRef.current?.start();
             } catch (e) {}
           }, 100);
         } else {
-          setIsListening(false);
+          setIsVoiceMode(false);
         }
       };
 
-      recognitionRef.current.onend = () => {
-        if (isListening) {
+      voiceModeRecognitionRef.current.onend = () => {
+        if (isVoiceMode) {
           try {
-            recognitionRef.current?.start();
+            voiceModeRecognitionRef.current?.start();
           } catch (e) {}
         }
       };
     }
-  }, [isListening]);
+  }, [isVoiceMode]);
 
-  const handleVoiceInput = () => {
+  const handleRecording = () => {
     if (!recognitionRef.current) {
       alert('Speech recognition is not supported in your browser.');
       return;
     }
 
-    if (isListening) {
+    if (isRecording) {
       recognitionRef.current.stop();
-      setIsListening(false);
+      setIsRecording(false);
     } else {
       recognitionRef.current.start();
-      setIsListening(true);
+      setIsRecording(true);
+    }
+  };
+
+  const handleVoiceMode = () => {
+    if (!voiceModeRecognitionRef.current) {
+      alert('Speech recognition is not supported in your browser.');
+      return;
+    }
+
+    if (isVoiceMode) {
+      voiceModeRecognitionRef.current.stop();
+      setIsVoiceMode(false);
+      setInputMessage('');
+    } else {
+      voiceModeRecognitionRef.current.start();
+      setIsVoiceMode(true);
     }
   };
 
@@ -359,28 +407,46 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder={isListening ? "Listening..." : "Ask anything (press Enter)"}
-              disabled={isListening}
-              className="w-full pl-4 pr-12 py-3 border border-gray-300 rounded-full focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm bg-white disabled:bg-gray-50 disabled:cursor-not-allowed"
+              placeholder={isRecording ? "Recording..." : isVoiceMode ? "Voice mode active..." : "Ask anything (press Enter)"}
+              disabled={isVoiceMode}
+              className="w-full pl-4 pr-20 py-3 border border-gray-300 rounded-full focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm bg-white disabled:bg-gray-50 disabled:cursor-not-allowed"
             />
-            <div className="absolute right-2 top-1/2 -translate-y-1/2">
+            <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+              {/* Mic Button - Recording/Dictation */}
               <button
-                onClick={handleVoiceInput}
+                onClick={handleRecording}
+                disabled={isVoiceMode}
                 className={`p-2 rounded-full transition-all ${
-                  isListening
-                    ? 'bg-red-500 text-white animate-pulse'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  isRecording
+                    ? 'bg-red-500 text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed'
                 }`}
-                title={isListening ? 'Stop voice mode' : 'Start voice mode'}
+                title={isRecording ? 'Stop recording' : 'Record message'}
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
                 </svg>
               </button>
+
+              {/* Voice Mode Button - Conversational AI */}
+              <button
+                onClick={handleVoiceMode}
+                disabled={isRecording}
+                className={`p-2 rounded-full transition-all ${
+                  isVoiceMode
+                    ? 'bg-blue-500 text-white animate-pulse'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed'
+                }`}
+                title={isVoiceMode ? 'Stop voice mode' : 'Start voice conversation'}
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+              </button>
             </div>
           </div>
         </div>
-        {isListening && (
+        {isRecording && (
           <div className="mt-3 flex items-center gap-2">
             <div className="flex gap-1">
               <span className="w-1 h-3 bg-red-500 rounded-full animate-pulse"></span>
@@ -389,7 +455,19 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
               <span className="w-1 h-4 bg-red-500 rounded-full animate-pulse" style={{animationDelay: '0.3s'}}></span>
               <span className="w-1 h-3 bg-red-500 rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></span>
             </div>
-            <p className="text-xs text-gray-600">Voice mode active - I'll respond when you pause</p>
+            <p className="text-xs text-gray-600">Recording - Press Enter to send</p>
+          </div>
+        )}
+        {isVoiceMode && (
+          <div className="mt-3 flex items-center gap-2">
+            <div className="flex gap-1">
+              <span className="w-1 h-3 bg-blue-500 rounded-full animate-pulse"></span>
+              <span className="w-1 h-4 bg-blue-500 rounded-full animate-pulse" style={{animationDelay: '0.1s'}}></span>
+              <span className="w-1 h-5 bg-blue-500 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></span>
+              <span className="w-1 h-4 bg-blue-500 rounded-full animate-pulse" style={{animationDelay: '0.3s'}}></span>
+              <span className="w-1 h-3 bg-blue-500 rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></span>
+            </div>
+            <p className="text-xs text-blue-600">Voice mode - I'll respond when you pause</p>
           </div>
         )}
         {isSpeaking && (
