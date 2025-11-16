@@ -368,7 +368,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
 
   return (
     <div className="h-full flex flex-col bg-white overflow-hidden">
-      {showHeader && (
+      {showHeader && !isVoiceMode && (
         <div className="flex-shrink-0 border-b border-gray-200 p-4 bg-gradient-to-r from-blue-50 via-teal-50 to-purple-50">
           <div className="flex items-center gap-2">
             <h2 className="text-lg font-semibold bg-gradient-to-r from-blue-600 via-teal-600 to-purple-600 bg-clip-text text-transparent">TOM</h2>
@@ -377,8 +377,108 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
         </div>
       )}
 
-      {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      {/* Immersive Voice Mode - Full Screen */}
+      {isVoiceMode && (
+        <div className="flex-1 flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 relative overflow-hidden">
+          {/* Animated Background Ripples */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            {!isSpeaking && (
+              <>
+                <div className="absolute w-64 h-64 rounded-full bg-blue-400/10 animate-ping" style={{ animationDuration: '3s' }}></div>
+                <div className="absolute w-80 h-80 rounded-full bg-teal-400/10 animate-ping" style={{ animationDuration: '4s', animationDelay: '0.5s' }}></div>
+                <div className="absolute w-96 h-96 rounded-full bg-purple-400/10 animate-ping" style={{ animationDuration: '5s', animationDelay: '1s' }}></div>
+              </>
+            )}
+          </div>
+
+          {/* Centered Logo */}
+          <div className="relative z-10 flex flex-col items-center gap-8">
+            {/* Logo with Animation */}
+            <div className={`relative transition-all duration-500 ${isSpeaking ? 'scale-110' : 'scale-100'}`}>
+              {/* Glow Effect */}
+              <div className={`absolute inset-0 blur-2xl transition-opacity duration-500 ${
+                isSpeaking ? 'opacity-60' : 'opacity-40'
+              }`}>
+                <TomLogo
+                  isListening={!isSpeaking}
+                  isSpeaking={isSpeaking}
+                  size={200}
+                  variant="standalone"
+                />
+              </div>
+
+              {/* Main Logo */}
+              <div className={`relative ${isSpeaking ? 'animate-pulse' : ''}`}>
+                <TomLogo
+                  isListening={!isSpeaking}
+                  isSpeaking={isSpeaking}
+                  size={200}
+                  variant="standalone"
+                />
+              </div>
+
+              {/* Listening Ripple Effect */}
+              {!isSpeaking && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-48 h-48 rounded-full border-4 border-blue-400/30 animate-ping"></div>
+                </div>
+              )}
+            </div>
+
+            {/* Status Text */}
+            <div className="text-center space-y-2">
+              <p className={`text-2xl font-bold transition-colors duration-300 ${
+                isSpeaking
+                  ? 'text-teal-600'
+                  : 'text-blue-600'
+              }`}>
+                {isSpeaking ? 'TOM is speaking...' : 'Listening...'}
+              </p>
+
+              {/* Live Transcript Preview */}
+              {inputMessage && !isSpeaking && (
+                <p className="text-sm text-gray-600 max-w-md px-4 italic">
+                  "{inputMessage}"
+                </p>
+              )}
+            </div>
+
+            {/* Voice Visualization Bars */}
+            <div className="flex items-center gap-1.5">
+              {[...Array(isSpeaking ? 7 : 5)].map((_, i) => (
+                <div
+                  key={i}
+                  className={`w-1.5 rounded-full transition-all ${
+                    isSpeaking ? 'bg-teal-500' : 'bg-blue-500'
+                  }`}
+                  style={{
+                    height: isSpeaking
+                      ? `${Math.random() * 40 + 20}px`
+                      : `${Math.random() * 30 + 10}px`,
+                    animation: `pulse ${Math.random() * 0.5 + 0.5}s ease-in-out infinite`,
+                    animationDelay: `${i * 0.1}s`
+                  }}
+                ></div>
+              ))}
+            </div>
+          </div>
+
+          {/* Exit Voice Mode Button */}
+          <button
+            onClick={handleVoiceMode}
+            className="absolute bottom-8 bg-white/90 backdrop-blur-sm text-gray-700 px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105 flex items-center gap-2 border border-gray-200"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            <span className="font-medium">End Voice Mode</span>
+          </button>
+        </div>
+      )}
+
+      {/* Messages Area - Hidden in Voice Mode */}
+      {!isVoiceMode && (
+        <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((message) => (
           <div
             key={message.id}
@@ -396,10 +496,12 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
           </div>
         ))}
         <div ref={messagesEndRef} />
-      </div>
+        </div>
+      )}
 
-      {/* Input Area - Fixed at bottom */}
-      <div className="flex-shrink-0 border-t border-gray-200 p-4 bg-white">
+      {/* Input Area - Fixed at bottom - Hidden in Voice Mode */}
+      {!isVoiceMode && (
+        <div className="flex-shrink-0 border-t border-gray-200 p-4 bg-white">
         <div className="flex gap-2 items-center">
           <div className="flex-1 relative">
             <input
@@ -476,7 +578,8 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
             <p className="text-xs text-teal-600">TOM is speaking...</p>
           </div>
         )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
