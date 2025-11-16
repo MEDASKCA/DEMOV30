@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Send } from 'lucide-react';
 import TomLogo from './TomLogo';
 
 interface Message {
@@ -360,10 +359,11 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder={isListening ? "Listening..." : "Ask anything"}
-              className="w-full pl-4 pr-24 py-3 border border-gray-300 rounded-full focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm bg-white"
+              placeholder={isListening ? "Listening..." : "Ask anything (press Enter)"}
+              disabled={isListening}
+              className="w-full pl-4 pr-12 py-3 border border-gray-300 rounded-full focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm bg-white disabled:bg-gray-50 disabled:cursor-not-allowed"
             />
-            <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+            <div className="absolute right-2 top-1/2 -translate-y-1/2">
               <button
                 onClick={handleVoiceInput}
                 className={`p-2 rounded-full transition-all ${
@@ -371,24 +371,17 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
                     ? 'bg-red-500 text-white animate-pulse'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
-                title={isListening ? 'Stop listening' : 'Voice mode'}
+                title={isListening ? 'Stop voice mode' : 'Start voice mode'}
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
                 </svg>
               </button>
-              <button
-                onClick={handleSendMessage}
-                disabled={!inputMessage.trim()}
-                className="p-2 bg-gradient-to-r from-blue-600 to-teal-600 text-white rounded-full hover:from-blue-700 hover:to-teal-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <Send className="w-4 h-4" />
-              </button>
             </div>
           </div>
         </div>
         {isListening && (
-          <div className="mt-2 flex items-center gap-2">
+          <div className="mt-3 flex items-center gap-2">
             <div className="flex gap-1">
               <span className="w-1 h-3 bg-red-500 rounded-full animate-pulse"></span>
               <span className="w-1 h-4 bg-red-500 rounded-full animate-pulse" style={{animationDelay: '0.1s'}}></span>
@@ -396,11 +389,11 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
               <span className="w-1 h-4 bg-red-500 rounded-full animate-pulse" style={{animationDelay: '0.3s'}}></span>
               <span className="w-1 h-3 bg-red-500 rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></span>
             </div>
-            <p className="text-xs text-gray-600">Voice mode active - Speak naturally</p>
+            <p className="text-xs text-gray-600">Voice mode active - I'll respond when you pause</p>
           </div>
         )}
         {isSpeaking && (
-          <div className="mt-2 flex items-center gap-2">
+          <div className="mt-3 flex items-center gap-2">
             <TomLogo isListening={false} isSpeaking={true} size={20} variant="inline" />
             <p className="text-xs text-teal-600">TOM is speaking...</p>
           </div>
