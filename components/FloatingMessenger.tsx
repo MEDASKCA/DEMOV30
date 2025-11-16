@@ -457,9 +457,17 @@ export default function FloatingMessenger({ currentUserId = 'user-1' }: Floating
                             onClick={() => handleOpenConversation(conversation)}
                             className="w-full p-3 hover:bg-gray-50 transition-colors flex items-start gap-3 text-left"
                           >
-                            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold flex-shrink-0">
-                              {otherUser.initials}
-                            </div>
+                            {otherUser.avatar ? (
+                              <img
+                                src={otherUser.avatar}
+                                alt={`${otherUser.firstName} ${otherUser.lastName}`}
+                                className="w-12 h-12 rounded-full object-cover flex-shrink-0"
+                              />
+                            ) : (
+                              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold flex-shrink-0">
+                                {otherUser.initials}
+                              </div>
+                            )}
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center justify-between mb-1">
                                 <p className="font-semibold text-sm text-gray-900 truncate">
@@ -535,9 +543,17 @@ export default function FloatingMessenger({ currentUserId = 'user-1' }: Floating
                                   : 'border-gray-200 hover:border-gray-300'
                               }`}
                             >
-                              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-sm font-bold">
-                                {staff.initials}
-                              </div>
+                              {staff.avatar ? (
+                                <img
+                                  src={staff.avatar}
+                                  alt={`${staff.firstName} ${staff.lastName}`}
+                                  className="w-10 h-10 rounded-full object-cover"
+                                />
+                              ) : (
+                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-sm font-bold">
+                                  {staff.initials}
+                                </div>
+                              )}
                               <div className="flex-1 text-left">
                                 <p className="font-semibold text-sm text-gray-900">
                                   {staff.firstName} {staff.lastName}
@@ -581,9 +597,17 @@ export default function FloatingMessenger({ currentUserId = 'user-1' }: Floating
 
                       return (
                         <>
-                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-sm font-bold">
-                            {otherUser.initials}
-                          </div>
+                          {otherUser.avatar ? (
+                            <img
+                              src={otherUser.avatar}
+                              alt={`${otherUser.firstName} ${otherUser.lastName}`}
+                              className="w-8 h-8 rounded-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-sm font-bold">
+                              {otherUser.initials}
+                            </div>
+                          )}
                           <div className="flex-1 min-w-0">
                             <p className="font-semibold text-sm text-gray-900 truncate">
                               {otherUser.firstName} {otherUser.lastName}
@@ -622,8 +646,18 @@ export default function FloatingMessenger({ currentUserId = 'user-1' }: Floating
 
                         return (
                           <>
-                            <div className="w-24 h-24 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mb-4 border-4 border-white/30">
-                              <div className="text-4xl font-bold">{otherUser.initials}</div>
+                            <div className="w-24 h-24 rounded-full mb-4 border-4 border-white/30 overflow-hidden bg-white/20 backdrop-blur-sm">
+                              {otherUser.avatar ? (
+                                <img
+                                  src={otherUser.avatar}
+                                  alt={`${otherUser.firstName} ${otherUser.lastName}`}
+                                  className="w-full h-full object-cover"
+                                />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center text-4xl font-bold">
+                                  {otherUser.initials}
+                                </div>
+                              )}
                             </div>
                             <h3 className="text-2xl font-bold mb-2">
                               {otherUser.firstName} {otherUser.lastName}
