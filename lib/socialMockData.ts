@@ -58,14 +58,14 @@ export interface Conversation {
   groupAvatar?: string;
 }
 
-// Mock NHS Theatre Staff Profiles
+// Mock NHS Theatre Staff Profiles - Diverse perioperative team
 export const mockStaffProfiles: StaffProfile[] = [
   {
     id: 'user-1',
     firstName: 'Alexander',
     lastName: 'Monterubio',
-    role: 'Senior Scrub Team Leader',
-    specialty: 'Orthopaedics',
+    role: 'Senior Scrub Team Leader • RN, Band 7',
+    specialty: 'Orthopaedics & Trauma',
     trust: 'Barts Health NHS Trust',
     avatar: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=150&h=150&fit=crop&crop=faces',
     initials: 'AM'
@@ -74,8 +74,8 @@ export const mockStaffProfiles: StaffProfile[] = [
     id: 'user-2',
     firstName: 'Sarah',
     lastName: 'Johnson',
-    role: 'Consultant Surgeon',
-    specialty: 'Orthopaedics',
+    role: 'Consultant Orthopaedic Surgeon',
+    specialty: 'Trauma & Arthroplasty',
     trust: 'Barts Health NHS Trust',
     avatar: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=150&h=150&fit=crop&crop=faces',
     initials: 'SJ'
@@ -84,8 +84,8 @@ export const mockStaffProfiles: StaffProfile[] = [
     id: 'user-3',
     firstName: 'Michael',
     lastName: 'Chen',
-    role: 'Scrub Nurse',
-    specialty: 'General Surgery',
+    role: 'Scrub Practitioner • RN, Band 6',
+    specialty: 'Upper GI & Laparoscopic Surgery',
     trust: 'Barts Health NHS Trust',
     avatar: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=150&h=150&fit=crop&crop=faces',
     initials: 'MC'
@@ -94,8 +94,8 @@ export const mockStaffProfiles: StaffProfile[] = [
     id: 'user-4',
     firstName: 'Emma',
     lastName: 'Williams',
-    role: 'Theatre Manager',
-    specialty: 'Operations',
+    role: 'Theatre Operations Manager • Band 8a',
+    specialty: 'Perioperative Services',
     trust: 'Barts Health NHS Trust',
     avatar: 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=150&h=150&fit=crop&crop=faces',
     initials: 'EW'
@@ -104,8 +104,8 @@ export const mockStaffProfiles: StaffProfile[] = [
     id: 'user-5',
     firstName: 'David',
     lastName: 'Patel',
-    role: 'Anaesthetist',
-    specialty: 'Anaesthetics',
+    role: 'Consultant Anaesthetist',
+    specialty: 'Anaesthetics & Critical Care',
     trust: 'Barts Health NHS Trust',
     avatar: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=150&h=150&fit=crop&crop=faces',
     initials: 'DP'
@@ -114,8 +114,8 @@ export const mockStaffProfiles: StaffProfile[] = [
     id: 'user-6',
     firstName: 'Rachel',
     lastName: 'Thompson',
-    role: 'ODP',
-    specialty: 'Theatre Support',
+    role: 'Operating Department Practitioner',
+    specialty: 'Anaesthetics & Recovery',
     trust: 'Barts Health NHS Trust',
     avatar: 'https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?w=150&h=150&fit=crop&crop=faces',
     initials: 'RT'
@@ -124,8 +124,8 @@ export const mockStaffProfiles: StaffProfile[] = [
     id: 'user-7',
     firstName: 'James',
     lastName: 'Kumar',
-    role: 'Surgical Registrar',
-    specialty: 'Cardiothoracic',
+    role: 'CT Surgery Registrar • ST6',
+    specialty: 'Cardiothoracic Surgery',
     trust: 'Barts Health NHS Trust',
     avatar: 'https://images.unsplash.com/photo-1618498082410-b4aa22193b38?w=150&h=150&fit=crop&crop=faces',
     initials: 'JK'
@@ -134,11 +134,31 @@ export const mockStaffProfiles: StaffProfile[] = [
     id: 'user-8',
     firstName: 'Lisa',
     lastName: 'O\'Brien',
-    role: 'Lead Nurse',
-    specialty: 'Recovery',
+    role: 'Recovery Lead Nurse • Band 7',
+    specialty: 'Post-Anaesthetic Care',
     trust: 'Barts Health NHS Trust',
     avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop&crop=faces',
     initials: 'LO'
+  },
+  {
+    id: 'user-9',
+    firstName: 'Aisha',
+    lastName: 'Mohammed',
+    role: 'Healthcare Assistant • Band 3',
+    specialty: 'Theatre Support',
+    trust: 'Barts Health NHS Trust',
+    avatar: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=150&h=150&fit=crop&crop=faces',
+    initials: 'AM'
+  },
+  {
+    id: 'user-10',
+    firstName: 'Tom',
+    lastName: 'Richards',
+    role: 'Clinical Specialist • Stryker Orthopaedics',
+    specialty: 'Joint Replacement Systems',
+    trust: 'Industry Partner',
+    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=faces',
+    initials: 'TR'
   }
 ];
 
