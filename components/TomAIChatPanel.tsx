@@ -353,43 +353,56 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
 
       {/* Input Area - Fixed at bottom */}
       <div className="flex-shrink-0 border-t border-gray-200 p-4 bg-white">
-        <div className="flex gap-2 items-end">
-          <button
-            onClick={handleVoiceInput}
-            className="p-2 rounded-full transition-all flex-shrink-0 hover:scale-105"
-            title={isListening ? 'Stop listening' : 'Start voice input'}
-          >
-            <TomLogo
-              isListening={isListening}
-              isSpeaking={isSpeaking}
-              size={48}
-              variant="inline"
+        <div className="flex gap-2 items-center">
+          <div className="flex-1 relative">
+            <input
+              type="text"
+              value={inputMessage}
+              onChange={(e) => setInputMessage(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder={isListening ? "Listening..." : "Ask anything"}
+              className="w-full pl-4 pr-24 py-3 border border-gray-300 rounded-full focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm bg-white"
             />
-          </button>
-          <input
-            type="text"
-            value={inputMessage}
-            onChange={(e) => setInputMessage(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="Message TOM..."
-            className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
-          />
-          <button
-            onClick={handleSendMessage}
-            disabled={!inputMessage.trim()}
-            className="p-3 bg-gradient-to-r from-blue-600 via-teal-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-teal-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
-          >
-            <Send className="w-5 h-5" />
-          </button>
+            <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+              <button
+                onClick={handleVoiceInput}
+                className={`p-2 rounded-full transition-all ${
+                  isListening
+                    ? 'bg-red-500 text-white animate-pulse'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+                title={isListening ? 'Stop listening' : 'Voice mode'}
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                </svg>
+              </button>
+              <button
+                onClick={handleSendMessage}
+                disabled={!inputMessage.trim()}
+                className="p-2 bg-gradient-to-r from-blue-600 to-teal-600 text-white rounded-full hover:from-blue-700 hover:to-teal-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <Send className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
         </div>
         {isListening && (
-          <div className="mt-2 space-y-1">
-            <p className="text-xs text-red-500 flex items-center gap-1">
-              <span className="animate-pulse">●</span> Listening... (Speak naturally, I'll auto-send when you stop)
-            </p>
-            <p className="text-xs text-gray-500 italic">
-              Tip: Wait 1.5 seconds after speaking for auto-send, or click Send button
-            </p>
+          <div className="mt-2 flex items-center gap-2">
+            <div className="flex gap-1">
+              <span className="w-1 h-3 bg-red-500 rounded-full animate-pulse"></span>
+              <span className="w-1 h-4 bg-red-500 rounded-full animate-pulse" style={{animationDelay: '0.1s'}}></span>
+              <span className="w-1 h-5 bg-red-500 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></span>
+              <span className="w-1 h-4 bg-red-500 rounded-full animate-pulse" style={{animationDelay: '0.3s'}}></span>
+              <span className="w-1 h-3 bg-red-500 rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></span>
+            </div>
+            <p className="text-xs text-gray-600">Voice mode active - Speak naturally</p>
+          </div>
+        )}
+        {isSpeaking && (
+          <div className="mt-2 flex items-center gap-2">
+            <TomLogo isListening={false} isSpeaking={true} size={20} variant="inline" />
+            <p className="text-xs text-teal-600">TOM is speaking...</p>
           </div>
         )}
       </div>
