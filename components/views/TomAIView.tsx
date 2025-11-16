@@ -16,7 +16,7 @@ export default function TomAIView() {
     {
       id: '1',
       role: 'assistant',
-      content: "TOM AI: Hello Alexander! How can I help you today?",
+      content: "TOM: Hello Alexander! How can I help you today?",
       timestamp: new Date()
     }
   ]);
@@ -372,7 +372,7 @@ export default function TomAIView() {
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Message TOM AI..."
+              placeholder="Message TOM..."
               className="flex-1 px-3 md:px-4 py-2.5 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm md:text-base"
             />
             <button

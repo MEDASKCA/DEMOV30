@@ -66,7 +66,7 @@ export default function TOMChatInterface({
     {
       id: '1',
       type: 'tom',
-      content: `Good morning, ${currentUserName.split(' ')[0]}! 👋 I'm TOM AI, your intelligent theatre operations assistant. How can I help you today?`,
+      content: `Good morning, ${currentUserName.split(' ')[0]}! 👋 I'm TOM, your intelligent theatre operations assistant. How can I help you today?`,
       timestamp: new Date(),
       suggestions: [
         'Show me today\'s procedures',
@@ -231,7 +231,7 @@ export default function TOMChatInterface({
 
         {/* Tooltip */}
         <div className="absolute bottom-full right-0 mb-2 px-3 py-1.5 bg-gray-900 text-white text-xs font-bold rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-          Ask TOM AI
+          Ask TOM
           <div className="absolute top-full right-4 w-2 h-2 bg-gray-900 transform rotate-45 -mt-1" />
         </div>
       </button>
@@ -248,7 +248,7 @@ export default function TOMChatInterface({
               <Brain className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h3 className="text-sm font-black text-gray-900">TOM AI</h3>
+              <h3 className="text-sm font-black text-gray-900">TOM</h3>
               <p className="text-xs text-gray-600">
                 {isProcessing ? 'Thinking...' : 'Ready to help'}
               </p>
@@ -289,7 +289,7 @@ export default function TOMChatInterface({
             </div>
             <div>
               <h2 className="text-xl font-black flex items-center gap-2">
-                TOM AI
+                TOM
                 <Sparkles className="w-4 h-4" />
               </h2>
               <p className="text-xs text-white/80">
