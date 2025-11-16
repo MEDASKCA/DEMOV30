@@ -2,7 +2,8 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { X, Send, MessageCircle, Minimize2, Smile, Paperclip, Mic, MicOff, Phone, Video, Users, Plus, Check } from 'lucide-react';
-import { mockStaffProfiles, mockConversations, getStaffById, getTimeAgo, type Conversation, type Message as MessageType } from '@/lib/socialMockData';
+import { mockStaffProfiles, mockConversations, getStaffById, getTimeAgo, type Conversation, type Message as MessageType, type StaffProfile } from '@/lib/socialMockData';
+import UserProfileModal from '@/components/UserProfileModal';
 
 interface FloatingMessengerProps {
   currentUserId?: string;
@@ -26,10 +27,20 @@ export default function FloatingMessenger({ currentUserId = 'user-1' }: Floating
   const [showCreateGroup, setShowCreateGroup] = useState(false);
   const [groupName, setGroupName] = useState('');
   const [selectedParticipants, setSelectedParticipants] = useState<string[]>([]);
+  const [selectedUser, setSelectedUser] = useState<StaffProfile | null>(null);
+  const [showProfileModal, setShowProfileModal] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const recognitionRef = useRef<any>(null);
   const chatWindowRef = useRef<HTMLDivElement>(null);
+
+  const handleProfileClick = (userId: string) => {
+    const user = getStaffById(userId);
+    if (user) {
+      setSelectedUser(user);
+      setShowProfileModal(true);
+    }
+  };
 
   // Calculate total unread messages
   const totalUnread = conversations.reduce((sum, conv) => sum + conv.unreadCount, 0);
@@ -452,25 +463,35 @@ export default function FloatingMessenger({ currentUserId = 'user-1' }: Floating
                         if (!otherUser) return null;
 
                         return (
-                          <button
+                          <div
                             key={conversation.id}
-                            onClick={() => handleOpenConversation(conversation)}
-                            className="w-full p-3 hover:bg-gray-50 transition-colors flex items-start gap-3 text-left"
+                            className="w-full p-3 hover:bg-gray-50 transition-colors flex items-start gap-3 relative"
                           >
-                            {otherUser.avatar ? (
-                              <img
-                                src={otherUser.avatar}
-                                alt={`${otherUser.firstName} ${otherUser.lastName}`}
-                                className="w-12 h-12 rounded-full object-cover flex-shrink-0"
-                              />
-                            ) : (
-                              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold flex-shrink-0">
-                                {otherUser.initials}
-                              </div>
-                            )}
-                            <div className="flex-1 min-w-0">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleProfileClick(otherUser.id);
+                              }}
+                              className="flex-shrink-0 hover:opacity-80 transition-opacity"
+                            >
+                              {otherUser.avatar ? (
+                                <img
+                                  src={otherUser.avatar}
+                                  alt={`${otherUser.firstName} ${otherUser.lastName}`}
+                                  className="w-12 h-12 rounded-full object-cover"
+                                />
+                              ) : (
+                                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold">
+                                  {otherUser.initials}
+                                </div>
+                              )}
+                            </button>
+                            <button
+                              onClick={() => handleOpenConversation(conversation)}
+                              className="flex-1 min-w-0 text-left"
+                            >
                               <div className="flex items-center justify-between mb-1">
-                                <p className="font-semibold text-sm text-gray-900 truncate">
+                                <p className="font-semibold text-sm text-gray-900 truncate hover:text-blue-600 transition-colors">
                                   {otherUser.firstName} {otherUser.lastName}
                                 </p>
                                 <span className="text-xs text-gray-500">
@@ -481,13 +502,13 @@ export default function FloatingMessenger({ currentUserId = 'user-1' }: Floating
                                 {conversation.lastMessage.senderId === currentUserId ? 'You: ' : ''}
                                 {conversation.lastMessage.content}
                               </p>
-                            </div>
+                            </button>
                             {conversation.unreadCount > 0 && (
-                              <div className="bg-blue-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center flex-shrink-0">
+                              <div className="bg-blue-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center flex-shrink-0 absolute top-3 right-3">
                                 {conversation.unreadCount}
                               </div>
                             )}
-                          </button>
+                          </div>
                         );
                       })}
                     </div>
@@ -534,36 +555,46 @@ export default function FloatingMessenger({ currentUserId = 'user-1' }: Floating
                         {mockStaffProfiles
                           .filter(staff => staff.id !== currentUserId)
                           .map(staff => (
-                            <button
+                            <div
                               key={staff.id}
-                              onClick={() => toggleParticipant(staff.id)}
                               className={`w-full p-3 rounded-lg border-2 transition-all flex items-center gap-3 ${
                                 selectedParticipants.includes(staff.id)
                                   ? 'border-blue-500 bg-blue-50'
                                   : 'border-gray-200 hover:border-gray-300'
                               }`}
                             >
-                              {staff.avatar ? (
-                                <img
-                                  src={staff.avatar}
-                                  alt={`${staff.firstName} ${staff.lastName}`}
-                                  className="w-10 h-10 rounded-full object-cover"
-                                />
-                              ) : (
-                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-sm font-bold">
-                                  {staff.initials}
-                                </div>
-                              )}
-                              <div className="flex-1 text-left">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleProfileClick(staff.id);
+                                }}
+                                className="flex-shrink-0 hover:opacity-80 transition-opacity"
+                              >
+                                {staff.avatar ? (
+                                  <img
+                                    src={staff.avatar}
+                                    alt={`${staff.firstName} ${staff.lastName}`}
+                                    className="w-10 h-10 rounded-full object-cover"
+                                  />
+                                ) : (
+                                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-sm font-bold">
+                                    {staff.initials}
+                                  </div>
+                                )}
+                              </button>
+                              <button
+                                onClick={() => toggleParticipant(staff.id)}
+                                className="flex-1 text-left"
+                              >
                                 <p className="font-semibold text-sm text-gray-900">
                                   {staff.firstName} {staff.lastName}
                                 </p>
                                 <p className="text-xs text-gray-600">{staff.role}</p>
-                              </div>
+                              </button>
                               {selectedParticipants.includes(staff.id) && (
                                 <Check className="w-5 h-5 text-blue-600" />
                               )}
-                            </button>
+                            </div>
                           ))}
                       </div>
                     </div>
@@ -597,21 +628,29 @@ export default function FloatingMessenger({ currentUserId = 'user-1' }: Floating
 
                       return (
                         <>
-                          {otherUser.avatar ? (
-                            <img
-                              src={otherUser.avatar}
-                              alt={`${otherUser.firstName} ${otherUser.lastName}`}
-                              className="w-8 h-8 rounded-full object-cover"
-                            />
-                          ) : (
-                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-sm font-bold">
-                              {otherUser.initials}
-                            </div>
-                          )}
+                          <button
+                            onClick={() => handleProfileClick(otherUser.id)}
+                            className="flex-shrink-0 hover:opacity-80 transition-opacity"
+                          >
+                            {otherUser.avatar ? (
+                              <img
+                                src={otherUser.avatar}
+                                alt={`${otherUser.firstName} ${otherUser.lastName}`}
+                                className="w-8 h-8 rounded-full object-cover"
+                              />
+                            ) : (
+                              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-sm font-bold">
+                                {otherUser.initials}
+                              </div>
+                            )}
+                          </button>
                           <div className="flex-1 min-w-0">
-                            <p className="font-semibold text-sm text-gray-900 truncate">
+                            <button
+                              onClick={() => handleProfileClick(otherUser.id)}
+                              className="font-semibold text-sm text-gray-900 truncate hover:text-blue-600 transition-colors text-left block w-full"
+                            >
                               {otherUser.firstName} {otherUser.lastName}
-                            </p>
+                            </button>
                             <p className="text-xs text-gray-500 truncate">{otherUser.role}</p>
                           </div>
                           {/* Call Buttons */}
@@ -646,7 +685,10 @@ export default function FloatingMessenger({ currentUserId = 'user-1' }: Floating
 
                         return (
                           <>
-                            <div className="w-24 h-24 rounded-full mb-4 border-4 border-white/30 overflow-hidden bg-white/20 backdrop-blur-sm">
+                            <button
+                              onClick={() => handleProfileClick(otherUser.id)}
+                              className="w-24 h-24 rounded-full mb-4 border-4 border-white/30 overflow-hidden bg-white/20 backdrop-blur-sm hover:opacity-80 transition-opacity"
+                            >
                               {otherUser.avatar ? (
                                 <img
                                   src={otherUser.avatar}
@@ -658,10 +700,13 @@ export default function FloatingMessenger({ currentUserId = 'user-1' }: Floating
                                   {otherUser.initials}
                                 </div>
                               )}
-                            </div>
-                            <h3 className="text-2xl font-bold mb-2">
+                            </button>
+                            <button
+                              onClick={() => handleProfileClick(otherUser.id)}
+                              className="text-2xl font-bold mb-2 hover:text-white/80 transition-colors"
+                            >
                               {otherUser.firstName} {otherUser.lastName}
-                            </h3>
+                            </button>
                             <p className="text-white/80 mb-8">{callType === 'video' ? 'Video Call' : 'Voice Call'}</p>
 
                             {callType === 'video' && (
@@ -796,6 +841,16 @@ export default function FloatingMessenger({ currentUserId = 'user-1' }: Floating
           )}
         </div>
       )}
+
+      {/* User Profile Modal */}
+      <UserProfileModal
+        user={selectedUser}
+        isOpen={showProfileModal}
+        onClose={() => {
+          setShowProfileModal(false);
+          setSelectedUser(null);
+        }}
+      />
     </>
   );
 }

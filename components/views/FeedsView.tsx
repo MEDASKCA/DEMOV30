@@ -2,10 +2,11 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, MessageSquare, Heart, Share2, Plus, Image as ImageIcon, Smile, ThumbsUp, ThumbsDown, X, Shield } from 'lucide-react';
-import { mockStaffProfiles, mockPosts, getStaffById, getTimeAgo, type Post as PostType, type Comment as CommentType } from '@/lib/socialMockData';
+import { mockStaffProfiles, mockPosts, getStaffById, getTimeAgo, type Post as PostType, type Comment as CommentType, type StaffProfile } from '@/lib/socialMockData';
 import TomAIChatPanel from '@/components/TomAIChatPanel';
 import ShareModal from '@/components/ShareModal';
 import AdvertsPanel from '@/components/AdvertsPanel';
+import UserProfileModal from '@/components/UserProfileModal';
 import { useRouter } from 'next/navigation';
 
 interface Story {
@@ -44,6 +45,16 @@ export default function FeedsView() {
   const [postToShare, setPostToShare] = useState<PostType | null>(null);
   const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(null);
   const [showReactionsList, setShowReactionsList] = useState<string | null>(null);
+  const [selectedUser, setSelectedUser] = useState<StaffProfile | null>(null);
+  const [showProfileModal, setShowProfileModal] = useState(false);
+
+  const handleProfileClick = (userId: string) => {
+    const user = getStaffById(userId);
+    if (user) {
+      setSelectedUser(user);
+      setShowProfileModal(true);
+    }
+  };
 
   // Mock stories data
   const stories: Story[] = [
@@ -216,7 +227,10 @@ export default function FeedsView() {
                   if (!user) return null;
                   return (
                     <div key={story.id} className="flex flex-col items-center gap-2 flex-shrink-0">
-                      <button className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 via-teal-500 to-purple-500 p-0.5 hover:scale-105 transition-transform">
+                      <button
+                        onClick={() => handleProfileClick(user.id)}
+                        className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 via-teal-500 to-purple-500 p-0.5 hover:scale-105 transition-transform"
+                      >
                         <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
                           {user.avatar ? (
                             <img
@@ -292,19 +306,29 @@ export default function FeedsView() {
                 <div key={post.id} className="bg-white rounded-xl border border-gray-200 hover:shadow-md transition-shadow">
                   {/* Post Header */}
                   <div className="p-4 flex items-start gap-3">
-                    {author.avatar ? (
-                      <img
-                        src={author.avatar}
-                        alt={`${author.firstName} ${author.lastName}`}
-                        className="w-10 h-10 rounded-full object-cover flex-shrink-0"
-                      />
-                    ) : (
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold flex-shrink-0">
-                        {author.initials}
-                      </div>
-                    )}
+                    <button
+                      onClick={() => handleProfileClick(author.id)}
+                      className="flex-shrink-0 hover:opacity-80 transition-opacity"
+                    >
+                      {author.avatar ? (
+                        <img
+                          src={author.avatar}
+                          alt={`${author.firstName} ${author.lastName}`}
+                          className="w-10 h-10 rounded-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold">
+                          {author.initials}
+                        </div>
+                      )}
+                    </button>
                     <div className="flex-1">
-                      <p className="font-semibold text-gray-900">{author.firstName} {author.lastName}</p>
+                      <button
+                        onClick={() => handleProfileClick(author.id)}
+                        className="font-semibold text-gray-900 hover:text-blue-600 transition-colors text-left"
+                      >
+                        {author.firstName} {author.lastName}
+                      </button>
                       <p className="text-xs text-gray-500">{author.role} • {getTimeAgo(post.timestamp)}</p>
                     </div>
                   </div>
@@ -342,18 +366,28 @@ export default function FeedsView() {
                           return (
                             <div key={userId} className="flex items-center justify-between text-sm">
                               <div className="flex items-center gap-2">
-                                {user.avatar ? (
-                                  <img
-                                    src={user.avatar}
-                                    alt={`${user.firstName} ${user.lastName}`}
-                                    className="w-6 h-6 rounded-full object-cover"
-                                  />
-                                ) : (
-                                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold">
-                                    {user.initials}
-                                  </div>
-                                )}
-                                <span className="text-gray-900 font-medium">{user.firstName} {user.lastName}</span>
+                                <button
+                                  onClick={() => handleProfileClick(user.id)}
+                                  className="flex-shrink-0 hover:opacity-80 transition-opacity"
+                                >
+                                  {user.avatar ? (
+                                    <img
+                                      src={user.avatar}
+                                      alt={`${user.firstName} ${user.lastName}`}
+                                      className="w-6 h-6 rounded-full object-cover"
+                                    />
+                                  ) : (
+                                    <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold">
+                                      {user.initials}
+                                    </div>
+                                  )}
+                                </button>
+                                <button
+                                  onClick={() => handleProfileClick(user.id)}
+                                  className="text-gray-900 font-medium hover:text-blue-600 transition-colors"
+                                >
+                                  {user.firstName} {user.lastName}
+                                </button>
                                 <span className="text-xl">{reaction.emoji}</span>
                               </div>
                               <span className="text-xs text-gray-500">{getTimeAgo(reaction.timestamp)}</span>
@@ -450,22 +484,30 @@ export default function FeedsView() {
 
                         return (
                           <div key={comment.id} className="flex gap-2">
-                            {commentAuthor.avatar ? (
-                              <img
-                                src={commentAuthor.avatar}
-                                alt={`${commentAuthor.firstName} ${commentAuthor.lastName}`}
-                                className="w-8 h-8 rounded-full object-cover flex-shrink-0"
-                              />
-                            ) : (
-                              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-                                {commentAuthor.initials}
-                              </div>
-                            )}
+                            <button
+                              onClick={() => handleProfileClick(commentAuthor.id)}
+                              className="flex-shrink-0 hover:opacity-80 transition-opacity"
+                            >
+                              {commentAuthor.avatar ? (
+                                <img
+                                  src={commentAuthor.avatar}
+                                  alt={`${commentAuthor.firstName} ${commentAuthor.lastName}`}
+                                  className="w-8 h-8 rounded-full object-cover"
+                                />
+                              ) : (
+                                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold">
+                                  {commentAuthor.initials}
+                                </div>
+                              )}
+                            </button>
                             <div className="flex-1">
                               <div className="bg-white rounded-lg px-3 py-2">
-                                <p className="font-semibold text-sm text-gray-900">
+                                <button
+                                  onClick={() => handleProfileClick(commentAuthor.id)}
+                                  className="font-semibold text-sm text-gray-900 hover:text-blue-600 transition-colors text-left"
+                                >
                                   {commentAuthor.firstName} {commentAuthor.lastName}
-                                </p>
+                                </button>
                                 <p className="text-sm text-gray-700 mt-0.5">{comment.content}</p>
                               </div>
                               <div className="flex items-center gap-3 mt-1 px-2">
@@ -564,7 +606,10 @@ export default function FeedsView() {
                 if (!user) return null;
                 return (
                   <div key={story.id} className="flex flex-col items-center gap-1.5 flex-shrink-0">
-                    <button className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 via-teal-500 to-purple-500 p-0.5">
+                    <button
+                      onClick={() => handleProfileClick(user.id)}
+                      className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 via-teal-500 to-purple-500 p-0.5"
+                    >
                       <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
                         {user.avatar ? (
                           <img
@@ -625,19 +670,29 @@ export default function FeedsView() {
                 <div key={post.id} className="bg-white rounded-lg border border-gray-200">
                   {/* Post Header */}
                   <div className="p-3 flex items-start gap-2">
-                    {author.avatar ? (
-                      <img
-                        src={author.avatar}
-                        alt={`${author.firstName} ${author.lastName}`}
-                        className="w-8 h-8 rounded-full object-cover flex-shrink-0"
-                      />
-                    ) : (
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-                        {author.initials}
-                      </div>
-                    )}
+                    <button
+                      onClick={() => handleProfileClick(author.id)}
+                      className="flex-shrink-0 hover:opacity-80 transition-opacity"
+                    >
+                      {author.avatar ? (
+                        <img
+                          src={author.avatar}
+                          alt={`${author.firstName} ${author.lastName}`}
+                          className="w-8 h-8 rounded-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold">
+                          {author.initials}
+                        </div>
+                      )}
+                    </button>
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-sm text-gray-900">{author.firstName} {author.lastName}</p>
+                      <button
+                        onClick={() => handleProfileClick(author.id)}
+                        className="font-semibold text-sm text-gray-900 hover:text-blue-600 transition-colors text-left"
+                      >
+                        {author.firstName} {author.lastName}
+                      </button>
                       <p className="text-xs text-gray-500">{author.role} • {getTimeAgo(post.timestamp)}</p>
                     </div>
                   </div>
@@ -675,18 +730,28 @@ export default function FeedsView() {
                           return (
                             <div key={userId} className="flex items-center justify-between text-xs">
                               <div className="flex items-center gap-2">
-                                {user.avatar ? (
-                                  <img
-                                    src={user.avatar}
-                                    alt={`${user.firstName} ${user.lastName}`}
-                                    className="w-5 h-5 rounded-full object-cover"
-                                  />
-                                ) : (
-                                  <div className="w-5 h-5 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-[10px] font-bold">
-                                    {user.initials}
-                                  </div>
-                                )}
-                                <span className="text-gray-900 font-medium">{user.firstName} {user.lastName}</span>
+                                <button
+                                  onClick={() => handleProfileClick(user.id)}
+                                  className="flex-shrink-0 hover:opacity-80 transition-opacity"
+                                >
+                                  {user.avatar ? (
+                                    <img
+                                      src={user.avatar}
+                                      alt={`${user.firstName} ${user.lastName}`}
+                                      className="w-5 h-5 rounded-full object-cover"
+                                    />
+                                  ) : (
+                                    <div className="w-5 h-5 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-[10px] font-bold">
+                                      {user.initials}
+                                    </div>
+                                  )}
+                                </button>
+                                <button
+                                  onClick={() => handleProfileClick(user.id)}
+                                  className="text-gray-900 font-medium hover:text-blue-600 transition-colors"
+                                >
+                                  {user.firstName} {user.lastName}
+                                </button>
                                 <span className="text-base">{reaction.emoji}</span>
                               </div>
                               <span className="text-[10px] text-gray-500">{getTimeAgo(reaction.timestamp)}</span>
@@ -783,22 +848,30 @@ export default function FeedsView() {
 
                         return (
                           <div key={comment.id} className="flex gap-2">
-                            {commentAuthor.avatar ? (
-                              <img
-                                src={commentAuthor.avatar}
-                                alt={`${commentAuthor.firstName} ${commentAuthor.lastName}`}
-                                className="w-7 h-7 rounded-full object-cover flex-shrink-0"
-                              />
-                            ) : (
-                              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-                                {commentAuthor.initials}
-                              </div>
-                            )}
+                            <button
+                              onClick={() => handleProfileClick(commentAuthor.id)}
+                              className="flex-shrink-0 hover:opacity-80 transition-opacity"
+                            >
+                              {commentAuthor.avatar ? (
+                                <img
+                                  src={commentAuthor.avatar}
+                                  alt={`${commentAuthor.firstName} ${commentAuthor.lastName}`}
+                                  className="w-7 h-7 rounded-full object-cover"
+                                />
+                              ) : (
+                                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold">
+                                  {commentAuthor.initials}
+                                </div>
+                              )}
+                            </button>
                             <div className="flex-1">
                               <div className="bg-white rounded-lg px-2.5 py-1.5">
-                                <p className="font-semibold text-xs text-gray-900">
+                                <button
+                                  onClick={() => handleProfileClick(commentAuthor.id)}
+                                  className="font-semibold text-xs text-gray-900 hover:text-blue-600 transition-colors text-left"
+                                >
                                   {commentAuthor.firstName} {commentAuthor.lastName}
-                                </p>
+                                </button>
                                 <p className="text-xs text-gray-700 mt-0.5">{comment.content}</p>
                               </div>
                               <div className="flex items-center gap-2 mt-1 px-2">
@@ -868,6 +941,16 @@ export default function FeedsView() {
           setPostToShare(null);
         }}
         postContent={postToShare?.content || ''}
+      />
+
+      {/* User Profile Modal */}
+      <UserProfileModal
+        user={selectedUser}
+        isOpen={showProfileModal}
+        onClose={() => {
+          setShowProfileModal(false);
+          setSelectedUser(null);
+        }}
       />
     </div>
   );
