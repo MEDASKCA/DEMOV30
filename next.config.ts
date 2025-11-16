@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
         hostname: 'raw.githubusercontent.com',
         pathname: '/MEDASKCA/OPS/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
     ],
   },
   async headers() {
