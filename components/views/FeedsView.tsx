@@ -218,9 +218,17 @@ export default function FeedsView() {
                     <div key={story.id} className="flex flex-col items-center gap-2 flex-shrink-0">
                       <button className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 via-teal-500 to-purple-500 p-0.5 hover:scale-105 transition-transform">
                         <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
-                          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center text-white font-bold">
-                            {user.initials}
-                          </div>
+                          {user.avatar ? (
+                            <img
+                              src={user.avatar}
+                              alt={`${user.firstName} ${user.lastName}`}
+                              className="w-14 h-14 rounded-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center text-white font-bold">
+                              {user.initials}
+                            </div>
+                          )}
                         </div>
                       </button>
                       <span className="text-xs text-gray-600 font-medium truncate w-16 text-center">
@@ -235,9 +243,17 @@ export default function FeedsView() {
             {/* Create Post */}
             <div className="bg-white rounded-xl border border-gray-200 p-4">
               <div className="flex gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold flex-shrink-0">
-                  {getStaffById(currentUserId)?.initials}
-                </div>
+                {getStaffById(currentUserId)?.avatar ? (
+                  <img
+                    src={getStaffById(currentUserId)?.avatar}
+                    alt={`${getStaffById(currentUserId)?.firstName}`}
+                    className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                  />
+                ) : (
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold flex-shrink-0">
+                    {getStaffById(currentUserId)?.initials}
+                  </div>
+                )}
                 <div className="flex-1">
                   <textarea
                     value={newPostContent}
@@ -276,9 +292,17 @@ export default function FeedsView() {
                 <div key={post.id} className="bg-white rounded-xl border border-gray-200 hover:shadow-md transition-shadow">
                   {/* Post Header */}
                   <div className="p-4 flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold flex-shrink-0">
-                      {author.initials}
-                    </div>
+                    {author.avatar ? (
+                      <img
+                        src={author.avatar}
+                        alt={`${author.firstName} ${author.lastName}`}
+                        className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                      />
+                    ) : (
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold flex-shrink-0">
+                        {author.initials}
+                      </div>
+                    )}
                     <div className="flex-1">
                       <p className="font-semibold text-gray-900">{author.firstName} {author.lastName}</p>
                       <p className="text-xs text-gray-500">{author.role} • {getTimeAgo(post.timestamp)}</p>
@@ -318,9 +342,17 @@ export default function FeedsView() {
                           return (
                             <div key={userId} className="flex items-center justify-between text-sm">
                               <div className="flex items-center gap-2">
-                                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold">
-                                  {user.initials}
-                                </div>
+                                {user.avatar ? (
+                                  <img
+                                    src={user.avatar}
+                                    alt={`${user.firstName} ${user.lastName}`}
+                                    className="w-6 h-6 rounded-full object-cover"
+                                  />
+                                ) : (
+                                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold">
+                                    {user.initials}
+                                  </div>
+                                )}
                                 <span className="text-gray-900 font-medium">{user.firstName} {user.lastName}</span>
                                 <span className="text-xl">{reaction.emoji}</span>
                               </div>
@@ -418,9 +450,17 @@ export default function FeedsView() {
 
                         return (
                           <div key={comment.id} className="flex gap-2">
-                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-                              {commentAuthor.initials}
-                            </div>
+                            {commentAuthor.avatar ? (
+                              <img
+                                src={commentAuthor.avatar}
+                                alt={`${commentAuthor.firstName} ${commentAuthor.lastName}`}
+                                className="w-8 h-8 rounded-full object-cover flex-shrink-0"
+                              />
+                            ) : (
+                              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                                {commentAuthor.initials}
+                              </div>
+                            )}
                             <div className="flex-1">
                               <div className="bg-white rounded-lg px-3 py-2">
                                 <p className="font-semibold text-sm text-gray-900">
@@ -451,9 +491,17 @@ export default function FeedsView() {
 
                       {/* Add Comment */}
                       <div className="flex gap-2 pt-2">
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-                          {getStaffById(currentUserId)?.initials}
-                        </div>
+                        {getStaffById(currentUserId)?.avatar ? (
+                          <img
+                            src={getStaffById(currentUserId)?.avatar}
+                            alt={`${getStaffById(currentUserId)?.firstName}`}
+                            className="w-8 h-8 rounded-full object-cover flex-shrink-0"
+                          />
+                        ) : (
+                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                            {getStaffById(currentUserId)?.initials}
+                          </div>
+                        )}
                         <div className="flex-1 flex gap-2">
                           <input
                             type="text"
@@ -518,9 +566,17 @@ export default function FeedsView() {
                   <div key={story.id} className="flex flex-col items-center gap-1.5 flex-shrink-0">
                     <button className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 via-teal-500 to-purple-500 p-0.5">
                       <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center text-white text-xs font-bold">
-                          {user.initials}
-                        </div>
+                        {user.avatar ? (
+                          <img
+                            src={user.avatar}
+                            alt={`${user.firstName} ${user.lastName}`}
+                            className="w-12 h-12 rounded-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center text-white text-xs font-bold">
+                            {user.initials}
+                          </div>
+                        )}
                       </div>
                     </button>
                     <span className="text-xs text-gray-600 truncate w-14 text-center">
@@ -535,9 +591,17 @@ export default function FeedsView() {
           {/* Create Post Mobile */}
           <div className="bg-white border-b border-gray-200 p-3">
             <div className="flex gap-2">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-                {getStaffById(currentUserId)?.initials}
-              </div>
+              {getStaffById(currentUserId)?.avatar ? (
+                <img
+                  src={getStaffById(currentUserId)?.avatar}
+                  alt={`${getStaffById(currentUserId)?.firstName}`}
+                  className="w-8 h-8 rounded-full object-cover flex-shrink-0"
+                />
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                  {getStaffById(currentUserId)?.initials}
+                </div>
+              )}
               <button
                 onClick={() => {/* Open post composer modal */}}
                 className="flex-1 px-3 py-2 bg-gray-100 border border-gray-300 rounded-full text-left text-sm text-gray-500"
@@ -561,9 +625,17 @@ export default function FeedsView() {
                 <div key={post.id} className="bg-white rounded-lg border border-gray-200">
                   {/* Post Header */}
                   <div className="p-3 flex items-start gap-2">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-                      {author.initials}
-                    </div>
+                    {author.avatar ? (
+                      <img
+                        src={author.avatar}
+                        alt={`${author.firstName} ${author.lastName}`}
+                        className="w-8 h-8 rounded-full object-cover flex-shrink-0"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                        {author.initials}
+                      </div>
+                    )}
                     <div className="flex-1 min-w-0">
                       <p className="font-semibold text-sm text-gray-900">{author.firstName} {author.lastName}</p>
                       <p className="text-xs text-gray-500">{author.role} • {getTimeAgo(post.timestamp)}</p>
@@ -603,9 +675,17 @@ export default function FeedsView() {
                           return (
                             <div key={userId} className="flex items-center justify-between text-xs">
                               <div className="flex items-center gap-2">
-                                <div className="w-5 h-5 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-[10px] font-bold">
-                                  {user.initials}
-                                </div>
+                                {user.avatar ? (
+                                  <img
+                                    src={user.avatar}
+                                    alt={`${user.firstName} ${user.lastName}`}
+                                    className="w-5 h-5 rounded-full object-cover"
+                                  />
+                                ) : (
+                                  <div className="w-5 h-5 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-[10px] font-bold">
+                                    {user.initials}
+                                  </div>
+                                )}
                                 <span className="text-gray-900 font-medium">{user.firstName} {user.lastName}</span>
                                 <span className="text-base">{reaction.emoji}</span>
                               </div>
@@ -703,9 +783,17 @@ export default function FeedsView() {
 
                         return (
                           <div key={comment.id} className="flex gap-2">
-                            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-                              {commentAuthor.initials}
-                            </div>
+                            {commentAuthor.avatar ? (
+                              <img
+                                src={commentAuthor.avatar}
+                                alt={`${commentAuthor.firstName} ${commentAuthor.lastName}`}
+                                className="w-7 h-7 rounded-full object-cover flex-shrink-0"
+                              />
+                            ) : (
+                              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                                {commentAuthor.initials}
+                              </div>
+                            )}
                             <div className="flex-1">
                               <div className="bg-white rounded-lg px-2.5 py-1.5">
                                 <p className="font-semibold text-xs text-gray-900">
@@ -734,9 +822,17 @@ export default function FeedsView() {
 
                       {/* Add Comment Mobile */}
                       <div className="flex gap-2 pt-1">
-                        <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-                          {getStaffById(currentUserId)?.initials}
-                        </div>
+                        {getStaffById(currentUserId)?.avatar ? (
+                          <img
+                            src={getStaffById(currentUserId)?.avatar}
+                            alt={`${getStaffById(currentUserId)?.firstName}`}
+                            className="w-7 h-7 rounded-full object-cover flex-shrink-0"
+                          />
+                        ) : (
+                          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                            {getStaffById(currentUserId)?.initials}
+                          </div>
+                        )}
                         <div className="flex-1 flex gap-1.5">
                           <input
                             type="text"

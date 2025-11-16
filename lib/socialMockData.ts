@@ -67,6 +67,7 @@ export const mockStaffProfiles: StaffProfile[] = [
     role: 'Senior Scrub Team Leader',
     specialty: 'Orthopaedics',
     trust: 'Barts Health NHS Trust',
+    avatar: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=150&h=150&fit=crop&crop=faces',
     initials: 'AM'
   },
   {
@@ -76,6 +77,7 @@ export const mockStaffProfiles: StaffProfile[] = [
     role: 'Consultant Surgeon',
     specialty: 'Orthopaedics',
     trust: 'Barts Health NHS Trust',
+    avatar: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=150&h=150&fit=crop&crop=faces',
     initials: 'SJ'
   },
   {
@@ -85,6 +87,7 @@ export const mockStaffProfiles: StaffProfile[] = [
     role: 'Scrub Nurse',
     specialty: 'General Surgery',
     trust: 'Barts Health NHS Trust',
+    avatar: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=150&h=150&fit=crop&crop=faces',
     initials: 'MC'
   },
   {
@@ -94,6 +97,7 @@ export const mockStaffProfiles: StaffProfile[] = [
     role: 'Theatre Manager',
     specialty: 'Operations',
     trust: 'Barts Health NHS Trust',
+    avatar: 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=150&h=150&fit=crop&crop=faces',
     initials: 'EW'
   },
   {
@@ -103,6 +107,7 @@ export const mockStaffProfiles: StaffProfile[] = [
     role: 'Anaesthetist',
     specialty: 'Anaesthetics',
     trust: 'Barts Health NHS Trust',
+    avatar: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=150&h=150&fit=crop&crop=faces',
     initials: 'DP'
   },
   {
@@ -112,6 +117,7 @@ export const mockStaffProfiles: StaffProfile[] = [
     role: 'ODP',
     specialty: 'Theatre Support',
     trust: 'Barts Health NHS Trust',
+    avatar: 'https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?w=150&h=150&fit=crop&crop=faces',
     initials: 'RT'
   },
   {
@@ -121,6 +127,7 @@ export const mockStaffProfiles: StaffProfile[] = [
     role: 'Surgical Registrar',
     specialty: 'Cardiothoracic',
     trust: 'Barts Health NHS Trust',
+    avatar: 'https://images.unsplash.com/photo-1618498082410-b4aa22193b38?w=150&h=150&fit=crop&crop=faces',
     initials: 'JK'
   },
   {
@@ -130,6 +137,7 @@ export const mockStaffProfiles: StaffProfile[] = [
     role: 'Lead Nurse',
     specialty: 'Recovery',
     trust: 'Barts Health NHS Trust',
+    avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop&crop=faces',
     initials: 'LO'
   }
 ];
