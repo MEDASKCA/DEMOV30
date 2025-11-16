@@ -161,17 +161,21 @@ export default function AdminDrawer({ isOpen, onClose, drawerType, onNavigate }:
                 // Handle menu navigation
                 else if (item.id === 'profile') {
                   onNavigate('profile');
+                  onClose();
                 } else if (item.id === 'settings') {
                   onNavigate('settings');
+                  onClose();
                 } else if (item.id === 'help') {
                   onNavigate('help');
+                  onClose();
                 } else if (item.id === 'signout') {
                   // Handle sign out
                   router.push('/');
                   onClose();
                 } else {
-                  // Handle view-based navigation for other items
+                  // Handle view-based navigation for other items (including alerts)
                   onNavigate(item.id);
+                  onClose();
                 }
               }}
               className={`w-full ${colorClasses.bg} border ${colorClasses.border} rounded-md sm:rounded-lg p-2 sm:p-3 flex items-center space-x-2 sm:space-x-3 ${colorClasses.hover} transition-all shadow-sm active:scale-[0.98]`}

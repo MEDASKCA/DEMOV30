@@ -117,6 +117,8 @@ export default function AdminPage() {
       setCurrentPage('workforce');
     } else if (['stock', 'storage', 'reorder', 'requests'].includes(viewId)) {
       setCurrentPage('inventory');
+    } else if (['critical-alerts', 'pending-tasks', 'incidents'].includes(viewId)) {
+      setCurrentPage('alerts');
     } else if (['readiness', 'analytics', 'settings', 'help'].includes(viewId)) {
       setCurrentPage('menu');
     }

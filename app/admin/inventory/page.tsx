@@ -62,6 +62,13 @@ export default function InventoryPage() {
       router.push('/admin/procedures/opcs4-database');
     } else if (viewId === 'preference-cards') {
       router.push('/admin/procedures/preference-cards');
+    } else if (viewId === 'profile') {
+      router.push('/profile');
+    } else if (viewId === 'settings' || viewId === 'help' || viewId === 'critical-alerts' || viewId === 'pending-tasks' || viewId === 'incidents') {
+      // Redirect to admin page for these views
+      router.push('/admin');
+    } else if (viewId === 'signout') {
+      router.push('/');
     }
   };
 
