@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ClipboardList, Users, Package, Activity, BarChart3, Shield, Settings, Menu as MenuIcon, Bot, Bell, Box, User, Home } from 'lucide-react';
+import { ClipboardList, Users, Package, Activity, BarChart3, Shield, Settings, Menu as MenuIcon, Bot, Bell, Box, User, Rss } from 'lucide-react';
 import TomLogo from './TomLogo';
 import { useListening } from '@/contexts/ListeningContext';
 
@@ -13,8 +13,8 @@ interface AdminBottomNavProps {
 export default function AdminBottomNav({ currentPage, onNavigate }: AdminBottomNavProps) {
   const { isListening } = useListening();
   const navItems = [
-    { id: 'ai' as const, icon: 'tomlogo' as const, label: 'TOM AI' },
-    { id: 'home' as const, icon: Home, label: 'Home' },
+    { id: 'ai' as const, icon: 'tomlogo' as const, label: 'TOM' },
+    { id: 'home' as const, icon: Rss, label: 'Feeds' },
     { id: 'ops' as const, icon: Activity, label: 'Ops' },
     { id: 'theatres' as const, icon: Box, label: 'Logistics' },
     { id: 'alerts' as const, icon: Bell, label: 'Alerts' },

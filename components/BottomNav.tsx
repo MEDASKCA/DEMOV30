@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Home, Sparkles, Activity, Package, Bell, User } from 'lucide-react';
+import { Rss, Sparkles, Activity, Package, Bell, User } from 'lucide-react';
 import TomLogo from './TomLogo';
 import { useListening } from '@/contexts/ListeningContext';
 
@@ -14,8 +14,8 @@ interface BottomNavProps {
 export default function BottomNav({ currentPage, onNavigate, alertCount = 0 }: BottomNavProps) {
   const { isListening } = useListening();
   const navItems = [
-    { id: 'chat' as const, icon: 'tomlogo' as const, label: 'TOM AI' },
-    { id: 'feeds' as const, icon: Home, label: 'Home' },
+    { id: 'chat' as const, icon: 'tomlogo' as const, label: 'TOM' },
+    { id: 'feeds' as const, icon: Rss, label: 'Feeds' },
     { id: 'theatres' as const, icon: Activity, label: 'Ops' },
     { id: 'staff' as const, icon: Package, label: 'Logistics' },
     { id: 'alerts' as const, icon: Bell, label: 'Alerts', badge: alertCount },

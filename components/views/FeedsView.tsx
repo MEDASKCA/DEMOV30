@@ -204,7 +204,7 @@ export default function FeedsView() {
         {/* Posts Feed - Middle (Desktop) */}
         <div className="col-span-2 flex flex-col overflow-hidden bg-white">
           <div className="bg-white border-b border-gray-200 p-4">
-            <h2 className="text-xl font-bold text-gray-900">Posts & Updates</h2>
+            <h2 className="text-xl font-bold text-gray-900">Feeds</h2>
             <p className="text-sm text-gray-600">Theatre staff collaboration and news</p>
           </div>
 
@@ -582,7 +582,7 @@ export default function FeedsView() {
         {/* Header */}
         <div className="text-white px-4 py-4 flex-shrink-0" style={{background: 'linear-gradient(135deg, #3B82F6 0%, #06B6D4 50%, #8B5CF6 100%)'}}>
           <div>
-            <h2 className="text-lg font-bold">Posts & Updates</h2>
+            <h2 className="text-lg font-bold">Feeds</h2>
             <p className="text-xs text-white/80 mt-0.5">Theatre staff collaboration</p>
           </div>
         </div>
