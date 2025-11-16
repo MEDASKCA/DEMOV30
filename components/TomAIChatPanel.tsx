@@ -31,6 +31,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
   const voiceModeRecognitionRef = useRef<any>(null);
+  const isStoppingVoiceMode = useRef(false);
 
   // Load voices
   useEffect(() => {
@@ -160,7 +161,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       };
 
       voiceModeRecognitionRef.current.onend = () => {
-        if (isVoiceMode) {
+        if (isVoiceMode && !isStoppingVoiceMode.current) {
           try {
             voiceModeRecognitionRef.current?.start();
           } catch (e) {}
@@ -185,18 +186,32 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
   };
 
   const handleVoiceMode = () => {
+    // If turning OFF voice mode, always allow it
+    if (isVoiceMode) {
+      isStoppingVoiceMode.current = true;
+      try {
+        voiceModeRecognitionRef.current?.stop();
+      } catch (e) {
+        console.log('Error stopping voice recognition:', e);
+      }
+      setIsVoiceMode(false);
+      setInputMessage('');
+      return;
+    }
+
+    // If turning ON voice mode, check support
     if (!voiceModeRecognitionRef.current) {
       alert('Speech recognition is not supported in your browser.');
       return;
     }
 
-    if (isVoiceMode) {
-      voiceModeRecognitionRef.current.stop();
-      setIsVoiceMode(false);
-      setInputMessage('');
-    } else {
+    isStoppingVoiceMode.current = false;
+    try {
       voiceModeRecognitionRef.current.start();
       setIsVoiceMode(true);
+    } catch (e) {
+      console.error('Error starting voice recognition:', e);
+      alert('Could not start voice mode. Please try again.');
     }
   };
 
