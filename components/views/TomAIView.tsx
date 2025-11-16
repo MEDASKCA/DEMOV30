@@ -353,7 +353,7 @@ export default function TomAIView() {
       </div>
 
       {/* Input Area - Fixed at bottom of container */}
-      <div className="flex-shrink-0 border-t border-gray-200 bg-white shadow-lg">
+      <div className="flex-shrink-0 border-t border-gray-200 bg-white shadow-lg pb-safe">
         <div className="max-w-3xl mx-auto w-full px-3 md:px-4 py-3 md:py-4">
           <div className="flex gap-2 items-center w-full">
             <button

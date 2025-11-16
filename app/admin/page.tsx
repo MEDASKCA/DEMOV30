@@ -528,7 +528,7 @@ export default function AdminPage() {
 
         {/* TOM AI View */}
         {currentView === 'chat' && (
-          <div className="h-[calc(100vh-10rem)]">
+          <div className="h-full md:h-[calc(100vh-10rem)]">
             <TomAIView />
           </div>
         )}
