@@ -281,7 +281,42 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
 
     setIsSpeaking(true);
 
-    // Use browser speech synthesis
+    // Try Azure Neural TTS first (ChatGPT-quality voice)
+    try {
+      const response = await fetch('/api/azure-tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text }),
+      });
+
+      if (response.ok) {
+        const contentType = response.headers.get('Content-Type');
+
+        // Check if we got audio back or a fallback signal
+        if (contentType?.includes('audio')) {
+          const audioBlob = await response.blob();
+          const audioUrl = URL.createObjectURL(audioBlob);
+          const audio = new Audio(audioUrl);
+
+          audio.onended = () => {
+            setIsSpeaking(false);
+            URL.revokeObjectURL(audioUrl);
+          };
+
+          audio.onerror = () => {
+            console.log('Audio playback error, falling back to browser voice');
+            speakWithBrowserVoice(text);
+          };
+
+          await audio.play();
+          return;
+        }
+      }
+    } catch (error) {
+      console.log('Azure TTS not available, using browser voice');
+    }
+
+    // Fallback to browser voice
     speakWithBrowserVoice(text);
   };
 
