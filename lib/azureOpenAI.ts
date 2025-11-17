@@ -1,30 +1,25 @@
-import { AzureOpenAI } from 'openai';
+import OpenAI from 'openai';
 
 /**
- * Azure OpenAI Client for TOM AI
- * Uses OpenAI SDK v4 with Azure configuration
+ * OpenAI Client for TOM AI
+ * Uses OpenAI SDK v4
  */
 
-let client: AzureOpenAI | null = null;
+let client: OpenAI | null = null;
 
-export function getAzureOpenAIClient(): AzureOpenAI {
+export function getAzureOpenAIClient(): OpenAI {
   if (!client) {
-    const apiKey = process.env.AZURE_OPENAI_API_KEY;
-    const endpoint = process.env.AZURE_OPENAI_ENDPOINT;
-    const apiVersion = '2024-08-01-preview';
+    const apiKey = process.env.OPENAI_API_KEY;
 
-    if (!apiKey || !endpoint) {
-      throw new Error('Azure OpenAI credentials not configured. Please set AZURE_OPENAI_API_KEY and AZURE_OPENAI_ENDPOINT in environment variables.');
+    if (!apiKey) {
+      throw new Error('OpenAI API key not configured. Please set OPENAI_API_KEY in environment variables.');
     }
 
-    client = new AzureOpenAI({
+    client = new OpenAI({
       apiKey,
-      endpoint,
-      apiVersion,
-      deployment: process.env.AZURE_OPENAI_DEPLOYMENT_NAME || 'gpt-4o',
     });
 
-    console.log('✅ Azure OpenAI client initialized');
+    console.log('✅ OpenAI client initialized');
   }
 
   return client;
@@ -33,9 +28,9 @@ export function getAzureOpenAIClient(): AzureOpenAI {
 export async function queryAzureOpenAI(userMessage: string, systemPrompt?: string): Promise<string> {
   try {
     const client = getAzureOpenAIClient();
-    const deploymentName = process.env.AZURE_OPENAI_DEPLOYMENT_NAME || 'gpt-4o';
+    const model = 'gpt-4o-mini'; // Cost-effective model for your $5 credit
 
-    console.log('🔵 Azure OpenAI - Querying deployment:', deploymentName);
+    console.log('🔵 OpenAI - Querying model:', model);
 
     const messages: any[] = [];
 
@@ -52,27 +47,27 @@ export async function queryAzureOpenAI(userMessage: string, systemPrompt?: strin
     });
 
     const response = await client.chat.completions.create({
-      model: deploymentName,
+      model,
       messages,
       temperature: 0.7,
       max_tokens: 1500,
     });
 
     const content = response.choices[0]?.message?.content || '';
-    console.log('✅ Azure OpenAI - Response received:', content.substring(0, 100) + '...');
+    console.log('✅ OpenAI - Response received:', content.substring(0, 100) + '...');
 
     return content;
   } catch (error: any) {
-    console.error('❌ Azure OpenAI Error:', error);
+    console.error('❌ OpenAI Error:', error);
     throw error;
   }
 }
 
 export async function streamAzureOpenAI(userMessage: string, systemPrompt?: string): Promise<ReadableStream> {
   const client = getAzureOpenAIClient();
-  const deploymentName = process.env.AZURE_OPENAI_DEPLOYMENT_NAME || 'gpt-4o';
+  const model = 'gpt-4o-mini';
 
-  console.log('🔵 Azure OpenAI - Streaming from deployment:', deploymentName);
+  console.log('🔵 OpenAI - Streaming from model:', model);
 
   const messages: any[] = [];
 
@@ -89,14 +84,14 @@ export async function streamAzureOpenAI(userMessage: string, systemPrompt?: stri
   });
 
   const stream = await client.chat.completions.create({
-    model: deploymentName,
+    model,
     messages,
     temperature: 0.7,
     max_tokens: 1500,
     stream: true,
   });
 
-  // Create a ReadableStream from the Azure OpenAI stream
+  // Create a ReadableStream from the OpenAI stream
   return new ReadableStream({
     async start(controller) {
       try {
