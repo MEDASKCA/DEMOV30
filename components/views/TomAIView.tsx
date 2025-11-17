@@ -51,6 +51,91 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
   const thinkingStartTime = useRef<number>(0);
   const isVoiceModeRef = useRef(false);
   const messageTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
+
+  // Initialize Web Audio API
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+    }
+  }, []);
+
+  // Audio Feedback Functions - ChatGPT-style sounds
+  const playOpeningClick = () => {
+    if (!audioContextRef.current) return;
+    const ctx = audioContextRef.current;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.frequency.value = 800;
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.1);
+  };
+
+  const playDetectionClick = () => {
+    if (!audioContextRef.current) return;
+    const ctx = audioContextRef.current;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.frequency.value = 600;
+    gain.gain.setValueAtTime(0.2, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08);
+
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.08);
+  };
+
+  const playThinkingSound = () => {
+    if (!audioContextRef.current) return;
+    const ctx = audioContextRef.current;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    const filter = ctx.createBiquadFilter();
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.type = 'sine';
+    osc.frequency.value = 200;
+    filter.type = 'lowpass';
+    filter.frequency.value = 400;
+
+    gain.gain.setValueAtTime(0, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.1);
+    gain.gain.linearRampToValueAtTime(0.12, ctx.currentTime + 0.3);
+    gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.5);
+
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.5);
+  };
+
+  const playReadyToSpeakClick = () => {
+    if (!audioContextRef.current) return;
+    const ctx = audioContextRef.current;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.frequency.value = 1000;
+    gain.gain.setValueAtTime(0.25, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.12);
+
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.12);
+  };
 
   // Keep ref in sync with state
   useEffect(() => {
@@ -175,6 +260,21 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
 
         if (finalTranscript) {
           currentTranscript = finalTranscript.trim();
+
+          // NOISE FILTER: Ignore short gibberish/noise (less than 2 words or 5 characters)
+          const wordCount = currentTranscript.split(/\s+/).filter(w => w.length > 0).length;
+          const isLikelyNoise = currentTranscript.length < 5 || wordCount < 2;
+
+          if (isLikelyNoise) {
+            console.log('⚠️ Filtered out noise:', currentTranscript);
+            currentTranscript = '';
+            setInputMessage('');
+            return;
+          }
+
+          // 🔊 DETECTION CLICK - Speech detected!
+          playDetectionClick();
+
           setInputMessage(currentTranscript);
 
           // Set timeout to send message after 1.5 seconds of silence
@@ -185,14 +285,19 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
               thinkingStartTime.current = Date.now();
               setVoiceUiMode('thinking');
 
+              // 🔊 THINKING SOUND - Processing!
+              playThinkingSound();
+
               // Send the message
               handleSendMessageInternal(currentTranscript);
               currentTranscript = '';
             }
           }, 1500);
         } else {
-          // Update interim transcript display
-          setInputMessage(interimTranscript);
+          // Update interim transcript display (but don't show if too short)
+          if (interimTranscript.length >= 3) {
+            setInputMessage(interimTranscript);
+          }
         }
 
         setVoiceUiMode('listening');
@@ -278,18 +383,41 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
     // Start voice mode
     isStoppingVoiceMode.current = false;
     setIsVoiceMode(true);
-    setVoiceUiMode('listening');
+    setVoiceUiMode('speaking'); // Start in speaking mode for greeting
 
-    // Start listening
-    setTimeout(() => {
-      try {
-        voiceModeRecognitionRef.current.start();
-        console.log('Started voice recognition');
-      } catch (e) {
-        console.error('Error starting voice recognition:', e);
-        setVoiceUiMode('idle');
-      }
-    }, 100);
+    // TOM introduces himself with varied greetings
+    const greetings = [
+      "Hello! I'm TOM, your Theatre Operations Manager. How can I assist you today?",
+      "Good day! TOM here, ready to help with your theatre operations. What would you like to discuss?",
+      "Greetings! I'm TOM, and I'm delighted to assist you with theatre management. How may I help?",
+      "Welcome! This is TOM, your dedicated theatre operations assistant. What can I do for you today?",
+      "Hello there! TOM at your service. I'm here to help make your theatre operations run smoothly. What's on your mind?",
+      "Hi! I'm TOM, your Theatre Operations Manager. I'm ready to help you with scheduling, staffing, or any theatre operations questions.",
+      "Good to see you! TOM here. Whether it's rosters, resources, or theatre logistics, I'm here to help. What do you need?",
+      "Welcome back! I'm TOM, and I'm excited to assist with your theatre operations today. How can I support you?",
+      "Hello! TOM speaking. I specialise in theatre operations management and I'm here to make your day easier. What would you like help with?",
+      "Wonderful to connect! I'm TOM, your theatre operations expert. Ready to tackle any challenges together. What's the task?"
+    ];
+
+    const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
+
+    // Speak greeting, then start listening
+    speakMessage(randomGreeting).then(() => {
+      // 🔊 OPENING CLICK - Ready to listen!
+      playOpeningClick();
+
+      // After greeting, start listening
+      setTimeout(() => {
+        try {
+          voiceModeRecognitionRef.current.start();
+          setVoiceUiMode('listening');
+          console.log('Started voice recognition after greeting');
+        } catch (e) {
+          console.error('Error starting voice recognition:', e);
+          setVoiceUiMode('idle');
+        }
+      }, 300);
+    });
   };
 
   const handleStopGenerating = () => {
@@ -445,51 +573,43 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
           console.log('✅ Audio loaded, duration:', audio.duration);
         };
 
-        audio.onplay = () => {
-          console.log('🔊 OpenAI TTS PLAYING!');
-          isSpeakingRef.current = true;
-          setVoiceUiMode('speaking');
+        // Return a Promise that resolves when audio finishes
+        return new Promise<void>((resolve, reject) => {
+          audio.onplay = () => {
+            console.log('🔊 OpenAI TTS PLAYING!');
 
-          // STOP recognition to prevent feedback loop
-          try {
-            voiceModeRecognitionRef.current?.stop();
-            console.log('🔇 Stopped microphone during speech');
-          } catch (e) {
-            console.log('Recognition already stopped');
-          }
-        };
+            // 🔊 READY TO SPEAK CLICK - Before TOM speaks!
+            playReadyToSpeakClick();
 
-        audio.onended = () => {
-          console.log('✅ OpenAI TTS ended');
-          isSpeakingRef.current = false;
-          URL.revokeObjectURL(audioUrl);
+            isSpeakingRef.current = true;
+            setVoiceUiMode('speaking');
 
-          if (isVoiceModeRef.current) {
-            // Restart listening
-            setVoiceUiMode('listening');
-            setTimeout(() => {
-              try {
-                voiceModeRecognitionRef.current?.start();
-                console.log('🎤 Restarted listening');
-              } catch (e) {
-                console.log('Could not restart:', e);
-              }
-            }, 200);
-          }
-        };
+            // STOP recognition to prevent feedback loop
+            try {
+              voiceModeRecognitionRef.current?.stop();
+              console.log('🔇 Stopped microphone during speech');
+            } catch (e) {
+              console.log('Recognition already stopped');
+            }
+          };
 
-        audio.onerror = (event) => {
-          console.error('❌ Audio error:', event);
-          isSpeakingRef.current = false;
-          URL.revokeObjectURL(audioUrl);
+          audio.onended = () => {
+            console.log('✅ OpenAI TTS ended');
+            isSpeakingRef.current = false;
+            URL.revokeObjectURL(audioUrl);
+            resolve(); // Resolve the promise when audio finishes
+          };
 
-          // Fallback to browser voice
-          speakWithBrowserVoice(text);
-        };
+          audio.onerror = (event) => {
+            console.error('❌ Audio error:', event);
+            isSpeakingRef.current = false;
+            URL.revokeObjectURL(audioUrl);
+            reject(event);
+          };
 
-        console.log('🎵 Playing audio...');
-        await audio.play();
-        return;
+          console.log('🎵 Playing audio...');
+          audio.play().catch(reject);
+        });
       } else {
         // Use browser voice
         const data = await response.json();
