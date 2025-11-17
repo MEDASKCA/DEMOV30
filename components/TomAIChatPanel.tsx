@@ -497,13 +497,13 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
             className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div
-              className={`max-w-[80%] rounded-2xl px-4 py-2.5 ${
+              className={`max-w-[80%] ${
                 message.role === 'user'
-                  ? 'bg-gray-500 dark:bg-slate-100 text-white dark:text-gray-900'
-                  : 'bg-gray-500 dark:bg-slate-100 text-white dark:text-gray-900'
+                  ? 'rounded-2xl px-4 py-2.5 bg-gray-500 dark:bg-slate-100 text-white dark:text-gray-900'
+                  : ''
               }`}
             >
-              <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+              <p className={`text-sm whitespace-pre-wrap ${message.role === 'assistant' ? 'text-gray-900 dark:text-slate-100' : ''}`}>{message.content}</p>
             </div>
           </div>
         ))}
