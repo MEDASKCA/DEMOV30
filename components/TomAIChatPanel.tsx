@@ -359,14 +359,40 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       utterance.onstart = () => {
         console.log('Speech started');
         setIsSpeaking(true);
+        // Stop listening to prevent feedback loop
+        if (voiceModeRecognitionRef.current) {
+          try {
+            voiceModeRecognitionRef.current.stop();
+          } catch (e) {
+            console.log('Recognition already stopped');
+          }
+        }
       };
       utterance.onend = () => {
         console.log('Speech ended');
         setIsSpeaking(false);
+        // Resume listening after TOM finishes speaking
+        if (isVoiceMode && voiceModeRecognitionRef.current) {
+          setTimeout(() => {
+            try {
+              voiceModeRecognitionRef.current?.start();
+            } catch (e) {
+              console.log('Recognition already running');
+            }
+          }, 300);
+        }
       };
       utterance.onerror = (event) => {
         console.error('Speech error:', event);
         setIsSpeaking(false);
+        // Resume listening after error
+        if (isVoiceMode && voiceModeRecognitionRef.current) {
+          setTimeout(() => {
+            try {
+              voiceModeRecognitionRef.current?.start();
+            } catch (e) {}
+          }, 300);
+        }
       };
 
       console.log('Starting speech...');
