@@ -168,15 +168,18 @@ export default function ChatGPTStyleTOM() {
   };
 
   const speakMessage = async (text: string) => {
+    console.log('🗣️ speakMessage called with text:', text.substring(0, 50) + '...');
     setIsSpeaking(true);
 
     try {
       // Try Azure TTS first
+      console.log('📡 Calling Azure TTS API...');
       const response = await fetch('/api/azure-tts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text })
       });
+      console.log('📡 Azure TTS response status:', response.status, response.ok);
 
       if (response.ok) {
         const contentType = response.headers.get('Content-Type');
@@ -184,41 +187,65 @@ export default function ChatGPTStyleTOM() {
         if (contentType?.includes('audio')) {
           // Azure TTS returned audio
           const audioBlob = await response.blob();
+          console.log('🎵 Audio blob received, size:', audioBlob.size);
+
           const audioUrl = URL.createObjectURL(audioBlob);
           const audio = new Audio(audioUrl);
 
-          audio.play();
+          // CRITICAL: audio.play() returns a Promise that must be handled!
+          audio.play()
+            .then(() => {
+              console.log('✅ Audio playback started successfully');
+            })
+            .catch((error) => {
+              console.error('❌ Audio playback failed:', error);
+              URL.revokeObjectURL(audioUrl);
+              setIsSpeaking(false);
+              // Fallback to browser voice if play fails
+              speakWithBrowserVoice(text);
+            });
 
           audio.onended = () => {
+            console.log('🎵 Audio playback ended');
             URL.revokeObjectURL(audioUrl);
             setIsSpeaking(false);
           };
 
-          audio.onerror = () => {
+          audio.onerror = (error) => {
+            console.error('❌ Audio element error:', error);
             URL.revokeObjectURL(audioUrl);
             setIsSpeaking(false);
             speakWithBrowserVoice(text);
           };
 
           return;
+        } else {
+          console.log('⚠️ Response content-type is not audio:', contentType);
         }
+      } else {
+        console.log('⚠️ Azure TTS request failed with status:', response.status);
       }
     } catch (error) {
-      console.log('Azure TTS not available, using browser voice');
+      console.error('❌ Azure TTS error:', error);
     }
 
     // Fallback to browser voice
+    console.log('🔊 Falling back to browser voice');
     speakWithBrowserVoice(text);
   };
 
   const speakWithBrowserVoice = (text: string) => {
+    console.log('🎤 Browser voice synthesis called');
+
     if (typeof window === 'undefined' || !window.speechSynthesis) {
+      console.error('❌ Speech synthesis not available');
       setIsSpeaking(false);
       return;
     }
 
     const utterance = new SpeechSynthesisUtterance(text);
     const voices = window.speechSynthesis.getVoices();
+    console.log('🎤 Available voices:', voices.length);
 
     // Prefer British male voices
     const preferredVoices = [
@@ -248,9 +275,21 @@ export default function ChatGPTStyleTOM() {
     utterance.pitch = 1.0;
     utterance.volume = 1.0;
 
-    utterance.onend = () => setIsSpeaking(false);
-    utterance.onerror = () => setIsSpeaking(false);
+    utterance.onstart = () => {
+      console.log('✅ Browser speech started');
+    };
 
+    utterance.onend = () => {
+      console.log('✅ Browser speech ended');
+      setIsSpeaking(false);
+    };
+
+    utterance.onerror = (event) => {
+      console.error('❌ Browser speech error:', event.error);
+      setIsSpeaking(false);
+    };
+
+    console.log('🎤 Starting speech synthesis...');
     window.speechSynthesis.speak(utterance);
   };
 
