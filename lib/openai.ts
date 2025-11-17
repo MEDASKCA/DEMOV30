@@ -7,7 +7,7 @@ import OpenAI from 'openai';
 
 let client: OpenAI | null = null;
 
-export function getAzureOpenAIClient(): OpenAI {
+export function getOpenAIClient(): OpenAI {
   if (!client) {
     const apiKey = process.env.OPENAI_API_KEY;
 
@@ -25,9 +25,9 @@ export function getAzureOpenAIClient(): OpenAI {
   return client;
 }
 
-export async function queryAzureOpenAI(userMessage: string, systemPrompt?: string): Promise<string> {
+export async function queryOpenAI(userMessage: string, systemPrompt?: string): Promise<string> {
   try {
-    const client = getAzureOpenAIClient();
+    const client = getOpenAIClient();
     const model = 'gpt-4o-mini'; // Cost-effective model for your $5 credit
 
     console.log('🔵 OpenAI - Querying model:', model);
@@ -63,8 +63,8 @@ export async function queryAzureOpenAI(userMessage: string, systemPrompt?: strin
   }
 }
 
-export async function streamAzureOpenAI(userMessage: string, systemPrompt?: string): Promise<ReadableStream> {
-  const client = getAzureOpenAIClient();
+export async function streamOpenAI(userMessage: string, systemPrompt?: string): Promise<ReadableStream> {
+  const client = getOpenAIClient();
   const model = 'gpt-4o-mini';
 
   console.log('🔵 OpenAI - Streaming from model:', model);

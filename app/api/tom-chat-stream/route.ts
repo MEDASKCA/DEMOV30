@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { queryOpenAI } from '@/lib/openai';
+import { NextRequest } from 'next/server';
+import { streamOpenAI } from '@/lib/openai';
 import { db } from '@/lib/firebase';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { format } from 'date-fns';
@@ -8,8 +8,8 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 /**
- * POST /api/tom-chat
- * TOM AI chat endpoint with OpenAI + Firebase RAG
+ * POST /api/tom-chat-stream
+ * TOM AI streaming chat endpoint with OpenAI + Firebase RAG
  */
 export async function POST(request: NextRequest) {
   try {
@@ -17,13 +17,16 @@ export async function POST(request: NextRequest) {
     const { message } = body;
 
     if (!message || typeof message !== 'string') {
-      return NextResponse.json(
-        { error: 'Message is required' },
-        { status: 400 }
+      return new Response(
+        JSON.stringify({ error: 'Message is required' }),
+        {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' }
+        }
       );
     }
 
-    console.log('🔍 TOM AI received query:', message);
+    console.log('🔍 TOM AI received streaming query:', message);
 
     // Build context from database
     const context = await buildContext(message);
@@ -43,22 +46,29 @@ Your role:
 
 Answer the user's question based on the context provided.`;
 
-    // Query OpenAI
-    const response = await queryOpenAI(message, systemPrompt);
+    // Get streaming response from OpenAI
+    const stream = await streamOpenAI(message, systemPrompt);
 
-    return NextResponse.json({
-      success: true,
-      message: response,
+    // Return streaming response
+    return new Response(stream, {
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Transfer-Encoding': 'chunked',
+      },
     });
 
   } catch (error: any) {
-    console.error('❌ TOM Chat API Error:', error);
+    console.error('❌ TOM Chat Stream API Error:', error);
 
-    // Fallback to basic response
-    return NextResponse.json({
-      success: true,
-      message: "I apologize, but I'm having trouble connecting to my AI service right now. Please try again, or ask me about specific theatre schedules, staff availability, or operations.",
-    });
+    return new Response(
+      JSON.stringify({
+        error: "I apologize, but I'm having trouble connecting to my AI service right now. Please try again, or ask me about specific theatre schedules, staff availability, or operations.",
+      }),
+      {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
+      }
+    );
   }
 }
 

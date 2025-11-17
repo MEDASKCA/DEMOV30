@@ -359,6 +359,10 @@ button.theme-toggle:hover {
 .tom-logo-container {
   position: relative;
   transition: all 0.3s ease;
+  border: none !important;
+  outline: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 .tom-logo-container.tom-logo-fixed {
@@ -375,6 +379,10 @@ button.theme-toggle:hover {
   justify-content: center;
   filter: drop-shadow(0 4px 12px rgba(6, 182, 212, 0.3));
   transition: all 0.3s ease;
+  border: none !important;
+  outline: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 .tom-logo-svg {
@@ -604,4 +612,114 @@ button.theme-toggle:hover {
 @keyframes tomBarsSpeaking {
   0%, 100% { transform: scaleY(0.5); }
   50% { transform: scaleY(1.5); }
+}
+
+/* Dramatic Voice Mode Animations */
+
+/* Floating particles in background */
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.3;
+  }
+  33% {
+    transform: translate(30px, -30px) scale(1.1);
+    opacity: 0.5;
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+    opacity: 0.4;
+  }
+}
+
+/* Expanding pulse rings */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* Dramatic glow for speaking orb */
+@keyframes dramatic-glow {
+  0%, 100% {
+    transform: scale(1);
+    filter: brightness(1) blur(3px);
+  }
+  50% {
+    transform: scale(1.15);
+    filter: brightness(1.4) blur(4px);
+  }
+}
+
+/* Subtle pulse for listening */
+@keyframes subtle-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+}
+
+/* Dramatic speaking animation */
+@keyframes dramatic-speak {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    transform: scale(1.05) rotate(-1deg);
+  }
+  50% {
+    transform: scale(1.08) rotate(0deg);
+  }
+  75% {
+    transform: scale(1.05) rotate(1deg);
+  }
+}
+
+/* Listening jitter - when user speaks */
+@keyframes listening-jitter {
+  0%, 100% {
+    transform: scale(1) translateX(0);
+  }
+  25% {
+    transform: scale(1.03) translateX(-2px);
+  }
+  50% {
+    transform: scale(1.04) translateX(0);
+  }
+  75% {
+    transform: scale(1.03) translateX(2px);
+  }
+}
+
+/* Dramatic speaking bars */
+@keyframes dramatic-bars-speaking {
+  0%, 100% {
+    transform: scaleY(0.4);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scaleY(1.8);
+    opacity: 1;
+  }
+}
+
+/* Dramatic listening bars */
+@keyframes dramatic-bars-listening {
+  0%, 100% {
+    transform: scaleY(0.5);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scaleY(1.3);
+    opacity: 1;
+  }
 }

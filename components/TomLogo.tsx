@@ -85,7 +85,11 @@ export default function TomLogo({
             height: '100%',
             borderRadius: '50%',
             overflow: 'hidden',
-            position: 'relative'
+            position: 'relative',
+            border: 'none',
+            outline: 'none',
+            background: 'transparent',
+            boxShadow: 'none'
           }}
           className={isActive ? (isSpeaking ? 'logo-blink-speaking' : 'logo-blink-listening') : ''}
         >

@@ -28,6 +28,17 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
   const [isVoiceMode, setIsVoiceMode] = useState(false);
   const [voiceUiMode, setVoiceUiMode] = useState<'idle' | 'listening' | 'thinking' | 'speaking'>('idle');
   const [voicesLoaded, setVoicesLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showVoiceSettings, setShowVoiceSettings] = useState(false);
+  const [voiceSettings, setVoiceSettings] = useState({
+    rate: 0.95,
+    pitch: 1.0,
+    volume: 1.0,
+    selectedVoice: '',
+    openaiVoice: 'nova' // alloy, echo, fable, onyx, nova, shimmer
+  });
+  const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   // Derived states for backwards compatibility
   const isSpeaking = voiceUiMode === 'speaking';
@@ -38,6 +49,12 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
   const isStoppingVoiceMode = useRef(false);
   const isSpeakingRef = useRef(false);
   const thinkingStartTime = useRef<number>(0);
+  const isVoiceModeRef = useRef(false);
+
+  // Keep ref in sync with state
+  useEffect(() => {
+    isVoiceModeRef.current = isVoiceMode;
+  }, [isVoiceMode]);
 
   // Load voices
   useEffect(() => {
@@ -45,6 +62,20 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       const voices = window.speechSynthesis.getVoices();
       if (voices.length > 0) {
         setVoicesLoaded(true);
+        setAvailableVoices(voices);
+
+        // Set default voice if not already set
+        if (!voiceSettings.selectedVoice) {
+          const defaultVoice = voices.find(v =>
+            v.name.includes('Google UK English Female') ||
+            v.name.includes('Google US English') ||
+            v.name.includes('Samantha') ||
+            v.lang.startsWith('en')
+          );
+          if (defaultVoice) {
+            setVoiceSettings(prev => ({ ...prev, selectedVoice: defaultVoice.name }));
+          }
+        }
       }
     };
 
@@ -99,17 +130,17 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
     }
   }, []);
 
-  // Initialize Voice Mode Speech Recognition (conversational)
+  // Initialize Voice Mode Speech Recognition (continuous listening)
   useEffect(() => {
     if (typeof window !== 'undefined' && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
       const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
       voiceModeRecognitionRef.current = new SpeechRecognition();
-      voiceModeRecognitionRef.current.continuous = true;
+      voiceModeRecognitionRef.current.continuous = true; // Continuous listening
       voiceModeRecognitionRef.current.interimResults = true;
       voiceModeRecognitionRef.current.lang = 'en-GB';
 
-      let autoSendTimeout: NodeJS.Timeout | null = null;
       let accumulatedText = '';
+      let silenceTimer: NodeJS.Timeout | null = null;
 
       voiceModeRecognitionRef.current.onresult = (event: any) => {
         // Cancel any ongoing speech when user starts talking
@@ -117,10 +148,10 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
           window.speechSynthesis.cancel();
         }
 
-        // Clear previous auto-send timer
-        if (autoSendTimeout) {
-          clearTimeout(autoSendTimeout);
-          autoSendTimeout = null;
+        // Clear any existing silence timer
+        if (silenceTimer) {
+          clearTimeout(silenceTimer);
+          silenceTimer = null;
         }
 
         let finalTranscript = '';
@@ -141,39 +172,63 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
 
         const currentText = (accumulatedText + interimTranscript).trim();
         setInputMessage(currentText);
+        setVoiceUiMode('listening');
 
-        // Auto-send after 1.5 seconds of silence
-        if (finalTranscript.trim()) {
-          autoSendTimeout = setTimeout(() => {
+        // If we have accumulated text, start a silence timer to auto-send after pause
+        if (accumulatedText.trim()) {
+          silenceTimer = setTimeout(() => {
             const textToSend = accumulatedText.trim();
-            if (textToSend) {
+            if (textToSend && isVoiceMode) {
               accumulatedText = '';
-              thinkingStartTime.current = Date.now(); // Track when thinking started
-              setVoiceUiMode('thinking'); // user-speech-end event
+              setInputMessage('');
+              thinkingStartTime.current = Date.now();
+              setVoiceUiMode('thinking');
+
+              // Stop recognition temporarily while processing
+              try {
+                voiceModeRecognitionRef.current?.stop();
+              } catch (e) {
+                console.log('Recognition already stopped');
+              }
+
+              // Send the message
               handleSendMessage();
             }
-          }, 1500);
+          }, 600); // Auto-send after 0.6 seconds of silence (immediate!)
         }
       };
 
       voiceModeRecognitionRef.current.onerror = (event: any) => {
-        if (event.error === 'no-speech' && isVoiceMode) {
+        console.log('Voice recognition error:', event.error);
+
+        // Restart recognition on error (except when voice mode is being stopped)
+        if (event.error !== 'aborted' && isVoiceMode && !isStoppingVoiceMode.current) {
           setTimeout(() => {
-            try {
-              voiceModeRecognitionRef.current?.start();
-            } catch (e) {}
-          }, 100);
-        } else {
-          setIsVoiceMode(false);
+            if (isVoiceMode && voiceModeRecognitionRef.current) {
+              try {
+                voiceModeRecognitionRef.current.start();
+                setVoiceUiMode('listening');
+              } catch (e) {
+                console.log('Could not restart recognition:', e);
+              }
+            }
+          }, 500);
         }
       };
 
       voiceModeRecognitionRef.current.onend = () => {
-        // Don't restart if TOM is speaking or voice mode is stopped
+        // Automatically restart recognition if still in voice mode and not speaking
         if (isVoiceMode && !isStoppingVoiceMode.current && !isSpeakingRef.current) {
-          try {
-            voiceModeRecognitionRef.current?.start();
-          } catch (e) {}
+          setTimeout(() => {
+            if (isVoiceMode && voiceModeRecognitionRef.current) {
+              try {
+                voiceModeRecognitionRef.current.start();
+                setVoiceUiMode('listening');
+              } catch (e) {
+                console.log('Could not restart recognition:', e);
+              }
+            }
+          }, 300);
         }
       };
     }
@@ -203,8 +258,11 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       } catch (e) {
         console.log('Error stopping voice recognition:', e);
       }
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+      }
       setIsVoiceMode(false);
-      setVoiceUiMode('idle'); // mic-close event
+      setVoiceUiMode('idle');
       setInputMessage('');
       return;
     }
@@ -215,19 +273,46 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       return;
     }
 
+    // Start voice mode and immediately begin listening
     isStoppingVoiceMode.current = false;
+    setIsVoiceMode(true);
+    setVoiceUiMode('listening');
+
+    // Start continuous listening
     try {
       voiceModeRecognitionRef.current.start();
-      setIsVoiceMode(true);
-      setVoiceUiMode('listening'); // mic-open event
     } catch (e) {
       console.error('Error starting voice recognition:', e);
-      alert('Could not start voice mode. Please try again.');
+      setVoiceUiMode('idle');
     }
   };
 
+  const handleTapToSpeak = () => {
+    if (!voiceModeRecognitionRef.current || voiceUiMode === 'thinking' || voiceUiMode === 'speaking') {
+      return;
+    }
+
+    try {
+      // Clear any previous input
+      setInputMessage('');
+      voiceModeRecognitionRef.current.start();
+      setVoiceUiMode('listening');
+    } catch (e) {
+      console.error('Error starting voice recognition:', e);
+      setVoiceUiMode('idle');
+    }
+  };
+
+  const handleStopGenerating = () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
+    setIsLoading(false);
+  };
+
   const handleSendMessage = async () => {
-    if (inputMessage.trim()) {
+    if (inputMessage.trim() && !isLoading) {
       const userMessage: Message = {
         id: Date.now().toString(),
         role: 'user',
@@ -238,6 +323,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       setMessages(prev => [...prev, userMessage]);
       const query = inputMessage;
       setInputMessage('');
+      setIsLoading(true);
 
       // Create a streaming message
       const streamingMessageId = 'streaming-' + Date.now();
@@ -249,37 +335,73 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       };
       setMessages(prev => [...prev, streamingMessage]);
 
+      // Create abort controller for this request
+      const abortController = new AbortController();
+      abortControllerRef.current = abortController;
+
       try {
-        // Try Azure OpenAI endpoint first
-        const response = await fetch('/api/tom-chat', {
+        console.log('Sending message to TOM API:', query.substring(0, 50));
+        const response = await fetch('/api/tom-chat-stream', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: query })
+          body: JSON.stringify({ message: query }),
+          signal: abortController.signal
         });
 
-        if (response.ok) {
-          const result = await response.json();
+        console.log('Got response from TOM API, status:', response.ok);
+        if (!response.ok) {
+          throw new Error('OpenAI request failed');
+        }
 
+        // Handle streaming response
+        const reader = response.body?.getReader();
+        const decoder = new TextDecoder();
+        let fullResponse = '';
+
+        if (reader) {
+          while (true) {
+            const { done, value } = await reader.read();
+
+            if (done) break;
+
+            const chunk = decoder.decode(value, { stream: true });
+            fullResponse += chunk;
+
+            // Update the message with accumulated content
+            setMessages(prev => prev.map(m =>
+              m.id === streamingMessageId
+                ? { ...m, content: fullResponse }
+                : m
+            ));
+          }
+
+          // Only speak the response in voice mode (use ref to avoid stale closure)
+          if (isVoiceModeRef.current && fullResponse) {
+            console.log('Speaking response in voice mode:', fullResponse.substring(0, 50));
+            speakMessage(fullResponse);
+          } else {
+            console.log('Not speaking - isVoiceModeRef:', isVoiceModeRef.current, 'hasResponse:', !!fullResponse);
+          }
+
+          setIsLoading(false);
+          abortControllerRef.current = null;
+        }
+      } catch (error: any) {
+        console.error('Chat error:', error);
+
+        // Check if request was aborted
+        if (error.name === 'AbortError') {
+          setMessages(prev => prev.filter(m => m.id !== streamingMessageId));
+        } else {
           setMessages(prev => prev.map(m =>
             m.id === streamingMessageId
-              ? { ...m, content: result.message }
+              ? { ...m, content: 'I encountered an error processing your request. Please try again.' }
               : m
           ));
-
-          // Speak the response
-          if ('speechSynthesis' in window && result.message) {
-            speakMessage(result.message);
-          }
-        } else {
-          throw new Error('Azure OpenAI request failed');
         }
-      } catch (error) {
-        console.error('Chat error:', error);
-        setMessages(prev => prev.map(m =>
-          m.id === streamingMessageId
-            ? { ...m, content: 'I encountered an error processing your request. Please try again.' }
-            : m
-        ));
+
+        setIsLoading(false);
+        abortControllerRef.current = null;
       }
     }
   };
@@ -290,16 +412,122 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       window.speechSynthesis.cancel();
     }
 
-    setIsSpeaking(true);
+    try {
+      // Try OpenAI TTS first
+      console.log('Requesting OpenAI TTS with voice:', voiceSettings.openaiVoice);
+      const response = await fetch('/api/openai-tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text,
+          voice: voiceSettings.openaiVoice // Can be: alloy, echo, fable, onyx, nova, shimmer
+        })
+      });
 
-    // Use browser speech synthesis
-    speakWithBrowserVoice(text);
+      console.log('OpenAI TTS response status:', response.status, 'Content-Type:', response.headers.get('Content-Type'));
+
+      if (!response.ok) {
+        throw new Error('OpenAI TTS request failed');
+      }
+
+      const contentType = response.headers.get('Content-Type');
+
+      // Check if we got audio or a fallback instruction
+      if (contentType?.includes('audio/mpeg')) {
+        // We got audio from OpenAI - play it
+        console.log('Got audio from OpenAI, creating audio element');
+        const audioBlob = await response.blob();
+        console.log('Audio blob size:', audioBlob.size, 'bytes');
+        const audioUrl = URL.createObjectURL(audioBlob);
+        const audio = new Audio(audioUrl);
+
+        audio.onloadeddata = () => {
+          console.log('✅ Audio loaded successfully, duration:', audio.duration);
+        };
+
+        audio.onplay = () => {
+          console.log('🔊 OpenAI TTS PLAYING NOW!');
+          isSpeakingRef.current = true;
+          setVoiceUiMode('speaking'); // Immediate transition to speaking
+        };
+
+        audio.onended = () => {
+          console.log('✅ OpenAI TTS ended');
+          isSpeakingRef.current = false;
+          URL.revokeObjectURL(audioUrl);
+
+          if (isVoiceMode) {
+            // Restart listening after speaking
+            setVoiceUiMode('listening');
+            setTimeout(() => {
+              if (isVoiceMode && voiceModeRecognitionRef.current && !isStoppingVoiceMode.current) {
+                try {
+                  voiceModeRecognitionRef.current.start();
+                  console.log('🎤 Restarted listening after speech');
+                } catch (e) {
+                  console.log('Could not restart recognition after speech:', e);
+                }
+              }
+            }, 300);
+          }
+        };
+
+        audio.onerror = (event) => {
+          console.error('❌ Audio playback error:', event, audio.error);
+          isSpeakingRef.current = false;
+          URL.revokeObjectURL(audioUrl);
+
+          // Fallback to browser voice on playback error
+          console.log('⚠️ Falling back to browser voice');
+          speakWithBrowserVoice(text);
+
+          if (isVoiceMode) {
+            // Restart listening after error
+            setTimeout(() => {
+              if (isVoiceMode && voiceModeRecognitionRef.current && !isStoppingVoiceMode.current) {
+                try {
+                  voiceModeRecognitionRef.current.start();
+                } catch (e) {
+                  console.log('Could not restart recognition after error:', e);
+                }
+              }
+            }, 300);
+          }
+        };
+
+        console.log('🎵 Starting audio playback...');
+        try {
+          await audio.play();
+          console.log('✅ Audio.play() succeeded');
+        } catch (playError) {
+          console.error('❌ Audio.play() failed:', playError);
+          // Fallback to browser voice
+          speakWithBrowserVoice(text);
+        }
+        return;
+      } else {
+        // Response says to use browser voice (API key not configured or error)
+        console.log('⚠️ OpenAI TTS returned non-audio response');
+        const data = await response.json();
+        if (data.useBrowserVoice) {
+          console.log('Using browser voice as instructed by API');
+          speakWithBrowserVoice(text);
+        }
+      }
+    } catch (error) {
+      console.error('❌ OpenAI TTS error:', error);
+      // Fallback to browser voice on any error
+      console.log('⚠️ Falling back to browser voice due to error');
+      speakWithBrowserVoice(text);
+    }
   };
 
   const speakWithBrowserVoice = (text: string) => {
     if (typeof window === 'undefined' || !window.speechSynthesis) {
       console.log('Browser speech synthesis not available');
-      setIsSpeaking(false);
+      if (isVoiceMode) {
+        setVoiceUiMode('idle');
+      }
       return;
     }
 
@@ -311,46 +539,30 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
 
       console.log('Available voices:', voices.length);
 
-      // Prioritize natural-sounding voices
+      // Use selected voice from settings
       let selectedVoice = null;
-      const preferredVoices = [
-        // Premium voices (most natural)
-        'Samantha',
-        'Alex',
-        'Google UK English Female',
-        'Google UK English Male',
-        'Google US English',
-        'Microsoft Zira - English (United States)',
-        'Microsoft David - English (United States)',
-        'Microsoft Mark - English (United States)',
-        // Enhanced voices
-        'Daniel (Enhanced)',
-        'Fiona (Enhanced)',
-        'Karen (Enhanced)',
-        // Standard voices
-        'Daniel',
-        'Fiona',
-        'Karen',
-        'Moira',
-        'Tessa'
-      ];
-
-      for (const prefName of preferredVoices) {
-        selectedVoice = voices.find(v => v.name === prefName);
-        if (selectedVoice) break;
+      if (voiceSettings.selectedVoice) {
+        selectedVoice = voices.find(v => v.name === voiceSettings.selectedVoice);
       }
 
-      // Fallback: find any English voice
+      // Fallback to default if selected voice not found
       if (!selectedVoice) {
-        selectedVoice = voices.find(voice =>
-          voice.lang.startsWith('en-') &&
-          (voice.name.includes('Google') || voice.name.includes('Microsoft'))
-        );
-      }
+        const preferredVoices = [
+          'Google UK English Female',
+          'Google US English',
+          'Samantha',
+          'Microsoft Zira - English (United States)'
+        ];
 
-      // Last resort: any English voice
-      if (!selectedVoice) {
-        selectedVoice = voices.find(voice => voice.lang.startsWith('en'));
+        for (const prefName of preferredVoices) {
+          selectedVoice = voices.find(v => v.name === prefName);
+          if (selectedVoice) break;
+        }
+
+        // Last resort: any English voice
+        if (!selectedVoice) {
+          selectedVoice = voices.find(voice => voice.lang.startsWith('en'));
+        }
       }
 
       if (selectedVoice) {
@@ -362,10 +574,10 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
         console.log('No specific voice found, using default en-GB');
       }
 
-      // Natural speech settings
-      utterance.rate = 0.95;  // Slightly slower for clarity
-      utterance.pitch = 1.0;  // Normal pitch (not robotic)
-      utterance.volume = 1.0;
+      // Use settings from state
+      utterance.rate = voiceSettings.rate;
+      utterance.pitch = voiceSettings.pitch;
+      utterance.volume = voiceSettings.volume;
 
       utterance.onstart = () => {
         console.log('Speech started');
@@ -392,14 +604,17 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       utterance.onend = () => {
         console.log('Speech ended');
         isSpeakingRef.current = false;
-        setVoiceUiMode('listening'); // assistant-audio-end event
-        // Resume listening after TOM finishes speaking
-        if (isVoiceMode && voiceModeRecognitionRef.current) {
+
+        if (isVoiceMode) {
+          // Restart listening after speaking
+          setVoiceUiMode('listening');
           setTimeout(() => {
-            try {
-              voiceModeRecognitionRef.current?.start();
-            } catch (e) {
-              console.log('Recognition already running');
+            if (isVoiceMode && voiceModeRecognitionRef.current && !isStoppingVoiceMode.current) {
+              try {
+                voiceModeRecognitionRef.current.start();
+              } catch (e) {
+                console.log('Could not restart recognition after speech:', e);
+              }
             }
           }, 300);
         }
@@ -407,13 +622,18 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       utterance.onerror = (event) => {
         console.error('Speech error:', event);
         isSpeakingRef.current = false;
-        setVoiceUiMode('listening'); // assistant-audio-end event (error)
-        // Resume listening after error
-        if (isVoiceMode && voiceModeRecognitionRef.current) {
+
+        if (isVoiceMode) {
+          // Restart listening after error
+          setVoiceUiMode('listening');
           setTimeout(() => {
-            try {
-              voiceModeRecognitionRef.current?.start();
-            } catch (e) {}
+            if (isVoiceMode && voiceModeRecognitionRef.current && !isStoppingVoiceMode.current) {
+              try {
+                voiceModeRecognitionRef.current.start();
+              } catch (e) {
+                console.log('Could not restart recognition after error:', e);
+              }
+            }
           }, 300);
         }
       };
@@ -440,92 +660,203 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
 
       {/* Immersive Voice Mode - Full Screen */}
       {isVoiceMode && (
-        <div className="flex-1 flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 relative overflow-hidden">
+        <div className="flex-1 flex flex-col items-center justify-center bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 dark:from-slate-900 dark:via-purple-900 dark:to-indigo-900 relative overflow-hidden">
 
-          {/* Centered Logo */}
-          <div className="relative z-10 flex flex-col items-center gap-8">
-            {/* Logo with Animation */}
-            <div className="relative">
-              {/* Glow Effect */}
+          {/* Animated Background Particles */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {[...Array(20)].map((_, i) => (
               <div
-                className={`absolute inset-0 blur-2xl transition-all duration-500 ${
-                  isSpeaking ? 'opacity-80' : 'opacity-40'
+                key={i}
+                className="absolute rounded-full bg-white/10 dark:bg-white/5"
+                style={{
+                  width: `${Math.random() * 100 + 50}px`,
+                  height: `${Math.random() * 100 + 50}px`,
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  animation: `float ${Math.random() * 10 + 10}s ease-in-out infinite`,
+                  animationDelay: `${Math.random() * 5}s`
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Pulsing Rings Around Logo */}
+          {(voiceUiMode === 'listening' || voiceUiMode === 'speaking') && (
+            <>
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                <div
+                  className={`rounded-full border-2 ${
+                    voiceUiMode === 'speaking' ? 'border-teal-400/40' : 'border-blue-400/40'
+                  }`}
+                  style={{
+                    width: '300px',
+                    height: '300px',
+                    animation: 'pulse-ring 2s ease-out infinite'
+                  }}
+                />
+              </div>
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                <div
+                  className={`rounded-full border-2 ${
+                    voiceUiMode === 'speaking' ? 'border-teal-400/30' : 'border-blue-400/30'
+                  }`}
+                  style={{
+                    width: '400px',
+                    height: '400px',
+                    animation: 'pulse-ring 2s ease-out infinite 0.5s'
+                  }}
+                />
+              </div>
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                <div
+                  className={`rounded-full border-2 ${
+                    voiceUiMode === 'speaking' ? 'border-teal-400/20' : 'border-blue-400/20'
+                  }`}
+                  style={{
+                    width: '500px',
+                    height: '500px',
+                    animation: 'pulse-ring 2s ease-out infinite 1s'
+                  }}
+                />
+              </div>
+            </>
+          )}
+
+          {/* Centered Logo - Non-interactive (always listening) */}
+          <div className="relative z-10 flex flex-col items-center gap-8">
+            {/* Logo with Dramatic Animation - NO CONTAINER */}
+            {/* Multiple Glow Layers for Drama */}
+            <div
+              className={`absolute blur-3xl transition-all duration-700 ${
+                  voiceUiMode === 'speaking' ? 'opacity-90 scale-150' :
+                  voiceUiMode === 'listening' ? 'opacity-70 scale-125' :
+                  voiceUiMode === 'thinking' ? 'opacity-60 scale-110' :
+                  'opacity-40 scale-100'
                 }`}
                 style={{
-                  animation: isSpeaking ? 'tomGlow 3s ease-in-out infinite' : 'none',
-                  filter: isSpeaking ? 'hue-rotate(150deg)' : 'none'
+                  animation: voiceUiMode === 'speaking' ? 'dramatic-glow 2s ease-in-out infinite' :
+                             voiceUiMode === 'listening' ? 'subtle-pulse 3s ease-in-out infinite' :
+                             'none',
+                  filter: voiceUiMode === 'speaking' ? 'hue-rotate(160deg) brightness(1.3)' :
+                          voiceUiMode === 'listening' ? 'hue-rotate(200deg)' :
+                          voiceUiMode === 'thinking' ? 'hue-rotate(280deg)' :
+                          'none'
                 }}
               >
                 <TomLogo
-                  isListening={!isSpeaking}
-                  isSpeaking={isSpeaking}
-                  size={200}
+                  isListening={voiceUiMode === 'listening'}
+                  isSpeaking={voiceUiMode === 'speaking'}
+                  size={280}
                   variant="standalone"
                 />
-              </div>
+            </div>
 
-              {/* Main Logo */}
-              <div
-                className="relative"
+            {/* Secondary Glow */}
+            <div
+              className={`absolute blur-2xl transition-all duration-500 ${
+                  voiceUiMode === 'speaking' ? 'opacity-80' :
+                  voiceUiMode === 'listening' ? 'opacity-60' :
+                  'opacity-30'
+                }`}
+              >
+                <TomLogo
+                  isListening={voiceUiMode === 'listening'}
+                  isSpeaking={voiceUiMode === 'speaking'}
+                  size={280}
+                  variant="standalone"
+                />
+            </div>
+
+            {/* Main Logo */}
+            <div
+              className={`relative transition-all duration-500 ${
+                  voiceUiMode === 'speaking' ? 'scale-110' :
+                  voiceUiMode === 'listening' ? 'scale-105' :
+                  'scale-100 group-hover:scale-105'
+                }`}
                 style={{
-                  animation: isSpeaking
-                    ? 'tomGlow 3s ease-in-out infinite'
-                    : inputMessage
-                    ? 'tomJitter 0.8s ease-in-out infinite'
-                    : 'none'
+                  animation: voiceUiMode === 'speaking'
+                    ? 'dramatic-speak 1.5s ease-in-out infinite'
+                    : voiceUiMode === 'listening' && inputMessage
+                    ? 'listening-jitter 0.6s ease-in-out infinite'
+                    : 'none',
+                  filter: voiceUiMode === 'speaking' ? 'drop-shadow(0 0 30px rgba(20, 184, 166, 0.8))' :
+                          voiceUiMode === 'listening' ? 'drop-shadow(0 0 25px rgba(59, 130, 246, 0.7))' :
+                          'drop-shadow(0 0 15px rgba(147, 51, 234, 0.5))'
                 }}
               >
                 <TomLogo
-                  isListening={!isSpeaking}
-                  isSpeaking={isSpeaking}
-                  size={200}
+                  isListening={voiceUiMode === 'listening'}
+                  isSpeaking={voiceUiMode === 'speaking'}
+                  size={280}
                   variant="standalone"
                 />
-              </div>
             </div>
 
             {/* Status Text */}
-            <div className="text-center space-y-2">
-              <p className={`text-2xl font-bold transition-colors duration-300 ${
+            <div className="text-center space-y-3 mt-8">
+              <p className={`text-4xl font-bold transition-all duration-500 ${
                 voiceUiMode === 'speaking'
-                  ? 'text-teal-600 dark:text-teal-400'
+                  ? 'text-teal-600 dark:text-teal-300 animate-pulse'
                   : voiceUiMode === 'thinking'
-                  ? 'text-purple-600 dark:text-purple-400'
-                  : 'text-blue-600 dark:text-blue-400'
-              }`}>
+                  ? 'text-purple-600 dark:text-purple-300 animate-pulse'
+                  : voiceUiMode === 'listening'
+                  ? 'text-blue-600 dark:text-blue-300'
+                  : 'text-gray-600 dark:text-gray-400'
+              }`} style={{
+                textShadow: voiceUiMode === 'speaking' ? '0 0 20px rgba(20, 184, 166, 0.5)' :
+                            voiceUiMode === 'thinking' ? '0 0 20px rgba(147, 51, 234, 0.5)' :
+                            voiceUiMode === 'listening' ? '0 0 20px rgba(59, 130, 246, 0.5)' :
+                            'none'
+              }}>
                 {voiceUiMode === 'speaking' ? 'TOM is speaking...' :
-                 voiceUiMode === 'thinking' ? 'Thinking...' :
-                 voiceUiMode === 'listening' ? 'Listening...' :
-                 'Ready'}
+                 voiceUiMode === 'thinking' ? 'Processing...' :
+                 'Listening...'}
               </p>
 
               {/* Live Transcript Preview */}
               {inputMessage && voiceUiMode === 'listening' && (
-                <p className="text-sm text-gray-600 dark:text-slate-400 max-w-md px-4 italic">
-                  "{inputMessage}"
-                </p>
+                <div className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-md rounded-2xl px-6 py-4 max-w-2xl mx-auto border border-blue-200 dark:border-blue-800 shadow-xl">
+                  <p className="text-lg text-gray-800 dark:text-slate-200 italic font-medium">
+                    "{inputMessage}"
+                  </p>
+                </div>
+              )}
+
+              {/* Thinking Indicator */}
+              {voiceUiMode === 'thinking' && (
+                <div className="flex justify-center gap-2">
+                  <div className="w-3 h-3 bg-purple-500 rounded-full animate-bounce" style={{animationDelay: '0s'}}></div>
+                  <div className="w-3 h-3 bg-purple-500 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                  <div className="w-3 h-3 bg-purple-500 rounded-full animate-bounce" style={{animationDelay: '0.4s'}}></div>
+                </div>
               )}
             </div>
 
-            {/* Voice Visualization Bars */}
-            {voiceUiMode !== 'thinking' && voiceUiMode !== 'idle' && (
-              <div className="flex items-center gap-2 h-16">
-                {[...Array(voiceUiMode === 'speaking' ? 7 : 5)].map((_, i) => (
+            {/* Dramatic Voice Visualization Bars */}
+            {voiceUiMode !== 'thinking' && (
+              <div className="flex items-center justify-center gap-3 h-24 mt-6">
+                {[...Array(voiceUiMode === 'speaking' ? 9 : 7)].map((_, i) => (
                   <div
                     key={i}
-                    className={`w-2 rounded-full transition-colors ${
-                      voiceUiMode === 'speaking' ? 'bg-teal-500' : 'bg-blue-500'
+                    className={`w-3 rounded-full transition-all duration-300 shadow-lg ${
+                      voiceUiMode === 'speaking'
+                        ? 'bg-gradient-to-t from-teal-500 via-teal-400 to-teal-300'
+                        : 'bg-gradient-to-t from-blue-500 via-blue-400 to-blue-300'
                     }`}
                     style={{
-                      height: '40px',
+                      height: '60px',
                       transformOrigin: 'center',
-                      animationName: voiceUiMode === 'speaking' ? 'tomBarsSpeaking' : 'tomBarsListening',
+                      animationName: voiceUiMode === 'speaking' ? 'dramatic-bars-speaking' : 'dramatic-bars-listening',
                       animationDuration: voiceUiMode === 'speaking'
-                        ? `${0.4 + Math.random() * 0.3}s`
-                        : `${0.6 + Math.random() * 0.4}s`,
+                        ? `${0.3 + Math.random() * 0.2}s`
+                        : `${0.5 + Math.random() * 0.3}s`,
                       animationTimingFunction: 'ease-in-out',
                       animationIterationCount: 'infinite',
-                      animationDelay: `${i * 0.08}s`
+                      animationDelay: `${i * 0.05}s`,
+                      boxShadow: voiceUiMode === 'speaking'
+                        ? '0 0 15px rgba(20, 184, 166, 0.6)'
+                        : '0 0 12px rgba(59, 130, 246, 0.5)'
                     }}
                   ></div>
                 ))}
@@ -533,16 +864,183 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
             )}
           </div>
 
-          {/* Exit Voice Mode Button */}
-          <button
-            onClick={handleVoiceMode}
-            className="absolute bottom-8 bg-white/90 backdrop-blur-sm text-gray-700 px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105 flex items-center gap-2 border border-gray-200"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-            <span className="font-medium">End Voice Mode</span>
-          </button>
+          {/* Voice Settings Panel */}
+          {showVoiceSettings && (
+            <div className="absolute top-8 right-8 bg-white/95 dark:bg-slate-800/95 backdrop-blur-xl rounded-2xl shadow-2xl p-6 w-80 border border-gray-200 dark:border-slate-700 z-20">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white">Voice Settings</h3>
+                <button
+                  onClick={() => setShowVoiceSettings(false)}
+                  className="p-1 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-full transition-colors"
+                >
+                  <svg className="w-5 h-5 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                {/* OpenAI Voice Selection */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    OpenAI Voice (Primary)
+                  </label>
+                  <select
+                    value={voiceSettings.openaiVoice}
+                    onChange={(e) => setVoiceSettings(prev => ({ ...prev, openaiVoice: e.target.value }))}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-teal-500 bg-white dark:bg-slate-700 text-gray-900 dark:text-white text-sm"
+                  >
+                    <option value="alloy">Alloy (Neutral)</option>
+                    <option value="echo">Echo (Male)</option>
+                    <option value="fable">Fable (British)</option>
+                    <option value="onyx">Onyx (Deep Male)</option>
+                    <option value="nova">Nova (Female)</option>
+                    <option value="shimmer">Shimmer (Soft Female)</option>
+                  </select>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    ChatGPT-quality voices from OpenAI
+                  </p>
+                </div>
+
+                {/* Browser Voice Selection (Fallback) */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Browser Voice (Fallback)
+                  </label>
+                  <select
+                    value={voiceSettings.selectedVoice}
+                    onChange={(e) => setVoiceSettings(prev => ({ ...prev, selectedVoice: e.target.value }))}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-teal-500 bg-white dark:bg-slate-700 text-gray-900 dark:text-white text-sm"
+                  >
+                    {availableVoices
+                      .filter(v => v.lang.startsWith('en'))
+                      .map(voice => (
+                        <option key={voice.name} value={voice.name}>
+                          {voice.name}
+                        </option>
+                      ))}
+                  </select>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    Used if OpenAI TTS fails
+                  </p>
+                </div>
+
+                {/* Speed/Rate */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Speed: {voiceSettings.rate.toFixed(2)}x
+                  </label>
+                  <input
+                    type="range"
+                    min="0.5"
+                    max="2"
+                    step="0.05"
+                    value={voiceSettings.rate}
+                    onChange={(e) => setVoiceSettings(prev => ({ ...prev, rate: parseFloat(e.target.value) }))}
+                    className="w-full accent-teal-500"
+                  />
+                  <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    <span>Slower</span>
+                    <span>Faster</span>
+                  </div>
+                </div>
+
+                {/* Pitch */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Pitch: {voiceSettings.pitch.toFixed(2)}
+                  </label>
+                  <input
+                    type="range"
+                    min="0.5"
+                    max="2"
+                    step="0.1"
+                    value={voiceSettings.pitch}
+                    onChange={(e) => setVoiceSettings(prev => ({ ...prev, pitch: parseFloat(e.target.value) }))}
+                    className="w-full accent-teal-500"
+                  />
+                  <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    <span>Lower</span>
+                    <span>Higher</span>
+                  </div>
+                </div>
+
+                {/* Volume */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Volume: {Math.round(voiceSettings.volume * 100)}%
+                  </label>
+                  <input
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.1"
+                    value={voiceSettings.volume}
+                    onChange={(e) => setVoiceSettings(prev => ({ ...prev, volume: parseFloat(e.target.value) }))}
+                    className="w-full accent-teal-500"
+                  />
+                </div>
+
+                {/* Test Button */}
+                <button
+                  onClick={() => speakMessage("Hello! This is how I sound with these settings.")}
+                  className="w-full py-2 bg-teal-500 hover:bg-teal-600 text-white rounded-lg font-medium transition-colors"
+                >
+                  Test Voice
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Voice Mode Controls */}
+          <div className="absolute bottom-8 left-0 right-0 flex items-center justify-center gap-4 px-4">
+            {/* Upload Button */}
+            <button
+              className="p-3 rounded-full bg-white/90 backdrop-blur-sm text-gray-700 shadow-lg hover:shadow-xl transition-all hover:scale-105 border border-gray-200"
+              title="Upload file"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+              </svg>
+            </button>
+
+            {/* Settings Button */}
+            <button
+              onClick={() => setShowVoiceSettings(!showVoiceSettings)}
+              className={`p-3 rounded-full backdrop-blur-sm shadow-lg hover:shadow-xl transition-all hover:scale-105 border ${
+                showVoiceSettings
+                  ? 'bg-teal-500 text-white border-teal-600'
+                  : 'bg-white/90 text-gray-700 border-gray-200'
+              }`}
+              title="Voice settings"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </button>
+
+            {/* Close (X) Button */}
+            <button
+              onClick={handleVoiceMode}
+              className="p-3 rounded-full bg-white/90 backdrop-blur-sm text-gray-700 shadow-lg hover:shadow-xl transition-all hover:scale-105 border border-gray-200"
+              title="Exit voice mode"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Share Button */}
+            <button
+              className="p-3 rounded-full bg-white/90 backdrop-blur-sm text-gray-700 shadow-lg hover:shadow-xl transition-all hover:scale-105 border border-gray-200"
+              title="Share conversation"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+              </svg>
+            </button>
+          </div>
         </div>
       )}
 
@@ -573,21 +1071,31 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       {!isVoiceMode && (
         <div className="flex-shrink-0 border-t border-gray-200 p-4 bg-white">
         <div className="flex gap-2 items-center">
+          {/* Upload (+) Button */}
+          <button
+            className="flex-shrink-0 p-2.5 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-all"
+            title="Upload file"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+          </button>
+
           <div className="flex-1 relative">
             <input
               type="text"
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder={isRecording ? "Recording..." : isVoiceMode ? "Voice mode active..." : "Ask anything (press Enter)"}
-              disabled={isVoiceMode}
+              placeholder={isRecording ? "Recording..." : "Message TOM..."}
+              disabled={isLoading}
               className="w-full pl-4 pr-20 py-3 border border-gray-300 rounded-full focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm bg-white disabled:bg-gray-50 disabled:cursor-not-allowed"
             />
             <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
               {/* Mic Button - Recording/Dictation */}
               <button
                 onClick={handleRecording}
-                disabled={isVoiceMode}
+                disabled={isLoading}
                 className={`p-2 rounded-full transition-all ${
                   isRecording
                     ? 'bg-red-500 text-white'
@@ -600,22 +1108,42 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
                 </svg>
               </button>
 
-              {/* Voice Mode Button - Conversational AI */}
-              <button
-                onClick={handleVoiceMode}
-                disabled={isRecording}
-                className={`p-2 rounded-full transition-all ${
-                  isVoiceMode
-                    ? 'bg-blue-500 text-white animate-pulse'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed'
-                }`}
-                title={isVoiceMode ? 'Stop voice mode' : 'Start voice conversation'}
-              >
-                {/* Waveform Icon - Like ChatGPT */}
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 12h2m0 0v4m0-4V8m4 4h2m0 0v6m0-6V6m4 6h2m0 0v2m0-2v-2m4 2h2m0 0v4m0-4V8" />
-                </svg>
-              </button>
+              {/* Dynamic Button - Stop/Send/Voice Mode */}
+              {isLoading ? (
+                // Stop button while generating
+                <button
+                  onClick={handleStopGenerating}
+                  className="p-2 rounded-full bg-gray-800 text-white hover:bg-gray-700 transition-all"
+                  title="Stop generating"
+                >
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    <rect x="6" y="6" width="12" height="12" rx="1" />
+                  </svg>
+                </button>
+              ) : inputMessage.trim() ? (
+                // Send button when there's text
+                <button
+                  onClick={handleSendMessage}
+                  className="p-2 rounded-full bg-gray-800 text-white hover:bg-gray-700 transition-all"
+                  title="Send message"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14m-7-7l7 7-7 7" />
+                  </svg>
+                </button>
+              ) : (
+                // Voice Mode button when idle
+                <button
+                  onClick={handleVoiceMode}
+                  disabled={isRecording}
+                  className="p-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  title="Start voice conversation"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 12h2m0 0v4m0-4V8m4 4h2m0 0v6m0-6V6m4 6h2m0 0v2m0-2v-2m4 2h2m0 0v4m0-4V8" />
+                  </svg>
+                </button>
+              )}
             </div>
           </div>
         </div>
