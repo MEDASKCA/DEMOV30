@@ -14,12 +14,29 @@ interface TomAIChatPanelProps {
   showHeader?: boolean;
 }
 
+// Varied greetings for chat
+const getRandomGreeting = () => {
+  const greetings = [
+    "Hello! I'm TOM, your Theatre Operations Manager. How can I assist you today?",
+    "Good day! TOM here, ready to help with your theatre operations. What would you like to discuss?",
+    "Greetings! I'm TOM, and I'm delighted to assist you with theatre management. How may I help?",
+    "Welcome! This is TOM, your dedicated theatre operations assistant. What can I do for you today?",
+    "Hello there! TOM at your service. I'm here to help make your theatre operations run smoothly. What's on your mind?",
+    "Hi! I'm TOM, your Theatre Operations Manager. Ready to help with scheduling, staffing, or any questions!",
+    "Good to see you! TOM here. Whether it's rosters, resources, or theatre logistics, I'm here to help.",
+    "Welcome back! I'm TOM, and I'm excited to assist with your theatre operations today. How can I support you?",
+    "Hello! TOM speaking. I specialise in theatre operations management. What would you like help with?",
+    "Wonderful to connect! I'm TOM, your theatre operations expert. Ready to tackle challenges together!"
+  ];
+  return greetings[Math.floor(Math.random() * greetings.length)];
+};
+
 export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
       role: 'assistant',
-      content: "Hello Alexander! How can I help you with theatre operations today? Just start speaking when you're ready.",
+      content: getRandomGreeting(),
       timestamp: new Date()
     }
   ]);
