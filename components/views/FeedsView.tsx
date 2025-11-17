@@ -205,7 +205,6 @@ export default function FeedsView() {
         <div className="col-span-2 flex flex-col overflow-hidden bg-white dark:bg-slate-900">
           <div className="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 px-4 py-3">
             <h2 className="text-xl font-bold text-gray-900 dark:text-slate-100">Feeds</h2>
-            <p className="text-xs text-gray-600 dark:text-slate-300 mt-0.5">Theatre staff collaboration and news</p>
           </div>
 
           <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-slate-900">
