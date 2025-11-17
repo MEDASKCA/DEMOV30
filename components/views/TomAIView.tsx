@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import TomLogo from './TomLogo';
+import TomLogo from '../TomLogo';
 
 interface Message {
   id: string;
