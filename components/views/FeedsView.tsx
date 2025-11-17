@@ -193,25 +193,25 @@ export default function FeedsView() {
   };
 
   return (
-    <div className="h-full flex flex-col bg-gray-50 overflow-hidden">
+    <div className="h-full flex flex-col bg-gray-50 dark:bg-slate-900 overflow-hidden">
       {/* Desktop View - Split with TOM AI */}
       <div className="hidden md:grid md:grid-cols-4 flex-1 overflow-hidden">
         {/* TOM AI Panel - Left Side (Desktop) */}
-        <div className="col-span-1 bg-white border-r border-gray-200 flex flex-col overflow-hidden">
+        <div className="col-span-1 bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-slate-800 flex flex-col overflow-hidden">
           <TomAIChatPanel />
         </div>
 
         {/* Posts Feed - Middle (Desktop) */}
-        <div className="col-span-2 flex flex-col overflow-hidden bg-white">
-          <div className="bg-white border-b border-gray-200 p-4">
-            <h2 className="text-xl font-bold text-gray-900">Feeds</h2>
-            <p className="text-sm text-gray-600">Theatre staff collaboration and news</p>
+        <div className="col-span-2 flex flex-col overflow-hidden bg-white dark:bg-slate-900">
+          <div className="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 p-4">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-slate-100">Feeds</h2>
+            <p className="text-sm text-gray-600 dark:text-slate-300">Theatre staff collaboration and news</p>
           </div>
 
-          <div className="flex-1 overflow-y-auto bg-gray-50">
+          <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-slate-900">
           <div className="py-6 px-4 space-y-4">
             {/* Stories Section */}
-            <div className="bg-white rounded-xl border border-gray-200 p-4">
+            <div className="bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 p-4">
               <div className="flex gap-3 overflow-x-auto pb-2">
                 {/* Add Your Story */}
                 <div className="flex flex-col items-center gap-2 flex-shrink-0">
@@ -255,7 +255,7 @@ export default function FeedsView() {
             </div>
 
             {/* Create Post */}
-            <div className="bg-white rounded-xl border border-gray-200 p-4">
+            <div className="bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 p-4">
               <div className="flex gap-3">
                 {getStaffById(currentUserId)?.avatar ? (
                   <img
@@ -273,11 +273,11 @@ export default function FeedsView() {
                     value={newPostContent}
                     onChange={(e) => setNewPostContent(e.target.value)}
                     placeholder="What's on your mind?"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm bg-white text-gray-900 placeholder-gray-500"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 placeholder-gray-500 dark:placeholder-slate-400"
                     rows={3}
                   />
                   <div className="flex items-center justify-between mt-2">
-                    <button className="flex items-center gap-2 text-sm text-gray-600 hover:text-blue-600 transition-colors px-3 py-1.5 rounded-lg hover:bg-gray-100">
+                    <button className="flex items-center gap-2 text-sm text-gray-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors px-3 py-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800">
                       <ImageIcon className="w-4 h-4" />
                       <span>Photo</span>
                     </button>
@@ -303,7 +303,7 @@ export default function FeedsView() {
               const isCommentsOpen = showComments === post.id;
 
               return (
-                <div key={post.id} className="bg-white rounded-xl border border-gray-200 hover:shadow-md transition-shadow">
+                <div key={post.id} className="bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 hover:shadow-md transition-shadow">
                   {/* Post Header */}
                   <div className="p-4 flex items-start gap-3">
                     <button
@@ -325,30 +325,30 @@ export default function FeedsView() {
                     <div className="flex-1">
                       <button
                         onClick={() => handleProfileClick(author.id)}
-                        className="font-semibold text-gray-900 hover:text-blue-600 transition-colors text-left"
+                        className="font-semibold text-gray-900 dark:text-slate-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-left"
                       >
                         {author.firstName} {author.lastName}
                       </button>
-                      <p className="text-xs text-gray-500">{author.role} • {getTimeAgo(post.timestamp)}</p>
+                      <p className="text-xs text-gray-500 dark:text-slate-400">{author.role} • {getTimeAgo(post.timestamp)}</p>
                     </div>
                   </div>
 
                   {/* Post Content */}
                   <div className="px-4 pb-3">
-                    <p className="text-gray-900 whitespace-pre-wrap">{post.content}</p>
+                    <p className="text-gray-700 dark:text-slate-200 whitespace-pre-wrap">{post.content}</p>
                   </div>
 
                   {/* Post Stats */}
-                  <div className="px-4 py-2 flex items-center justify-between text-sm border-t border-gray-100">
+                  <div className="px-4 py-2 flex items-center justify-between text-sm border-t border-gray-100 dark:border-slate-800">
                     <button
                       onClick={() => setShowReactionsList(showReactionsList === post.id ? null : post.id)}
-                      className="text-gray-600 hover:text-blue-600 hover:underline transition-colors"
+                      className="text-gray-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-colors"
                     >
                       {post.likes.length} {post.likes.length === 1 ? 'reaction' : 'reactions'}
                     </button>
                     <button
                       onClick={() => setShowComments(showComments === post.id ? null : post.id)}
-                      className="text-gray-600 hover:text-blue-600 hover:underline transition-colors"
+                      className="text-gray-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-colors"
                     >
                       {post.comments.length} {post.comments.length === 1 ? 'comment' : 'comments'}
                     </button>

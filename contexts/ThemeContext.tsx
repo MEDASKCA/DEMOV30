@@ -18,11 +18,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   // Load theme from localStorage on mount
   useEffect(() => {
     setMounted(true);
-    // Force light mode as default - clear any saved dark mode
-    localStorage.setItem('theme', 'light');
-    setTheme('light');
-    // Remove dark class immediately
-    document.documentElement.classList.remove('dark');
+    const savedTheme = localStorage.getItem('theme') as Theme;
+    if (savedTheme) {
+      setTheme(savedTheme);
+    }
   }, []);
 
   // Apply theme to document

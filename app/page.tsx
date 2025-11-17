@@ -12,7 +12,7 @@ export default function Home() {
   }, [router]);
 
   return (
-    <div className="flex items-center justify-center h-screen" style={{backgroundColor: '#F0F9FF'}}>
+    <div className="flex items-center justify-center h-screen bg-sky-50 dark:bg-slate-950">
       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600"></div>
     </div>
   );

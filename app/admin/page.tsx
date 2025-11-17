@@ -317,14 +317,14 @@ export default function AdminPage() {
 
   if (!mounted) {
     return (
-      <div className="flex items-center justify-center h-screen" style={{backgroundColor: '#F0F9FF'}}>
+      <div className="flex items-center justify-center h-screen bg-sky-50 dark:bg-slate-950">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600"></div>
       </div>
     );
   }
 
   return (
-    <div className="h-screen w-screen flex flex-col overflow-hidden" style={{backgroundColor: '#F0F9FF'}}>
+    <div className="h-screen w-screen flex flex-col overflow-hidden bg-sky-50 dark:bg-slate-950">
       {/* Static Admin Demo Header */}
       <div
         className="w-full bg-purple-600 text-white flex items-center justify-center gap-3 px-4 flex-shrink-0"
