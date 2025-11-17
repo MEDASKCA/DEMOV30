@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Sparkles, Send, Mic, MicOff } from 'lucide-react';
-import { useListening } from '@/contexts/ListeningContext';
+import TomLogo from './TomLogo';
 
 interface Message {
   id: string;
@@ -11,21 +10,28 @@ interface Message {
   timestamp: Date;
 }
 
-export default function TomAIView() {
+interface TomAIChatPanelProps {
+  showHeader?: boolean;
+}
+
+export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
       role: 'assistant',
-      content: "TOM: Hello Alexander! How can I help you today?",
+      content: "Hello Alexander! How can I help you with theatre operations today? Just start speaking when you're ready.",
       timestamp: new Date()
     }
   ]);
   const [inputMessage, setInputMessage] = useState('');
-  const [isListening, setIsListening] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const [isVoiceMode, setIsVoiceMode] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const [voicesLoaded, setVoicesLoaded] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
+  const voiceModeRecognitionRef = useRef<any>(null);
+  const isStoppingVoiceMode = useRef(false);
 
   // Load voices
   useEffect(() => {
@@ -33,7 +39,6 @@ export default function TomAIView() {
       const voices = window.speechSynthesis.getVoices();
       if (voices.length > 0) {
         setVoicesLoaded(true);
-        console.log('Available voices:', voices.map(v => v.name));
       }
     };
 
@@ -51,24 +56,62 @@ export default function TomAIView() {
     scrollToBottom();
   }, [messages]);
 
-  // Initialize Speech Recognition with continuous listening and wake word
+  // Initialize Recording Mode Speech Recognition (mic button)
   useEffect(() => {
     if (typeof window !== 'undefined' && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
       const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
       recognitionRef.current = new SpeechRecognition();
-      recognitionRef.current.continuous = true;  // Keep listening
-      recognitionRef.current.interimResults = true;  // Show interim results
+      recognitionRef.current.continuous = false;
+      recognitionRef.current.interimResults = true;
       recognitionRef.current.lang = 'en-GB';
 
-      let autoSendTimeout: NodeJS.Timeout | null = null;
-
       recognitionRef.current.onresult = (event: any) => {
-        // Stop any ongoing speech when user starts talking (interrupt)
+        let finalTranscript = '';
+        let interimTranscript = '';
+
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const transcript = event.results[i][0].transcript;
+          if (event.results[i].isFinal) {
+            finalTranscript += transcript + ' ';
+          } else {
+            interimTranscript += transcript;
+          }
+        }
+
+        const currentText = (finalTranscript + interimTranscript).trim();
+        setInputMessage(currentText);
+      };
+
+      recognitionRef.current.onerror = (event: any) => {
+        console.error('Recording error:', event.error);
+        setIsRecording(false);
+      };
+
+      recognitionRef.current.onend = () => {
+        setIsRecording(false);
+      };
+    }
+  }, []);
+
+  // Initialize Voice Mode Speech Recognition (conversational)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+      const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
+      voiceModeRecognitionRef.current = new SpeechRecognition();
+      voiceModeRecognitionRef.current.continuous = true;
+      voiceModeRecognitionRef.current.interimResults = true;
+      voiceModeRecognitionRef.current.lang = 'en-GB';
+
+      let autoSendTimeout: NodeJS.Timeout | null = null;
+      let accumulatedText = '';
+
+      voiceModeRecognitionRef.current.onresult = (event: any) => {
+        // Cancel any ongoing speech when user starts talking
         if (window.speechSynthesis.speaking) {
           window.speechSynthesis.cancel();
         }
 
-        // Clear any pending auto-send
+        // Clear previous auto-send timer
         if (autoSendTimeout) {
           clearTimeout(autoSendTimeout);
           autoSendTimeout = null;
@@ -80,86 +123,95 @@ export default function TomAIView() {
         for (let i = event.resultIndex; i < event.results.length; i++) {
           const transcript = event.results[i][0].transcript;
           if (event.results[i].isFinal) {
-            finalTranscript += transcript;
+            finalTranscript += transcript + ' ';
           } else {
             interimTranscript += transcript;
           }
         }
 
-        // Check for wake word "Hey TOM"
-        const combined = (finalTranscript + interimTranscript).toLowerCase();
-        if (combined.includes('hey tom') || combined.includes('hey time') || combined.includes('a tom')) {
-          // Remove wake word and start listening for command
-          const query = combined.replace(/hey tom|hey time|a tom/gi, '').trim();
-          if (query) {
-            setInputMessage(query);
-            // Auto-send immediately after detecting wake word
-            autoSendTimeout = setTimeout(() => {
-              handleSendMessage();
-              setInputMessage('');
-            }, 300);
-          }
-          return;
-        }
-
-        // Update input with final or interim transcript
         if (finalTranscript) {
-          setInputMessage(finalTranscript);
-          // Auto-send when speech is finalized (reduced delay for faster response)
+          accumulatedText += finalTranscript;
+        }
+
+        const currentText = (accumulatedText + interimTranscript).trim();
+        setInputMessage(currentText);
+
+        // Auto-send after 1.5 seconds of silence
+        if (finalTranscript.trim()) {
           autoSendTimeout = setTimeout(() => {
-            if (finalTranscript.trim()) {
+            const textToSend = accumulatedText.trim();
+            if (textToSend) {
+              accumulatedText = '';
               handleSendMessage();
-              setInputMessage('');
             }
-          }, 500);
-        } else if (interimTranscript) {
-          setInputMessage(interimTranscript);
+          }, 1500);
         }
       };
 
-      recognitionRef.current.onerror = (event: any) => {
-        console.error('Speech recognition error:', event.error);
-        if (event.error === 'no-speech') {
-          // Restart if no speech detected
-          if (isListening) {
-            setTimeout(() => {
-              try {
-                recognitionRef.current?.start();
-              } catch (e) {
-                // Already started
-              }
-            }, 100);
-          }
+      voiceModeRecognitionRef.current.onerror = (event: any) => {
+        if (event.error === 'no-speech' && isVoiceMode) {
+          setTimeout(() => {
+            try {
+              voiceModeRecognitionRef.current?.start();
+            } catch (e) {}
+          }, 100);
         } else {
-          setIsListening(false);
+          setIsVoiceMode(false);
         }
       };
 
-      recognitionRef.current.onend = () => {
-        // Auto-restart if still in listening mode
-        if (isListening) {
+      voiceModeRecognitionRef.current.onend = () => {
+        if (isVoiceMode && !isStoppingVoiceMode.current) {
           try {
-            recognitionRef.current?.start();
-          } catch (e) {
-            // Already started
-          }
+            voiceModeRecognitionRef.current?.start();
+          } catch (e) {}
         }
       };
     }
-  }, [isListening]);
+  }, [isVoiceMode]);
 
-  const handleVoiceInput = () => {
+  const handleRecording = () => {
     if (!recognitionRef.current) {
       alert('Speech recognition is not supported in your browser.');
       return;
     }
 
-    if (isListening) {
+    if (isRecording) {
       recognitionRef.current.stop();
-      setIsListening(false);
+      setIsRecording(false);
     } else {
       recognitionRef.current.start();
-      setIsListening(true);
+      setIsRecording(true);
+    }
+  };
+
+  const handleVoiceMode = () => {
+    // If turning OFF voice mode, always allow it
+    if (isVoiceMode) {
+      isStoppingVoiceMode.current = true;
+      try {
+        voiceModeRecognitionRef.current?.stop();
+      } catch (e) {
+        console.log('Error stopping voice recognition:', e);
+      }
+      setIsVoiceMode(false);
+      setInputMessage('');
+      return;
+    }
+
+    // If turning ON voice mode, check support
+    if (!voiceModeRecognitionRef.current) {
+      alert('Speech recognition is not supported in your browser.');
+      return;
+    }
+
+    isStoppingVoiceMode.current = false;
+    try {
+      voiceModeRecognitionRef.current.start();
+      setIsVoiceMode(true);
+    } catch (e) {
+      console.error('Error starting voice recognition:', e);
+      alert('Could not start voice mode. Please try again.');
     }
   };
 
@@ -176,148 +228,150 @@ export default function TomAIView() {
       const query = inputMessage;
       setInputMessage('');
 
-      // Show typing indicator
-      const typingMessage: Message = {
-        id: 'typing',
+      // Create a streaming message
+      const streamingMessageId = 'streaming-' + Date.now();
+      const streamingMessage: Message = {
+        id: streamingMessageId,
         role: 'assistant',
-        content: '...',
+        content: '',
         timestamp: new Date()
       };
-      setMessages(prev => [...prev, typingMessage]);
+      setMessages(prev => [...prev, streamingMessage]);
 
-      // Process query with TOM AI Service
       try {
-        const { TomAIService } = await import('@/lib/tomAIService');
-        const result = await TomAIService.processQuery(query);
-
-        // Remove typing indicator and add real response
-        setMessages(prev => {
-          const filtered = prev.filter(m => m.id !== 'typing');
-          return [
-            ...filtered,
-            {
-              id: (Date.now() + 1).toString(),
-              role: 'assistant',
-              content: result.message,
-              timestamp: new Date()
-            }
-          ];
+        // Try Azure OpenAI endpoint first
+        const response = await fetch('/api/tom-chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: query })
         });
 
-        // If voice output is available, speak the response with natural young male voice
-        if ('speechSynthesis' in window && result.success && voicesLoaded) {
-          // Cancel any ongoing speech
-          window.speechSynthesis.cancel();
+        if (response.ok) {
+          const result = await response.json();
 
-          // Small delay to ensure voices are fully loaded
-          setTimeout(() => {
-            const utterance = new SpeechSynthesisUtterance(result.message);
+          setMessages(prev => prev.map(m =>
+            m.id === streamingMessageId
+              ? { ...m, content: result.message }
+              : m
+          ));
 
-            // Get all available voices
-            const voices = window.speechSynthesis.getVoices();
-            console.log('Available voices:', voices.map(v => `${v.name} (${v.lang})`));
-
-            // Try to find a male voice - be very aggressive in searching
-            let selectedVoice = null;
-
-            // Priority list of male voices (most natural first)
-            const preferredMaleVoices = [
-              'Google UK English Male',
-              'Microsoft David - English (United Kingdom)',
-              'Daniel (Enhanced)',
-              'Daniel',
-              'Google US English',
-              'Microsoft Mark - English (United States)'
-            ];
-
-            // First: Look for preferred voices
-            for (const prefName of preferredMaleVoices) {
-              selectedVoice = voices.find(v => v.name === prefName);
-              if (selectedVoice) break;
-            }
-
-            // Second: Look for any voice with "male" in the name
-            if (!selectedVoice) {
-              selectedVoice = voices.find(voice =>
-                voice.lang.startsWith('en') &&
-                voice.name.toLowerCase().includes('male')
-              );
-            }
-
-            // Third: Look for known male voice names
-            if (!selectedVoice) {
-              const maleVoiceNames = ['daniel', 'david', 'mark', 'alex', 'james', 'thomas', 'ryan', 'aaron'];
-              selectedVoice = voices.find(voice =>
-                voice.lang.startsWith('en') &&
-                maleVoiceNames.some(name => voice.name.toLowerCase().includes(name))
-              );
-            }
-
-            // Fourth: On Windows, look for Microsoft voices that aren't female
-            if (!selectedVoice) {
-              selectedVoice = voices.find(voice =>
-                voice.lang.startsWith('en') &&
-                voice.name.includes('Microsoft') &&
-                !voice.name.includes('Zira') &&
-                !voice.name.includes('Susan') &&
-                !voice.name.includes('Linda') &&
-                !voice.name.includes('Hazel')
-              );
-            }
-
-            // Fifth: Try Google voices (usually better quality)
-            if (!selectedVoice) {
-              selectedVoice = voices.find(voice =>
-                voice.name.includes('Google') &&
-                voice.lang.startsWith('en')
-              );
-            }
-
-            // Configure voice parameters for natural male sound
-            if (selectedVoice) {
-              utterance.voice = selectedVoice;
-              utterance.lang = selectedVoice.lang;
-              console.log('✓ Selected voice:', selectedVoice.name, selectedVoice.lang);
-
-              // Adjust based on voice type
-              if (selectedVoice.name.includes('Google')) {
-                utterance.rate = 1.0;
-                utterance.pitch = 0.9;
-              } else if (selectedVoice.name.includes('Microsoft')) {
-                utterance.rate = 1.05;
-                utterance.pitch = 0.85;
-              } else {
-                utterance.rate = 1.1;
-                utterance.pitch = 0.9;
-              }
-            } else {
-              utterance.lang = 'en-GB';
-              utterance.rate = 1.05;
-              utterance.pitch = 0.85;
-              console.log('⚠ No male voice found, using default with adjusted pitch');
-            }
-
-            utterance.volume = 1.0;
-
-            window.speechSynthesis.speak(utterance);
-          }, 100);
+          // Speak the response
+          if ('speechSynthesis' in window && result.message) {
+            speakMessage(result.message);
+          }
+        } else {
+          throw new Error('Azure OpenAI request failed');
         }
       } catch (error) {
-        // Remove typing indicator and show error
-        setMessages(prev => {
-          const filtered = prev.filter(m => m.id !== 'typing');
-          return [
-            ...filtered,
-            {
-              id: (Date.now() + 1).toString(),
-              role: 'assistant',
-              content: 'I encountered an error processing your request. Please try again.',
-              timestamp: new Date()
-            }
-          ];
-        });
+        console.error('Chat error:', error);
+        setMessages(prev => prev.map(m =>
+          m.id === streamingMessageId
+            ? { ...m, content: 'I encountered an error processing your request. Please try again.' }
+            : m
+        ));
       }
     }
+  };
+
+  const speakMessage = async (text: string) => {
+    // Cancel any ongoing speech
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
+
+    setIsSpeaking(true);
+
+    // Use browser speech synthesis
+    speakWithBrowserVoice(text);
+  };
+
+  const speakWithBrowserVoice = (text: string) => {
+    if (typeof window === 'undefined' || !window.speechSynthesis) {
+      console.log('Browser speech synthesis not available');
+      setIsSpeaking(false);
+      return;
+    }
+
+    console.log('Using browser voice');
+
+    setTimeout(() => {
+      const utterance = new SpeechSynthesisUtterance(text);
+      const voices = window.speechSynthesis.getVoices();
+
+      console.log('Available voices:', voices.length);
+
+      // Prioritize natural-sounding voices
+      let selectedVoice = null;
+      const preferredVoices = [
+        // Premium voices (most natural)
+        'Samantha',
+        'Alex',
+        'Google UK English Female',
+        'Google UK English Male',
+        'Google US English',
+        'Microsoft Zira - English (United States)',
+        'Microsoft David - English (United States)',
+        'Microsoft Mark - English (United States)',
+        // Enhanced voices
+        'Daniel (Enhanced)',
+        'Fiona (Enhanced)',
+        'Karen (Enhanced)',
+        // Standard voices
+        'Daniel',
+        'Fiona',
+        'Karen',
+        'Moira',
+        'Tessa'
+      ];
+
+      for (const prefName of preferredVoices) {
+        selectedVoice = voices.find(v => v.name === prefName);
+        if (selectedVoice) break;
+      }
+
+      // Fallback: find any English voice
+      if (!selectedVoice) {
+        selectedVoice = voices.find(voice =>
+          voice.lang.startsWith('en-') &&
+          (voice.name.includes('Google') || voice.name.includes('Microsoft'))
+        );
+      }
+
+      // Last resort: any English voice
+      if (!selectedVoice) {
+        selectedVoice = voices.find(voice => voice.lang.startsWith('en'));
+      }
+
+      if (selectedVoice) {
+        utterance.voice = selectedVoice;
+        utterance.lang = selectedVoice.lang;
+        console.log('Selected voice:', selectedVoice.name);
+      } else {
+        utterance.lang = 'en-GB';
+        console.log('No specific voice found, using default en-GB');
+      }
+
+      // Natural speech settings
+      utterance.rate = 0.95;  // Slightly slower for clarity
+      utterance.pitch = 1.0;  // Normal pitch (not robotic)
+      utterance.volume = 1.0;
+
+      utterance.onstart = () => {
+        console.log('Speech started');
+        setIsSpeaking(true);
+      };
+      utterance.onend = () => {
+        console.log('Speech ended');
+        setIsSpeaking(false);
+      };
+      utterance.onerror = (event) => {
+        console.error('Speech error:', event);
+        setIsSpeaking(false);
+      };
+
+      console.log('Starting speech...');
+      window.speechSynthesis.speak(utterance);
+    }, 100);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -329,67 +383,219 @@ export default function TomAIView() {
 
   return (
     <div className="h-full flex flex-col bg-white overflow-hidden">
-      {/* Messages Area - Takes full height with centered layout */}
-      <div ref={messagesContainerRef} className="flex-1 overflow-y-auto">
-        <div className="max-w-3xl mx-auto w-full px-3 md:px-4 py-6 md:py-8 space-y-4">
-          {messages.map((message) => (
-            <div
-              key={message.id}
-              className={`flex w-full ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-            >
-              <div
-                className={`max-w-[85%] md:max-w-[70%] rounded-2xl px-4 py-3 ${
-                  message.role === 'user'
-                    ? 'bg-gradient-to-r from-blue-600 via-teal-600 to-purple-600 text-white shadow-md'
-                    : 'bg-gray-100 text-gray-900'
-                }`}
-              >
-                <p className="text-sm md:text-base whitespace-pre-wrap">{message.content}</p>
-              </div>
-            </div>
-          ))}
-          <div ref={messagesEndRef} />
+      {showHeader && !isVoiceMode && (
+        <div className="flex-shrink-0 border-b border-gray-200 p-4 bg-gradient-to-r from-blue-50 via-teal-50 to-purple-50">
+          <div className="flex items-center gap-2">
+            <h2 className="text-lg font-semibold bg-gradient-to-r from-blue-600 via-teal-600 to-purple-600 bg-clip-text text-transparent">TOM</h2>
+          </div>
+          <p className="text-xs text-gray-600 mt-0.5">Your Theatre Operations Assistant</p>
         </div>
-      </div>
+      )}
 
-      {/* Input Area - Fixed at bottom of container */}
-      <div className="flex-shrink-0 border-t border-gray-200 bg-white shadow-lg pb-safe">
-        <div className="max-w-3xl mx-auto w-full px-3 md:px-4 py-3 md:py-4">
-          <div className="flex gap-2 items-center w-full">
-            <button
-              onClick={handleVoiceInput}
-              className={`p-2.5 md:p-3 rounded-lg transition-all flex-shrink-0 ${
-                isListening
-                  ? 'bg-red-500 text-white hover:bg-red-600'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+      {/* Immersive Voice Mode - Full Screen */}
+      {isVoiceMode && (
+        <div className="flex-1 flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 relative overflow-hidden">
+          {/* Animated Background Ripples */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            {!isSpeaking && (
+              <>
+                <div className="absolute w-64 h-64 rounded-full bg-blue-400/10 animate-ping" style={{ animationDuration: '3s' }}></div>
+                <div className="absolute w-80 h-80 rounded-full bg-teal-400/10 animate-ping" style={{ animationDuration: '4s', animationDelay: '0.5s' }}></div>
+                <div className="absolute w-96 h-96 rounded-full bg-purple-400/10 animate-ping" style={{ animationDuration: '5s', animationDelay: '1s' }}></div>
+              </>
+            )}
+          </div>
+
+          {/* Centered Logo */}
+          <div className="relative z-10 flex flex-col items-center gap-8">
+            {/* Logo with Animation */}
+            <div className={`relative transition-all duration-500 ${isSpeaking ? 'scale-110' : 'scale-100'}`}>
+              {/* Glow Effect */}
+              <div className={`absolute inset-0 blur-2xl transition-opacity duration-500 ${
+                isSpeaking ? 'opacity-60' : 'opacity-40'
+              }`}>
+                <TomLogo
+                  isListening={!isSpeaking}
+                  isSpeaking={isSpeaking}
+                  size={200}
+                  variant="standalone"
+                />
+              </div>
+
+              {/* Main Logo */}
+              <div className={`relative ${isSpeaking ? 'animate-pulse' : ''}`}>
+                <TomLogo
+                  isListening={!isSpeaking}
+                  isSpeaking={isSpeaking}
+                  size={200}
+                  variant="standalone"
+                />
+              </div>
+
+              {/* Listening Ripple Effect */}
+              {!isSpeaking && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-48 h-48 rounded-full border-4 border-blue-400/30 animate-ping"></div>
+                </div>
+              )}
+            </div>
+
+            {/* Status Text */}
+            <div className="text-center space-y-2">
+              <p className={`text-2xl font-bold transition-colors duration-300 ${
+                isSpeaking
+                  ? 'text-teal-600'
+                  : 'text-blue-600'
+              }`}>
+                {isSpeaking ? 'TOM is speaking...' : 'Listening...'}
+              </p>
+
+              {/* Live Transcript Preview */}
+              {inputMessage && !isSpeaking && (
+                <p className="text-sm text-gray-600 max-w-md px-4 italic">
+                  "{inputMessage}"
+                </p>
+              )}
+            </div>
+
+            {/* Voice Visualization Bars */}
+            <div className="flex items-center gap-1.5">
+              {[...Array(isSpeaking ? 7 : 5)].map((_, i) => (
+                <div
+                  key={i}
+                  className={`w-1.5 rounded-full transition-all ${
+                    isSpeaking ? 'bg-teal-500' : 'bg-blue-500'
+                  }`}
+                  style={{
+                    height: isSpeaking
+                      ? `${Math.random() * 40 + 20}px`
+                      : `${Math.random() * 30 + 10}px`,
+                    animation: `pulse ${Math.random() * 0.5 + 0.5}s ease-in-out infinite`,
+                    animationDelay: `${i * 0.1}s`
+                  }}
+                ></div>
+              ))}
+            </div>
+          </div>
+
+          {/* Exit Voice Mode Button */}
+          <button
+            onClick={handleVoiceMode}
+            className="absolute bottom-8 bg-white/90 backdrop-blur-sm text-gray-700 px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105 flex items-center gap-2 border border-gray-200"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            <span className="font-medium">End Voice Mode</span>
+          </button>
+        </div>
+      )}
+
+      {/* Messages Area - Hidden in Voice Mode */}
+      {!isVoiceMode && (
+        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        {messages.map((message) => (
+          <div
+            key={message.id}
+            className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+          >
+            <div
+              className={`max-w-[80%] rounded-2xl px-4 py-2.5 ${
+                message.role === 'user'
+                  ? 'bg-gradient-to-r from-blue-600 via-teal-600 to-purple-600 text-white'
+                  : 'bg-gray-100 text-gray-900'
               }`}
-              title={isListening ? 'Stop listening' : 'Start voice input'}
             >
-              {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
-            </button>
+              <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+            </div>
+          </div>
+        ))}
+        <div ref={messagesEndRef} />
+        </div>
+      )}
+
+      {/* Input Area - Fixed at bottom - Hidden in Voice Mode */}
+      {!isVoiceMode && (
+        <div className="flex-shrink-0 border-t border-gray-200 p-4 bg-white">
+        <div className="flex gap-2 items-center">
+          <div className="flex-1 relative">
             <input
               type="text"
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Message TOM..."
-              className="flex-1 px-3 md:px-4 py-2.5 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm md:text-base"
+              placeholder={isRecording ? "Recording..." : isVoiceMode ? "Voice mode active..." : "Ask anything (press Enter)"}
+              disabled={isVoiceMode}
+              className="w-full pl-4 pr-20 py-3 border border-gray-300 rounded-full focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm bg-white disabled:bg-gray-50 disabled:cursor-not-allowed"
             />
-            <button
-              onClick={handleSendMessage}
-              disabled={!inputMessage.trim()}
-              className="p-2.5 md:p-3 bg-gradient-to-r from-blue-600 via-teal-600 to-purple-600 text-white rounded-lg hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0 active:scale-95"
-            >
-              <Send className="w-5 h-5" />
-            </button>
+            <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+              {/* Mic Button - Recording/Dictation */}
+              <button
+                onClick={handleRecording}
+                disabled={isVoiceMode}
+                className={`p-2 rounded-full transition-all ${
+                  isRecording
+                    ? 'bg-red-500 text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed'
+                }`}
+                title={isRecording ? 'Stop recording' : 'Record message'}
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                </svg>
+              </button>
+
+              {/* Voice Mode Button - Conversational AI */}
+              <button
+                onClick={handleVoiceMode}
+                disabled={isRecording}
+                className={`p-2 rounded-full transition-all ${
+                  isVoiceMode
+                    ? 'bg-blue-500 text-white animate-pulse'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed'
+                }`}
+                title={isVoiceMode ? 'Stop voice mode' : 'Start voice conversation'}
+              >
+                {/* Waveform Icon - Like ChatGPT */}
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 12h2m0 0v4m0-4V8m4 4h2m0 0v6m0-6V6m4 6h2m0 0v2m0-2v-2m4 2h2m0 0v4m0-4V8" />
+                </svg>
+              </button>
+            </div>
           </div>
-          {isListening && (
-            <p className="text-xs text-red-500 mt-2 flex items-center gap-1">
-              <span className="animate-pulse">●</span> Listening...
-            </p>
-          )}
         </div>
-      </div>
+        {isRecording && (
+          <div className="mt-3 flex items-center gap-2">
+            <div className="flex gap-1">
+              <span className="w-1 h-3 bg-red-500 rounded-full animate-pulse"></span>
+              <span className="w-1 h-4 bg-red-500 rounded-full animate-pulse" style={{animationDelay: '0.1s'}}></span>
+              <span className="w-1 h-5 bg-red-500 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></span>
+              <span className="w-1 h-4 bg-red-500 rounded-full animate-pulse" style={{animationDelay: '0.3s'}}></span>
+              <span className="w-1 h-3 bg-red-500 rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></span>
+            </div>
+            <p className="text-xs text-gray-600">Recording - Press Enter to send</p>
+          </div>
+        )}
+        {isVoiceMode && (
+          <div className="mt-3 flex items-center gap-2">
+            <div className="flex gap-1">
+              <span className="w-1 h-3 bg-blue-500 rounded-full animate-pulse"></span>
+              <span className="w-1 h-4 bg-blue-500 rounded-full animate-pulse" style={{animationDelay: '0.1s'}}></span>
+              <span className="w-1 h-5 bg-blue-500 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></span>
+              <span className="w-1 h-4 bg-blue-500 rounded-full animate-pulse" style={{animationDelay: '0.3s'}}></span>
+              <span className="w-1 h-3 bg-blue-500 rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></span>
+            </div>
+            <p className="text-xs text-blue-600">Voice mode - I'll respond when you pause</p>
+          </div>
+        )}
+        {isSpeaking && (
+          <div className="mt-3 flex items-center gap-2">
+            <TomLogo isListening={false} isSpeaking={true} size={20} variant="inline" />
+            <p className="text-xs text-teal-600">TOM is speaking...</p>
+          </div>
+        )}
+        </div>
+      )}
     </div>
   );
 }
