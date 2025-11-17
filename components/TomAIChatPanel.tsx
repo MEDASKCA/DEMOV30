@@ -508,9 +508,12 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
                     style={{
                       height: '40px',
                       transformOrigin: 'center',
-                      animation: voiceUiMode === 'speaking'
-                        ? `tomBarsSpeaking ${0.4 + Math.random() * 0.3}s ease-in-out infinite`
-                        : `tomBarsListening ${0.6 + Math.random() * 0.4}s ease-in-out infinite`,
+                      animationName: voiceUiMode === 'speaking' ? 'tomBarsSpeaking' : 'tomBarsListening',
+                      animationDuration: voiceUiMode === 'speaking'
+                        ? `${0.4 + Math.random() * 0.3}s`
+                        : `${0.6 + Math.random() * 0.4}s`,
+                      animationTimingFunction: 'ease-in-out',
+                      animationIterationCount: 'infinite',
                       animationDelay: `${i * 0.08}s`
                     }}
                   ></div>
