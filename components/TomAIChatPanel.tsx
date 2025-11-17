@@ -32,6 +32,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
   const recognitionRef = useRef<any>(null);
   const voiceModeRecognitionRef = useRef<any>(null);
   const isStoppingVoiceMode = useRef(false);
+  const isSpeakingRef = useRef(false);
 
   // Load voices
   useEffect(() => {
@@ -161,7 +162,8 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       };
 
       voiceModeRecognitionRef.current.onend = () => {
-        if (isVoiceMode && !isStoppingVoiceMode.current) {
+        // Don't restart if TOM is speaking or voice mode is stopped
+        if (isVoiceMode && !isStoppingVoiceMode.current && !isSpeakingRef.current) {
           try {
             voiceModeRecognitionRef.current?.start();
           } catch (e) {}
@@ -358,6 +360,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
 
       utterance.onstart = () => {
         console.log('Speech started');
+        isSpeakingRef.current = true;
         setIsSpeaking(true);
         // Stop listening to prevent feedback loop
         if (voiceModeRecognitionRef.current) {
@@ -370,6 +373,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       };
       utterance.onend = () => {
         console.log('Speech ended');
+        isSpeakingRef.current = false;
         setIsSpeaking(false);
         // Resume listening after TOM finishes speaking
         if (isVoiceMode && voiceModeRecognitionRef.current) {
@@ -384,6 +388,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       };
       utterance.onerror = (event) => {
         console.error('Speech error:', event);
+        isSpeakingRef.current = false;
         setIsSpeaking(false);
         // Resume listening after error
         if (isVoiceMode && voiceModeRecognitionRef.current) {
