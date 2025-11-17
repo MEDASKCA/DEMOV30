@@ -384,11 +384,8 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
   return (
     <div className="h-full flex flex-col bg-white overflow-hidden">
       {showHeader && !isVoiceMode && (
-        <div className="flex-shrink-0 border-b border-gray-200 p-4 bg-gradient-to-r from-blue-50 via-teal-50 to-purple-50">
-          <div className="flex items-center gap-2">
-            <h2 className="text-lg font-semibold bg-gradient-to-r from-blue-600 via-teal-600 to-purple-600 bg-clip-text text-transparent">TOM</h2>
-          </div>
-          <p className="text-xs text-gray-600 mt-0.5">Your Theatre Operations Assistant</p>
+        <div className="flex-shrink-0 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 p-4">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-slate-100">TOM</h2>
         </div>
       )}
 
