@@ -37,6 +37,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
   const voiceModeRecognitionRef = useRef<any>(null);
   const isStoppingVoiceMode = useRef(false);
   const isSpeakingRef = useRef(false);
+  const thinkingStartTime = useRef<number>(0);
 
   // Load voices
   useEffect(() => {
@@ -147,6 +148,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
             const textToSend = accumulatedText.trim();
             if (textToSend) {
               accumulatedText = '';
+              thinkingStartTime.current = Date.now(); // Track when thinking started
               setVoiceUiMode('thinking'); // user-speech-end event
               handleSendMessage();
             }
@@ -368,7 +370,16 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       utterance.onstart = () => {
         console.log('Speech started');
         isSpeakingRef.current = true;
-        setVoiceUiMode('speaking'); // assistant-audio-start event
+
+        // Ensure minimum thinking duration of 600ms
+        const thinkingDuration = Date.now() - thinkingStartTime.current;
+        const minThinkingTime = 600;
+        const remainingTime = Math.max(0, minThinkingTime - thinkingDuration);
+
+        setTimeout(() => {
+          setVoiceUiMode('speaking'); // assistant-audio-start event
+        }, remainingTime);
+
         // Stop listening to prevent feedback loop
         if (voiceModeRecognitionRef.current) {
           try {
