@@ -26,8 +26,12 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
   const [inputMessage, setInputMessage] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const [isVoiceMode, setIsVoiceMode] = useState(false);
-  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [voiceUiMode, setVoiceUiMode] = useState<'idle' | 'listening' | 'thinking' | 'speaking'>('idle');
   const [voicesLoaded, setVoicesLoaded] = useState(false);
+
+  // Derived states for backwards compatibility
+  const isSpeaking = voiceUiMode === 'speaking';
+  const isListening = voiceUiMode === 'listening';
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
   const voiceModeRecognitionRef = useRef<any>(null);
@@ -143,6 +147,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
             const textToSend = accumulatedText.trim();
             if (textToSend) {
               accumulatedText = '';
+              setVoiceUiMode('thinking'); // user-speech-end event
               handleSendMessage();
             }
           }, 1500);
@@ -197,6 +202,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
         console.log('Error stopping voice recognition:', e);
       }
       setIsVoiceMode(false);
+      setVoiceUiMode('idle'); // mic-close event
       setInputMessage('');
       return;
     }
@@ -211,6 +217,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
     try {
       voiceModeRecognitionRef.current.start();
       setIsVoiceMode(true);
+      setVoiceUiMode('listening'); // mic-open event
     } catch (e) {
       console.error('Error starting voice recognition:', e);
       alert('Could not start voice mode. Please try again.');
@@ -361,7 +368,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       utterance.onstart = () => {
         console.log('Speech started');
         isSpeakingRef.current = true;
-        setIsSpeaking(true);
+        setVoiceUiMode('speaking'); // assistant-audio-start event
         // Stop listening to prevent feedback loop
         if (voiceModeRecognitionRef.current) {
           try {
@@ -374,7 +381,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       utterance.onend = () => {
         console.log('Speech ended');
         isSpeakingRef.current = false;
-        setIsSpeaking(false);
+        setVoiceUiMode('listening'); // assistant-audio-end event
         // Resume listening after TOM finishes speaking
         if (isVoiceMode && voiceModeRecognitionRef.current) {
           setTimeout(() => {
@@ -389,7 +396,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       utterance.onerror = (event) => {
         console.error('Speech error:', event);
         isSpeakingRef.current = false;
-        setIsSpeaking(false);
+        setVoiceUiMode('listening'); // assistant-audio-end event (error)
         // Resume listening after error
         if (isVoiceMode && voiceModeRecognitionRef.current) {
           setTimeout(() => {
@@ -469,40 +476,47 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
             {/* Status Text */}
             <div className="text-center space-y-2">
               <p className={`text-2xl font-bold transition-colors duration-300 ${
-                isSpeaking
-                  ? 'text-teal-600'
-                  : 'text-blue-600'
+                voiceUiMode === 'speaking'
+                  ? 'text-teal-600 dark:text-teal-400'
+                  : voiceUiMode === 'thinking'
+                  ? 'text-purple-600 dark:text-purple-400'
+                  : 'text-blue-600 dark:text-blue-400'
               }`}>
-                {isSpeaking ? 'TOM is speaking...' : 'Listening...'}
+                {voiceUiMode === 'speaking' ? 'TOM is speaking...' :
+                 voiceUiMode === 'thinking' ? 'Thinking...' :
+                 voiceUiMode === 'listening' ? 'Listening...' :
+                 'Ready'}
               </p>
 
               {/* Live Transcript Preview */}
-              {inputMessage && !isSpeaking && (
-                <p className="text-sm text-gray-600 max-w-md px-4 italic">
+              {inputMessage && voiceUiMode === 'listening' && (
+                <p className="text-sm text-gray-600 dark:text-slate-400 max-w-md px-4 italic">
                   "{inputMessage}"
                 </p>
               )}
             </div>
 
             {/* Voice Visualization Bars */}
-            <div className="flex items-center gap-2 h-16">
-              {[...Array(isSpeaking ? 7 : 5)].map((_, i) => (
-                <div
-                  key={i}
-                  className={`w-2 rounded-full transition-colors ${
-                    isSpeaking ? 'bg-teal-500' : 'bg-blue-500'
-                  }`}
-                  style={{
-                    height: '40px',
-                    transformOrigin: 'center',
-                    animation: isSpeaking
-                      ? `tomBarsSpeaking ${0.4 + Math.random() * 0.3}s ease-in-out infinite`
-                      : `tomBarsListening ${0.6 + Math.random() * 0.4}s ease-in-out infinite`,
-                    animationDelay: `${i * 0.08}s`
-                  }}
-                ></div>
-              ))}
-            </div>
+            {voiceUiMode !== 'thinking' && voiceUiMode !== 'idle' && (
+              <div className="flex items-center gap-2 h-16">
+                {[...Array(voiceUiMode === 'speaking' ? 7 : 5)].map((_, i) => (
+                  <div
+                    key={i}
+                    className={`w-2 rounded-full transition-colors ${
+                      voiceUiMode === 'speaking' ? 'bg-teal-500' : 'bg-blue-500'
+                    }`}
+                    style={{
+                      height: '40px',
+                      transformOrigin: 'center',
+                      animation: voiceUiMode === 'speaking'
+                        ? `tomBarsSpeaking ${0.4 + Math.random() * 0.3}s ease-in-out infinite`
+                        : `tomBarsListening ${0.6 + Math.random() * 0.4}s ease-in-out infinite`,
+                      animationDelay: `${i * 0.08}s`
+                    }}
+                  ></div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Exit Voice Mode Button */}
