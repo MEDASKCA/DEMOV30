@@ -384,7 +384,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
   return (
     <div className="h-full flex flex-col bg-white overflow-hidden">
       {showHeader && !isVoiceMode && (
-        <div className="flex-shrink-0 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 p-4">
+        <div className="flex-shrink-0 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 px-4 py-3">
           <h2 className="text-xl font-bold text-gray-900 dark:text-slate-100">TOM</h2>
         </div>
       )}
@@ -497,13 +497,13 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
             className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div
-              className={`max-w-[80%] rounded-2xl px-4 py-2.5 ${
+              className={`max-w-[80%] ${
                 message.role === 'user'
-                  ? 'bg-gradient-to-r from-blue-600 via-teal-600 to-purple-600 text-white'
-                  : 'bg-gray-100 text-gray-900'
+                  ? 'bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-400 text-white rounded-2xl px-4 py-2.5'
+                  : ''
               }`}
             >
-              <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+              <p className={`text-sm whitespace-pre-wrap ${message.role === 'assistant' ? 'text-gray-900 dark:text-slate-100' : ''}`}>{message.content}</p>
             </div>
           </div>
         ))}
