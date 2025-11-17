@@ -406,11 +406,17 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
           {/* Centered Logo */}
           <div className="relative z-10 flex flex-col items-center gap-8">
             {/* Logo with Animation */}
-            <div className={`relative transition-all duration-500 ${isSpeaking ? 'scale-110' : 'scale-100'}`}>
+            <div className="relative">
               {/* Glow Effect */}
-              <div className={`absolute inset-0 blur-2xl transition-opacity duration-500 ${
-                isSpeaking ? 'opacity-60' : 'opacity-40'
-              }`}>
+              <div
+                className={`absolute inset-0 blur-2xl transition-all duration-500 ${
+                  isSpeaking ? 'opacity-80' : 'opacity-40'
+                }`}
+                style={{
+                  animation: isSpeaking ? 'tomGlow 3s ease-in-out infinite' : 'none',
+                  filter: isSpeaking ? 'hue-rotate(150deg)' : 'none'
+                }}
+              >
                 <TomLogo
                   isListening={!isSpeaking}
                   isSpeaking={isSpeaking}
@@ -420,7 +426,14 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
               </div>
 
               {/* Main Logo */}
-              <div className={`relative ${isSpeaking ? 'animate-pulse' : ''}`}>
+              <div
+                className="relative"
+                style={{
+                  animation: isSpeaking
+                    ? 'tomGlow 3s ease-in-out infinite'
+                    : 'tomJitter 0.4s ease-in-out infinite'
+                }}
+              >
                 <TomLogo
                   isListening={!isSpeaking}
                   isSpeaking={isSpeaking}
@@ -428,13 +441,6 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
                   variant="standalone"
                 />
               </div>
-
-              {/* Listening Ripple Effect */}
-              {!isSpeaking && (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-48 h-48 rounded-full border-4 border-blue-400/30 animate-ping"></div>
-                </div>
-              )}
             </div>
 
             {/* Status Text */}
@@ -456,19 +462,20 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
             </div>
 
             {/* Voice Visualization Bars */}
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-2 h-16">
               {[...Array(isSpeaking ? 7 : 5)].map((_, i) => (
                 <div
                   key={i}
-                  className={`w-1.5 rounded-full transition-all ${
+                  className={`w-2 rounded-full transition-colors ${
                     isSpeaking ? 'bg-teal-500' : 'bg-blue-500'
                   }`}
                   style={{
-                    height: isSpeaking
-                      ? `${Math.random() * 40 + 20}px`
-                      : `${Math.random() * 30 + 10}px`,
-                    animation: `pulse ${Math.random() * 0.5 + 0.5}s ease-in-out infinite`,
-                    animationDelay: `${i * 0.1}s`
+                    height: '40px',
+                    transformOrigin: 'center',
+                    animation: isSpeaking
+                      ? `tomBarsSpeaking ${0.4 + Math.random() * 0.3}s ease-in-out infinite`
+                      : `tomBarsListening ${0.6 + Math.random() * 0.4}s ease-in-out infinite`,
+                    animationDelay: `${i * 0.08}s`
                   }}
                 ></div>
               ))}
