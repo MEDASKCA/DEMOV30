@@ -98,13 +98,6 @@ export default function TomLogo({
             unoptimized
           />
         </div>
-
-        {/* Active indicator dot */}
-        {isActive && (
-          <div className={`active-indicator ${isSpeaking ? 'speaking' : 'listening'}`}>
-            <div className="active-dot" />
-          </div>
-        )}
       </div>
     </div>
   );

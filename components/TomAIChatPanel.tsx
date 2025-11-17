@@ -391,17 +391,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
 
       {/* Immersive Voice Mode - Full Screen */}
       {isVoiceMode && (
-        <div className="flex-1 flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 relative overflow-hidden">
-          {/* Animated Background Ripples */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            {!isSpeaking && (
-              <>
-                <div className="absolute w-64 h-64 rounded-full bg-blue-400/10 animate-ping" style={{ animationDuration: '3s' }}></div>
-                <div className="absolute w-80 h-80 rounded-full bg-teal-400/10 animate-ping" style={{ animationDuration: '4s', animationDelay: '0.5s' }}></div>
-                <div className="absolute w-96 h-96 rounded-full bg-purple-400/10 animate-ping" style={{ animationDuration: '5s', animationDelay: '1s' }}></div>
-              </>
-            )}
-          </div>
+        <div className="flex-1 flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 relative overflow-hidden">
 
           {/* Centered Logo */}
           <div className="relative z-10 flex flex-col items-center gap-8">
@@ -431,7 +421,9 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
                 style={{
                   animation: isSpeaking
                     ? 'tomGlow 3s ease-in-out infinite'
-                    : 'tomJitter 0.4s ease-in-out infinite'
+                    : inputMessage
+                    ? 'tomJitter 0.4s ease-in-out infinite'
+                    : 'none'
                 }}
               >
                 <TomLogo
