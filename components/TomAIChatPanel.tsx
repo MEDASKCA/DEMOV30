@@ -453,7 +453,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
                   animation: isSpeaking
                     ? 'tomGlow 3s ease-in-out infinite'
                     : inputMessage
-                    ? 'tomJitter 0.4s ease-in-out infinite'
+                    ? 'tomJitter 0.8s ease-in-out infinite'
                     : 'none'
                 }}
               >

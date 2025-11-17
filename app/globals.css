@@ -582,18 +582,10 @@ button.theme-toggle:hover {
 
 /* Voice Mode Animations - ChatGPT Style */
 
-/* Jitter animation for listening mode */
+/* Jitter animation for listening mode - subtle beat */
 @keyframes tomJitter {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  10% { transform: translate(-1px, 1px) scale(1.01); }
-  20% { transform: translate(1px, -1px) scale(0.99); }
-  30% { transform: translate(-1px, -1px) scale(1.01); }
-  40% { transform: translate(1px, 1px) scale(0.99); }
-  50% { transform: translate(-1px, 0) scale(1.01); }
-  60% { transform: translate(1px, 0) scale(0.99); }
-  70% { transform: translate(0, -1px) scale(1.01); }
-  80% { transform: translate(0, 1px) scale(0.99); }
-  90% { transform: translate(-1px, 1px) scale(1.01); }
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
 }
 
 /* Breathing glow animation for speaking mode */
