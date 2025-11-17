@@ -166,16 +166,16 @@ export default function AdvertsPanel() {
   const currentAd = adverts[currentIndex];
 
   return (
-    <div className="sticky top-0 h-screen bg-gray-50 flex flex-col overflow-hidden">
+    <div className="sticky top-0 h-screen bg-gray-50 dark:bg-slate-900 flex flex-col overflow-hidden">
       {/* Full-height Advert Card with Smooth Fade Transition */}
       <div
         className={`flex-1 transition-opacity duration-700 ease-in-out ${
           isTransitioning ? 'opacity-0' : 'opacity-100'
         }`}
       >
-        <div className="h-full bg-white overflow-hidden flex flex-col">
+        <div className="h-full bg-white dark:bg-slate-900 overflow-hidden flex flex-col">
           {/* Image Section - Fixed height at top */}
-          <div className="relative h-[45vh] bg-gray-100 flex-shrink-0">
+          <div className="relative h-[45vh] bg-gray-100 dark:bg-slate-800 flex-shrink-0">
             {currentAd.imageUrl && (
               <Image
                 src={currentAd.imageUrl}
@@ -189,7 +189,7 @@ export default function AdvertsPanel() {
 
             {/* Type Badge */}
             <div className="absolute top-4 right-4 z-10">
-              <span className="px-3 py-1.5 bg-white/95 backdrop-blur-sm rounded-full text-xs font-bold text-gray-800 shadow-lg">
+              <span className="px-3 py-1.5 bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm rounded-full text-xs font-bold text-gray-800 dark:text-slate-100 shadow-lg">
                 {getTypeLabel(currentAd.type)}
               </span>
             </div>
@@ -210,35 +210,35 @@ export default function AdvertsPanel() {
           </div>
 
           {/* Content Section - Scrollable below image */}
-          <div className="flex-1 overflow-y-auto p-3 bg-white">
-            <h3 className="font-bold text-gray-900 text-base mb-2 line-clamp-2">
+          <div className="flex-1 overflow-y-auto p-3 bg-white dark:bg-slate-900">
+            <h3 className="font-bold text-gray-900 dark:text-slate-100 text-base mb-2 line-clamp-2">
               {currentAd.title}
             </h3>
-            <p className="text-xs text-gray-600 mb-3 line-clamp-2">
+            <p className="text-xs text-gray-600 dark:text-slate-300 mb-3 line-clamp-2">
               {currentAd.description}
             </p>
 
             {/* Details */}
             <div className="space-y-1 mb-3">
               {currentAd.date && (
-                <div className="flex items-center gap-1.5 text-xs text-gray-700">
-                  <Calendar className="w-3.5 h-3.5 text-gray-500 flex-shrink-0" />
+                <div className="flex items-center gap-1.5 text-xs text-gray-700 dark:text-slate-200">
+                  <Calendar className="w-3.5 h-3.5 text-gray-500 dark:text-slate-400 flex-shrink-0" />
                   <span className="font-medium">{currentAd.date}</span>
-                  {currentAd.time && <span className="text-gray-500">• {currentAd.time}</span>}
+                  {currentAd.time && <span className="text-gray-500 dark:text-slate-400">• {currentAd.time}</span>}
                 </div>
               )}
               {currentAd.location && (
-                <div className="flex items-center gap-1.5 text-xs text-gray-700">
+                <div className="flex items-center gap-1.5 text-xs text-gray-700 dark:text-slate-200">
                   <div className="w-3.5 h-3.5 flex items-center justify-center flex-shrink-0">
-                    <div className="w-2 h-2 bg-gray-500 rounded-full" />
+                    <div className="w-2 h-2 bg-gray-500 dark:bg-slate-400 rounded-full" />
                   </div>
                   <span>{currentAd.location}</span>
                 </div>
               )}
               {currentAd.presenter && (
-                <div className="flex items-center gap-1.5 text-xs text-gray-700">
-                  <Users className="w-3.5 h-3.5 text-gray-500 flex-shrink-0" />
-                  <span className="text-gray-600">{currentAd.presenter}</span>
+                <div className="flex items-center gap-1.5 text-xs text-gray-700 dark:text-slate-200">
+                  <Users className="w-3.5 h-3.5 text-gray-500 dark:text-slate-400 flex-shrink-0" />
+                  <span className="text-gray-600 dark:text-slate-300">{currentAd.presenter}</span>
                 </div>
               )}
               {currentAd.attendees && (
@@ -246,7 +246,7 @@ export default function AdvertsPanel() {
                   <div className="w-3.5 h-3.5 flex items-center justify-center flex-shrink-0">
                     <div className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
                   </div>
-                  <span className="text-blue-600 font-medium">{currentAd.attendees}</span>
+                  <span className="text-blue-600 dark:text-blue-400 font-medium">{currentAd.attendees}</span>
                 </div>
               )}
             </div>
