@@ -101,6 +101,8 @@ export default function TomAIChatPanel({ showHeader = true, onMenuOpen }: TomAIC
   const isVoiceModeRef = useRef(false);
   const messageTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
+  const currentAudioRef = useRef<HTMLAudioElement | null>(null);
+  const currentAudioUrlRef = useRef<string | null>(null);
 
   // Initialize Web Audio API
   useEffect(() => {
@@ -830,9 +832,23 @@ export default function TomAIChatPanel({ showHeader = true, onMenuOpen }: TomAIC
   };
 
   const speakMessage = async (text: string) => {
-    // Cancel any ongoing speech
+    // Cancel any ongoing browser speech
     if (typeof window !== 'undefined' && window.speechSynthesis) {
       window.speechSynthesis.cancel();
+    }
+
+    // Stop any currently playing OpenAI audio
+    if (currentAudioRef.current) {
+      console.log('🛑 Stopping previous OpenAI audio');
+      currentAudioRef.current.pause();
+      currentAudioRef.current.currentTime = 0;
+      currentAudioRef.current = null;
+    }
+
+    // Revoke previous audio URL to prevent memory leak
+    if (currentAudioUrlRef.current) {
+      URL.revokeObjectURL(currentAudioUrlRef.current);
+      currentAudioUrlRef.current = null;
     }
 
     try {
@@ -865,6 +881,10 @@ export default function TomAIChatPanel({ showHeader = true, onMenuOpen }: TomAIC
         const audio = new Audio(audioUrl);
         audio.volume = voiceSettings.volume;
 
+        // Store refs to prevent overlapping audio
+        currentAudioRef.current = audio;
+        currentAudioUrlRef.current = audioUrl;
+
         audio.onloadeddata = () => {
           console.log('✅ Audio loaded successfully, duration:', audio.duration, 'seconds');
         };
@@ -894,6 +914,10 @@ export default function TomAIChatPanel({ showHeader = true, onMenuOpen }: TomAIC
             isSpeakingRef.current = false;
             URL.revokeObjectURL(audioUrl);
 
+            // Clear refs
+            currentAudioRef.current = null;
+            currentAudioUrlRef.current = null;
+
             // Restart listening after speaking finishes
             if (isVoiceModeRef.current) {
               setVoiceUiMode('listening');
@@ -914,6 +938,10 @@ export default function TomAIChatPanel({ showHeader = true, onMenuOpen }: TomAIC
             console.error('❌ Audio playback error:', event);
             isSpeakingRef.current = false;
             URL.revokeObjectURL(audioUrl);
+
+            // Clear refs
+            currentAudioRef.current = null;
+            currentAudioUrlRef.current = null;
 
             // Restart listening even after error
             if (isVoiceModeRef.current) {
