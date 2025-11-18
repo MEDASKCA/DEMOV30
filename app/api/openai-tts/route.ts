@@ -6,8 +6,9 @@ export const dynamic = 'force-dynamic';
 
 /**
  * POST /api/openai-tts
- * OpenAI Text-to-Speech with multiple voice options
- * Supports: alloy, echo, fable, onyx, nova, shimmer
+ * OpenAI Text-to-Speech HD with multiple voice options
+ * Supports: alloy, echo, fable, onyx, nova, shimmer, coral, sage, arbor, verse, ballad, ember
+ * Using tts-1-hd model for highest quality and expressiveness
  */
 export async function POST(request: NextRequest) {
   try {
@@ -29,10 +30,10 @@ export async function POST(request: NextRequest) {
 
     const openai = new OpenAI({ apiKey });
 
-    // Create speech using OpenAI TTS
+    // Create speech using OpenAI TTS HD for better quality
     const mp3 = await openai.audio.speech.create({
-      model: "tts-1", // or "tts-1-hd" for higher quality
-      voice: voice as 'alloy' | 'echo' | 'fable' | 'onyx' | 'nova' | 'shimmer',
+      model: "tts-1-hd", // Higher quality audio
+      voice: voice as 'alloy' | 'echo' | 'fable' | 'onyx' | 'nova' | 'shimmer' | 'coral' | 'sage' | 'arbor' | 'verse' | 'ballad' | 'ember',
       input: text,
       speed: 1.0, // 0.25 to 4.0
     });

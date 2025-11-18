@@ -21,14 +21,14 @@ import {
 import TheatreCalendar from '@/components/scheduling/TheatreCalendar';
 import TheatreUnitsManager from '@/components/scheduling/TheatreUnitsManager';
 import InventoryView from '@/components/views/InventoryView';
-import AdminBottomNav from '@/components/AdminBottomNav';
 import AdminDrawer from '@/components/AdminDrawer';
+import AdminBottomNav from '@/components/AdminBottomNav';
 import TomAIView from '@/components/views/TomAIView';
 import FeedsView from '@/components/views/FeedsView';
+import CommunicationHub from '@/components/views/CommunicationHub';
 import DashboardViewNew from '@/components/views/DashboardViewNew';
 import SettingsView from '@/components/views/SettingsView';
 import HelpSupportView from '@/components/views/HelpSupportView';
-import FloatingMessenger from '@/components/FloatingMessenger';
 
 export default function AdminPage() {
   const router = useRouter();
@@ -67,10 +67,12 @@ export default function AdminPage() {
       // Show TOM AI chat view
       setCurrentView('chat');
       setShowDrawer(false);
+      router.push('/admin?view=chat', { scroll: false });
     } else if (page === 'home') {
       // Show feeds/social media view
       setCurrentView('feeds');
       setShowDrawer(false);
+      router.push('/admin?view=feeds', { scroll: false });
     } else if (page === 'ops') {
       // Show ops drawer (always show it, even if already on an ops view)
       setDrawerType('ops');
@@ -324,105 +326,7 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="h-screen w-screen flex flex-col overflow-hidden bg-sky-50 dark:bg-slate-900">
-      {/* Static Admin Demo Header */}
-      <div
-        className="w-full bg-purple-600 text-white flex items-center justify-center gap-3 px-4 flex-shrink-0"
-        style={{ height: '28px' }}
-      >
-        <p className="text-sm font-bold whitespace-nowrap">ADMIN DEMO ACCOUNT</p>
-      </div>
-
-      {/* Header Banner - Mobile: Only on chat, Desktop: Always visible */}
-      <div className={`text-white flex-shrink-0 shadow-lg ${currentView === 'chat' ? '' : 'hidden md:block'}`} style={{background: 'linear-gradient(135deg, #3B82F6 0%, #06B6D4 50%, #8B5CF6 100%)'}}>
-        <div className="px-3 md:px-6 py-2 md:py-3 flex items-center justify-between" style={{display: currentView === 'dashboard' ? 'none' : 'flex'}}>
-          {/* Left: Branding */}
-          <div>
-            <h1 className="text-xl font-bold">TOM by MEDASKCA</h1>
-            <p className="text-sm text-white/90">Theatre Operations Manager</p>
-            <p className="text-xs italic text-white/80">Demo for NHSCEP Cohort 10</p>
-          </div>
-
-          {/* Right: User Profile & Hospital Selector (Desktop Only) */}
-          <div className="flex items-center gap-3">
-            {/* Hospital Selector */}
-            <div className="hidden md:block">
-              <HospitalSelector />
-            </div>
-
-            {/* User Profile - Desktop Only */}
-            <div className="hidden md:block relative">
-              <button
-                onClick={() => setShowProfileDropdown(!showProfileDropdown)}
-                className="flex items-center space-x-3 bg-white/10 hover:bg-white/20 rounded-lg px-3 py-2 transition-colors"
-              >
-                {/* Profile Photo */}
-                <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white font-bold text-sm border-2 border-white/30">
-                  AM
-                </div>
-
-                {/* User Info */}
-                <div className="text-left">
-                  <p className="text-sm font-bold text-white">Alexander Monterubio</p>
-                  <p className="text-xs text-white/70">Team Leader</p>
-                </div>
-
-                {/* Dropdown Arrow */}
-                <ChevronDown className={`w-4 h-4 text-white/80 transition-transform ${showProfileDropdown ? 'rotate-180' : ''}`} />
-              </button>
-
-              {/* Dropdown Menu */}
-              {showProfileDropdown && (
-                <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50">
-                  <button
-                    onClick={() => {
-                      router.push('/profile');
-                      setShowProfileDropdown(false);
-                    }}
-                    className="w-full px-4 py-3 text-left hover:bg-gray-50 flex items-center space-x-3 text-gray-700 transition-colors"
-                  >
-                    <User className="w-5 h-5 text-gray-500" />
-                    <span className="font-medium">Profile</span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      setCurrentView('settings');
-                      setCurrentPage('menu');
-                      setShowProfileDropdown(false);
-                    }}
-                    className="w-full px-4 py-3 text-left hover:bg-gray-50 flex items-center space-x-3 text-gray-700 transition-colors"
-                  >
-                    <SettingsIcon className="w-5 h-5 text-gray-500" />
-                    <span className="font-medium">Settings</span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      setCurrentView('help');
-                      setCurrentPage('menu');
-                      setShowProfileDropdown(false);
-                    }}
-                    className="w-full px-4 py-3 text-left hover:bg-gray-50 flex items-center space-x-3 text-gray-700 transition-colors"
-                  >
-                    <HelpCircle className="w-5 h-5 text-gray-500" />
-                    <span className="font-medium">Help and Support</span>
-                  </button>
-                  <div className="border-t border-gray-200 my-2"></div>
-                  <button
-                    onClick={() => {
-                      router.push('/');
-                      setShowProfileDropdown(false);
-                    }}
-                    className="w-full px-4 py-3 text-left hover:bg-red-50 flex items-center space-x-3 text-red-600 transition-colors"
-                  >
-                    <LogOut className="w-5 h-5" />
-                    <span className="font-medium">Sign Out</span>
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className="h-full w-full flex flex-col overflow-hidden bg-sky-50 dark:bg-slate-900">
 
       {/* Desktop Navigation Tabs - Hidden on Mobile */}
       <div className="hidden md:block bg-white border-b border-gray-200">
@@ -464,7 +368,7 @@ export default function AdminPage() {
               onClick={() => router.push('/admin/procedures/opcs4-database')}
               className="px-4 py-4 font-semibold transition-colors border-b-2 whitespace-nowrap text-gray-600 border-transparent hover:text-gray-900"
             >
-              Cases
+              Procedures & Preferences
             </button>
             <button
               onClick={() => router.push('/admin/inventory')}
@@ -526,17 +430,17 @@ export default function AdminPage() {
       <div className="flex-1 overflow-hidden flex flex-col pb-16 md:pb-0">
         <div className="w-full flex-1 overflow-auto md:px-4 md:py-4">
 
-        {/* TOM AI View */}
+        {/* TOM AI View - Mobile Only (Desktop uses TomLeftPanel) */}
         {currentView === 'chat' && (
-          <div className="h-full md:h-[calc(100vh-10rem)]">
+          <div className="h-full md:hidden">
             <TomAIView />
           </div>
         )}
 
-        {/* Social Media / Feeds View */}
+        {/* Communication Hub - NHS Mail + Feeds */}
         {currentView === 'feeds' && (
           <div className="h-full">
-            <FeedsView />
+            <CommunicationHub />
           </div>
         )}
 
@@ -1108,14 +1012,18 @@ export default function AdminPage() {
         </div>
       </div>
 
-      {/* Floating Messenger */}
-      <FloatingMessenger />
-
       {/* Bottom Navigation - Mobile */}
       <div className="md:hidden">
         <AdminBottomNav
           currentPage={currentPage}
-          onNavigate={handleBottomNavClick}
+          onNavigate={(page) => {
+            setCurrentPage(page);
+            if (page === 'ai') {
+              setCurrentView('chat');
+            } else if (page === 'home') {
+              setCurrentView('feeds');
+            }
+          }}
         />
       </div>
 

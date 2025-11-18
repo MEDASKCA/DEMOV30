@@ -166,14 +166,14 @@ export default function AdvertsPanel() {
   const currentAd = adverts[currentIndex];
 
   return (
-    <div className="sticky top-0 h-screen bg-gray-50 dark:bg-slate-900 flex flex-col overflow-hidden">
+    <div className="sticky top-0 h-screen bg-gray-50 dark:bg-slate-900 flex flex-col overflow-hidden w-full">
       {/* Full-height Advert Card with Smooth Fade Transition */}
       <div
-        className={`flex-1 transition-opacity duration-700 ease-in-out ${
+        className={`flex-1 transition-opacity duration-700 ease-in-out overflow-hidden ${
           isTransitioning ? 'opacity-0' : 'opacity-100'
         }`}
       >
-        <div className="h-full bg-white dark:bg-slate-900 overflow-hidden flex flex-col">
+        <div className="h-full w-full bg-white dark:bg-slate-900 overflow-hidden flex flex-col">
           {/* Image Section - Fixed height at top */}
           <div className="relative h-[45vh] bg-gray-100 dark:bg-slate-800 flex-shrink-0">
             {currentAd.imageUrl && (

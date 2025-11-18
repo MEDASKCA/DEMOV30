@@ -837,9 +837,19 @@ export default function MobileProfile({ staffId, staffProfile, isEditable = fals
       {/* Header with Avatar */}
       <div className="bg-gradient-to-r from-blue-600 via-teal-600 to-purple-600 px-4 py-4">
         <div className="flex items-start space-x-3">
-          <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center text-blue-600 text-xl font-bold shadow-lg">
-            {profile.firstName[0]}{profile.lastName[0]}
-          </div>
+          <img
+            src="/profile/alexander-monterubio.jpg"
+            alt={`${profile.firstName} ${profile.lastName}`}
+            className="w-16 h-16 rounded-full object-cover shadow-lg border-2 border-white"
+            onError={(e) => {
+              // Fallback to initials if image not found
+              const target = e.currentTarget;
+              const fallback = document.createElement('div');
+              fallback.className = 'w-16 h-16 rounded-full bg-white flex items-center justify-center text-blue-600 text-xl font-bold shadow-lg';
+              fallback.textContent = profile.firstName[0] + profile.lastName[0];
+              target.parentNode?.replaceChild(fallback, target);
+            }}
+          />
           <div className="flex-1">
             <h1 className="text-white font-bold text-lg">
               {profile.firstName} {profile.lastName}

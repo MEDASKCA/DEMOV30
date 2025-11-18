@@ -723,3 +723,18 @@ button.theme-toggle:hover {
     opacity: 1;
   }
 }
+
+/* 3D Flip Card Perspective */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+/* Hide scrollbar for elements with scrollbar-hide class */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

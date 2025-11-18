@@ -1,7 +1,9 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import TomLogo from '../TomLogo';
+import { History, Plus, Mic2, Trash2, X, Menu, Settings, HelpCircle, MessageSquarePlus, Archive } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -10,8 +12,18 @@ interface Message {
   timestamp: Date;
 }
 
+interface Conversation {
+  id: string;
+  title: string;
+  messages: Message[];
+  isVoiceConversation: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 interface TomAIChatPanelProps {
   showHeader?: boolean;
+  onMenuOpen?: () => void;
 }
 
 // Varied greetings for chat
@@ -31,18 +43,34 @@ const getRandomGreeting = () => {
   return greetings[Math.floor(Math.random() * greetings.length)];
 };
 
-export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProps) {
+export default function TomAIChatPanel({ showHeader = true, onMenuOpen }: TomAIChatPanelProps) {
+  // Expose menu control to parent
+  useEffect(() => {
+    if (onMenuOpen) {
+      // Parent can trigger menu open
+      (window as any).openTomMenu = () => {
+        setShowSidebar(true);
+        setSidebarView('menu');
+      };
+    }
+  }, [onMenuOpen]);
+  const router = useRouter();
+  const [currentConversationId, setCurrentConversationId] = useState<string>('');
+  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [showSidebar, setShowSidebar] = useState(false);
+  const [sidebarView, setSidebarView] = useState<'menu' | 'history' | 'settings'>('menu');
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
       role: 'assistant',
-      content: getRandomGreeting(),
+      content: "Hello! I'm TOM, your Theatre Operations Manager. How can I assist you today?",
       timestamp: new Date()
     }
   ]);
   const [inputMessage, setInputMessage] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const [isVoiceMode, setIsVoiceMode] = useState(false);
+  const [conversationStartedWithVoice, setConversationStartedWithVoice] = useState(false);
   const [voiceUiMode, setVoiceUiMode] = useState<'idle' | 'listening' | 'thinking' | 'speaking'>('idle');
   const [voicesLoaded, setVoicesLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -52,7 +80,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
     pitch: 1.0,
     volume: 1.0,
     selectedVoice: '',
-    openaiVoice: 'fable' // alloy, echo (expressive male), fable (British professional male), onyx (deep male), nova, shimmer
+    openaiVoice: 'arbor' // arbor (newest, most natural & expressive), alloy, echo, fable, onyx, nova, shimmer
   });
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -74,6 +102,120 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
   useEffect(() => {
     if (typeof window !== 'undefined') {
       audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+    }
+  }, []);
+
+  // Load conversations from localStorage on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('tom-conversations');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          // Convert date strings back to Date objects
+          const convos = parsed.map((c: any) => ({
+            ...c,
+            createdAt: new Date(c.createdAt),
+            updatedAt: new Date(c.updatedAt),
+            messages: c.messages.map((m: any) => ({
+              ...m,
+              timestamp: new Date(m.timestamp)
+            }))
+          }));
+          setConversations(convos);
+        } catch (e) {
+          console.error('Failed to load conversations:', e);
+        }
+      }
+    }
+  }, []);
+
+  // Save current conversation when messages change
+  useEffect(() => {
+    if (messages.length > 1 && currentConversationId) {
+      saveCurrentConversation();
+    }
+  }, [messages]);
+
+  // Save conversations to localStorage
+  const saveConversations = (convos: Conversation[]) => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('tom-conversations', JSON.stringify(convos));
+      setConversations(convos);
+    }
+  };
+
+  // Save current conversation
+  const saveCurrentConversation = () => {
+    if (!currentConversationId || messages.length <= 1) return;
+
+    const title = messages[1]?.content.substring(0, 50) || 'New conversation';
+    const updatedConvo: Conversation = {
+      id: currentConversationId,
+      title,
+      messages,
+      isVoiceConversation: conversationStartedWithVoice,
+      createdAt: new Date(currentConversationId),
+      updatedAt: new Date()
+    };
+
+    const existingIndex = conversations.findIndex(c => c.id === currentConversationId);
+    let updatedConvos;
+    if (existingIndex >= 0) {
+      updatedConvos = [...conversations];
+      updatedConvos[existingIndex] = updatedConvo;
+    } else {
+      updatedConvos = [updatedConvo, ...conversations];
+    }
+
+    saveConversations(updatedConvos);
+  };
+
+  // Start new conversation
+  const startNewConversation = () => {
+    const newId = Date.now().toString();
+    setCurrentConversationId(newId);
+    setConversationStartedWithVoice(false);
+    setMessages([
+      {
+        id: '1',
+        role: 'assistant',
+        content: getRandomGreeting(),
+        timestamp: new Date()
+      }
+    ]);
+    setShowSidebar(false);
+  };
+
+  // Load conversation
+  const loadConversation = (convo: Conversation) => {
+    setCurrentConversationId(convo.id);
+    setMessages(convo.messages);
+    setConversationStartedWithVoice(convo.isVoiceConversation);
+    setShowSidebar(false);
+  };
+
+  // Clear all conversations
+  const clearAllConversations = () => {
+    if (confirm('Are you sure you want to delete all conversation history?')) {
+      saveConversations([]);
+      startNewConversation();
+    }
+  };
+
+  // Delete conversation
+  const deleteConversation = (id: string) => {
+    const updated = conversations.filter(c => c.id !== id);
+    saveConversations(updated);
+    if (currentConversationId === id) {
+      startNewConversation();
+    }
+  };
+
+  // Initialize conversation ID if not set
+  useEffect(() => {
+    if (!currentConversationId) {
+      setCurrentConversationId(Date.now().toString());
     }
   }, []);
 
@@ -158,6 +300,29 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
   useEffect(() => {
     isVoiceModeRef.current = isVoiceMode;
   }, [isVoiceMode]);
+
+  // Handle navigation commands
+  const handleNavigationCommand = (text: string) => {
+    const navMatch = text.match(/\[NAV:(\w+)\]/);
+    if (navMatch) {
+      const destination = navMatch[1];
+      const routeMap: { [key: string]: string } = {
+        dashboard: '/admin/dashboard',
+        schedule: '/admin/schedule',
+        workforce: '/admin/workforce',
+        inventory: '/admin/inventory',
+        procedures: '/admin/procedures/opcs4-database',
+        equipment: '/admin/equipment'
+      };
+
+      if (routeMap[destination]) {
+        console.log(`Navigating to ${destination}:`, routeMap[destination]);
+        setTimeout(() => {
+          router.push(routeMap[destination]);
+        }, 1000); // Small delay for smoother UX
+      }
+    }
+  };
 
   // Load voices
   useEffect(() => {
@@ -278,12 +443,24 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
         if (finalTranscript) {
           currentTranscript = finalTranscript.trim();
 
-          // NOISE FILTER: Ignore short gibberish/noise (less than 2 words or 5 characters)
-          const wordCount = currentTranscript.split(/\s+/).filter(w => w.length > 0).length;
-          const isLikelyNoise = currentTranscript.length < 5 || wordCount < 2;
+          // ENHANCED NOISE FILTER
+          const wordCount = currentTranscript.split(/\s+/).filter(w => w.length > 1).length;
+          const avgWordLength = currentTranscript.length / Math.max(wordCount, 1);
+
+          // Filter criteria:
+          // 1. Too short (< 3 chars or < 2 words)
+          // 2. Too many single-char "words" (likely noise)
+          // 3. Very short average word length (< 2 chars = likely gibberish)
+          const singleCharWords = currentTranscript.split(/\s+/).filter(w => w.length === 1).length;
+          const isLikelyNoise =
+            currentTranscript.length < 3 ||
+            wordCount < 2 ||
+            (singleCharWords > wordCount * 0.5) || // More than 50% single-char words
+            avgWordLength < 2;
 
           if (isLikelyNoise) {
-            console.log('⚠️ Filtered out noise:', currentTranscript);
+            console.log('⚠️ Filtered out noise/background sound:', currentTranscript,
+              `(words: ${wordCount}, avg length: ${avgWordLength.toFixed(1)}, single-char: ${singleCharWords})`);
             currentTranscript = '';
             setInputMessage('');
             return;
@@ -400,6 +577,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
     // Start voice mode
     isStoppingVoiceMode.current = false;
     setIsVoiceMode(true);
+    setConversationStartedWithVoice(true); // Mark this conversation as voice-based
     setVoiceUiMode('speaking'); // Start in speaking mode for greeting
 
     // TOM introduces himself with varied greetings
@@ -507,10 +685,25 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
             ));
           }
 
+          // Handle navigation commands
+          if (fullResponse) {
+            handleNavigationCommand(fullResponse);
+            // Remove navigation markers from display
+            const cleanedResponse = fullResponse.replace(/\[NAV:\w+\]/g, '').trim();
+            if (cleanedResponse !== fullResponse) {
+              setMessages(prev => prev.map(m =>
+                m.id === streamingMessageId
+                  ? { ...m, content: cleanedResponse }
+                  : m
+              ));
+            }
+          }
+
           // Only speak the response in voice mode
           if (isVoiceModeRef.current && fullResponse) {
             console.log('Speaking response in voice mode:', fullResponse.substring(0, 50));
-            speakMessage(fullResponse);
+            const cleanedResponse = fullResponse.replace(/\[NAV:\w+\]/g, '').trim();
+            speakMessage(cleanedResponse);
           }
 
           setIsLoading(false);
@@ -580,20 +773,22 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
 
       if (contentType?.includes('audio/mpeg')) {
         // We got audio from OpenAI
-        console.log('✅ Got audio from OpenAI, creating audio element');
+        console.log('✅ SUCCESS: Got audio/mpeg from OpenAI TTS API');
+        console.log('✅ USING OPENAI VOICE:', voiceSettings.openaiVoice);
         const audioBlob = await response.blob();
+        console.log('✅ Audio blob size:', audioBlob.size, 'bytes');
         const audioUrl = URL.createObjectURL(audioBlob);
         const audio = new Audio(audioUrl);
         audio.volume = voiceSettings.volume;
 
         audio.onloadeddata = () => {
-          console.log('✅ Audio loaded, duration:', audio.duration);
+          console.log('✅ Audio loaded successfully, duration:', audio.duration, 'seconds');
         };
 
         // Return a Promise that resolves when audio finishes
         return new Promise<void>((resolve, reject) => {
           audio.onplay = () => {
-            console.log('🔊 OpenAI TTS PLAYING!');
+            console.log('🔊 OPENAI TTS PLAYING NOW - Voice:', voiceSettings.openaiVoice);
 
             // 🔊 READY TO SPEAK CLICK - Before TOM speaks!
             playReadyToSpeakClick();
@@ -611,43 +806,45 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
           };
 
           audio.onended = () => {
-            console.log('✅ OpenAI TTS ended');
+            console.log('✅ OpenAI TTS playback ended');
             isSpeakingRef.current = false;
             URL.revokeObjectURL(audioUrl);
             resolve(); // Resolve the promise when audio finishes
           };
 
           audio.onerror = (event) => {
-            console.error('❌ Audio error:', event);
+            console.error('❌ Audio playback error:', event);
             isSpeakingRef.current = false;
             URL.revokeObjectURL(audioUrl);
             reject(event);
           };
 
-          console.log('🎵 Playing audio...');
+          console.log('🎵 Starting audio playback...');
           audio.play().catch(reject);
         });
       } else {
         // Use browser voice
+        console.log('⚠️ NO AUDIO FROM OPENAI - Falling back to browser voice');
+        console.log('Response content-type:', contentType);
         const data = await response.json();
         if (data.useBrowserVoice) {
-          console.log('Using browser voice as instructed');
+          console.log('ℹ️ API instructed to use browser voice (OpenAI API key may not be configured)');
           speakWithBrowserVoice(text);
         }
       }
     } catch (error) {
-      console.error('❌ TTS error:', error);
+      console.error('❌ TTS error - Falling back to browser voice:', error);
       speakWithBrowserVoice(text);
     }
   };
 
   const speakWithBrowserVoice = (text: string) => {
     if (typeof window === 'undefined' || !window.speechSynthesis) {
-      console.log('Browser speech not available');
+      console.log('⚠️ Browser speech synthesis not available');
       return;
     }
 
-    console.log('Using browser voice');
+    console.log('🔊 Using browser speech synthesis (fallback)');
 
     setTimeout(() => {
       const utterance = new SpeechSynthesisUtterance(text);
@@ -665,6 +862,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       if (selectedVoice) {
         utterance.voice = selectedVoice;
         utterance.lang = selectedVoice.lang;
+        console.log('🔊 Browser voice selected:', selectedVoice.name);
       }
 
       utterance.rate = voiceSettings.rate;
@@ -672,7 +870,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       utterance.volume = voiceSettings.volume;
 
       utterance.onstart = () => {
-        console.log('Speech started');
+        console.log('🔊 Browser speech started');
         isSpeakingRef.current = true;
         setVoiceUiMode('speaking');
 
@@ -686,7 +884,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       };
 
       utterance.onend = () => {
-        console.log('Speech ended');
+        console.log('✅ Browser speech ended');
         isSpeakingRef.current = false;
 
         if (isVoiceModeRef.current) {
@@ -702,8 +900,26 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       };
 
       utterance.onerror = (event) => {
-        console.error('Speech error:', event);
+        console.error('❌ Browser speech error:', event.error || 'Unknown error');
+        console.error('Error details:', {
+          type: event.type,
+          error: event.error,
+          charIndex: event.charIndex,
+          elapsedTime: event.elapsedTime
+        });
         isSpeakingRef.current = false;
+
+        // Restart listening if in voice mode
+        if (isVoiceModeRef.current) {
+          setVoiceUiMode('listening');
+          setTimeout(() => {
+            try {
+              voiceModeRecognitionRef.current?.start();
+            } catch (e) {
+              console.log('Could not restart after error:', e);
+            }
+          }, 500);
+        }
       };
 
       window.speechSynthesis.speak(utterance);
@@ -760,8 +976,220 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       `}</style>
 
       {showHeader && !isVoiceMode && (
-        <div className="flex-shrink-0 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 px-4 py-3 hidden md:block">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-slate-100">TOM</h2>
+        <div className="flex-shrink-0 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 px-4 py-3 hidden md:flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => {
+                setShowSidebar(!showSidebar);
+                setSidebarView('menu');
+              }}
+              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
+              title="Menu"
+            >
+              <Menu className="w-5 h-5 text-gray-700 dark:text-slate-300" />
+            </button>
+            <h2 className="text-xl font-bold text-gray-900 dark:text-slate-100">TOM AI</h2>
+          </div>
+          <button
+            onClick={startNewConversation}
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
+            title="New conversation"
+          >
+            <MessageSquarePlus className="w-5 h-5 text-gray-700 dark:text-slate-300" />
+          </button>
+        </div>
+      )}
+
+      {/* Sidebar Menu */}
+      {showSidebar && !isVoiceMode && (
+        <div className="absolute top-0 left-0 bottom-0 w-80 bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-slate-800 shadow-xl z-50 flex flex-col">
+          <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-slate-800">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-slate-100">
+              {sidebarView === 'menu' ? 'Menu' : sidebarView === 'history' ? 'History' : 'Settings'}
+            </h3>
+            <button
+              onClick={() => setShowSidebar(false)}
+              className="p-1 hover:bg-gray-100 dark:hover:bg-slate-800 rounded transition-colors"
+            >
+              <X className="w-5 h-5 text-gray-600 dark:text-slate-400" />
+            </button>
+          </div>
+
+          {/* Menu View */}
+          {sidebarView === 'menu' && (
+            <div className="flex-1 p-3 space-y-1">
+              <button
+                onClick={() => {
+                  startNewConversation();
+                }}
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors text-left"
+              >
+                <MessageSquarePlus className="w-5 h-5 text-gray-600 dark:text-slate-400" />
+                <span className="text-sm font-medium text-gray-900 dark:text-slate-100">New Conversation</span>
+              </button>
+
+              <button
+                onClick={() => setSidebarView('history')}
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors text-left"
+              >
+                <History className="w-5 h-5 text-gray-600 dark:text-slate-400" />
+                <div className="flex-1">
+                  <span className="text-sm font-medium text-gray-900 dark:text-slate-100">History</span>
+                  {conversations.length > 0 && (
+                    <span className="ml-2 text-xs text-gray-500 dark:text-slate-500">
+                      ({conversations.length})
+                    </span>
+                  )}
+                </div>
+              </button>
+
+              <button
+                onClick={() => setSidebarView('settings')}
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors text-left"
+              >
+                <Settings className="w-5 h-5 text-gray-600 dark:text-slate-400" />
+                <span className="text-sm font-medium text-gray-900 dark:text-slate-100">Settings</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  // TODO: Navigate to help
+                  alert('Help & Support coming soon!');
+                }}
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors text-left"
+              >
+                <HelpCircle className="w-5 h-5 text-gray-600 dark:text-slate-400" />
+                <span className="text-sm font-medium text-gray-900 dark:text-slate-100">Help & Support</span>
+              </button>
+
+              {conversations.length > 0 && (
+                <>
+                  <div className="border-t border-gray-200 dark:border-slate-700 my-2"></div>
+                  <button
+                    onClick={clearAllConversations}
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors text-left"
+                  >
+                    <Trash2 className="w-5 h-5 text-red-600 dark:text-red-400" />
+                    <span className="text-sm font-medium text-red-600 dark:text-red-400">Clear All Conversations</span>
+                  </button>
+                </>
+              )}
+            </div>
+          )}
+
+          {/* History View */}
+          {sidebarView === 'history' && (
+            <div className="flex-1 flex flex-col">
+              <button
+                onClick={() => setSidebarView('menu')}
+                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-100 transition-colors"
+              >
+                ← Back to Menu
+              </button>
+              <div className="flex-1 overflow-y-auto p-3 space-y-2">
+                {conversations.length === 0 ? (
+                  <div className="text-center py-8 text-gray-500 dark:text-slate-400">
+                    <History className="w-12 h-12 mx-auto mb-2 opacity-50" />
+                    <p className="text-sm">No conversation history yet</p>
+                  </div>
+                ) : (
+                  conversations.map((convo) => (
+                    <div
+                      key={convo.id}
+                      className={`group p-3 rounded-lg cursor-pointer transition-all border ${
+                        convo.id === currentConversationId
+                          ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800'
+                          : 'bg-gray-50 dark:bg-slate-800 border-transparent hover:bg-gray-100 dark:hover:bg-slate-700'
+                      }`}
+                      onClick={() => loadConversation(convo)}
+                    >
+                      <div className="flex items-start justify-between mb-1">
+                        <div className="flex items-center gap-2 flex-1 min-w-0">
+                          {convo.isVoiceConversation && (
+                            <Mic2 className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 flex-shrink-0" />
+                          )}
+                          <p className="text-sm font-medium text-gray-900 dark:text-slate-100 truncate">
+                            {convo.title}
+                          </p>
+                        </div>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            deleteConversation(convo.id);
+                          }}
+                          className="opacity-0 group-hover:opacity-100 p-1 hover:bg-red-100 dark:hover:bg-red-900/30 rounded transition-all"
+                          title="Delete"
+                        >
+                          <Trash2 className="w-3.5 h-3.5 text-red-600 dark:text-red-400" />
+                        </button>
+                      </div>
+                      <p className="text-xs text-gray-500 dark:text-slate-500">
+                        {new Date(convo.updatedAt).toLocaleDateString()} • {convo.messages.length} messages
+                      </p>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Settings View */}
+          {sidebarView === 'settings' && (
+            <div className="flex-1 flex flex-col">
+              <button
+                onClick={() => setSidebarView('menu')}
+                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-100 transition-colors"
+              >
+                ← Back to Menu
+              </button>
+              <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-900 dark:text-slate-100 mb-3">Voice Settings</h4>
+
+                  <div className="space-y-3">
+                    <div>
+                      <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+                        OpenAI Voice
+                      </label>
+                      <select
+                        value={voiceSettings.openaiVoice}
+                        onChange={(e) => setVoiceSettings(prev => ({ ...prev, openaiVoice: e.target.value }))}
+                        className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white dark:bg-slate-800 text-gray-900 dark:text-white"
+                      >
+                        <option value="arbor">Arbor (Most Natural)</option>
+                        <option value="alloy">Alloy</option>
+                        <option value="echo">Echo</option>
+                        <option value="fable">Fable</option>
+                        <option value="onyx">Onyx</option>
+                        <option value="nova">Nova</option>
+                        <option value="shimmer">Shimmer</option>
+                      </select>
+                    </div>
+
+                    <button
+                      onClick={() => speakMessage("Hello! This is how I sound with these settings.")}
+                      className="w-full py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm rounded-lg font-medium transition-colors"
+                    >
+                      Test Voice
+                    </button>
+                  </div>
+                </div>
+
+                <div className="border-t border-gray-200 dark:border-slate-700 pt-4">
+                  <h4 className="text-sm font-semibold text-gray-900 dark:text-slate-100 mb-3">Data</h4>
+                  <p className="text-xs text-gray-600 dark:text-slate-400 mb-3">
+                    Your conversations are stored locally in your browser
+                  </p>
+                  <button
+                    onClick={clearAllConversations}
+                    className="w-full py-2 bg-red-500 hover:bg-red-600 text-white text-sm rounded-lg font-medium transition-colors"
+                  >
+                    Clear All History
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -886,9 +1314,9 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
                   ? 'text-blue-600 dark:text-blue-300'
                   : 'text-gray-600 dark:text-gray-400'
               }`}>
-                {voiceUiMode === 'speaking' ? 'TOM is speaking...' :
-                 voiceUiMode === 'thinking' ? 'Processing...' :
-                 voiceUiMode === 'listening' ? 'Listening...' :
+                {voiceUiMode === 'speaking' ? 'Speaking' :
+                 voiceUiMode === 'thinking' ? 'Processing' :
+                 voiceUiMode === 'listening' ? 'Listening' :
                  'Voice Mode'}
               </p>
 
@@ -942,6 +1370,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
                     onChange={(e) => setVoiceSettings(prev => ({ ...prev, openaiVoice: e.target.value }))}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-teal-500 bg-white dark:bg-slate-700 text-gray-900 dark:text-white text-sm"
                   >
+                    <option value="arbor">Arbor (Most Natural)</option>
                     <option value="alloy">Alloy</option>
                     <option value="echo">Echo</option>
                     <option value="fable">Fable</option>
@@ -1046,6 +1475,18 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
       {!isVoiceMode && (
         <div className="flex-shrink-0 border-t border-gray-200 dark:border-gray-700 p-4 bg-white dark:bg-gray-900">
           <div className="flex gap-2 items-center">
+            {/* Upload Button */}
+            <button
+              className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all flex-shrink-0"
+              title="Upload file"
+              onClick={() => {
+                // TODO: Implement file upload
+                alert('File upload feature coming soon!');
+              }}
+            >
+              <Plus className="w-5 h-5" />
+            </button>
+
             <div className="flex-1 relative">
               <input
                 type="text"
@@ -1054,7 +1495,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
                 onKeyPress={handleKeyPress}
                 placeholder={isRecording ? "Recording..." : "Message TOM..."}
                 disabled={isLoading}
-                className="w-full pl-4 pr-20 py-3 border border-gray-300 dark:border-gray-600 rounded-full focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white disabled:bg-gray-50 dark:disabled:bg-gray-700 disabled:cursor-not-allowed"
+                className="w-full pl-4 pr-28 py-3 border border-gray-300 dark:border-gray-600 rounded-full focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white disabled:bg-gray-50 dark:disabled:bg-gray-700 disabled:cursor-not-allowed"
               />
               <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
                 <button

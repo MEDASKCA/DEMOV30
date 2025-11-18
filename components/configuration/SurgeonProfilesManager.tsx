@@ -250,15 +250,15 @@ export default function SurgeonProfilesManager() {
   const gapsCount = coverage.filter(c => c.gap > 0).length;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       {/* Header with Actions */}
-      <div className="bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg shadow-lg p-6 text-white">
-        <div className="flex items-center justify-between mb-4">
+      <div className="bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg shadow-lg p-4 text-white">
+        <div className="flex items-center justify-between mb-3">
           <div>
-            <h2 className="text-2xl font-bold flex items-center gap-2">
+            <h2 className="text-lg font-bold flex items-center gap-2">
               👨‍⚕️ Surgeon Profiles
             </h2>
-            <p className="text-blue-100 mt-1">
+            <p className="text-blue-100 mt-0.5 text-sm">
               {showAddForm ? 'Manually add real-life consultant surgeons for pilot' : 'Auto-generate demo data or manage existing surgeons'}
             </p>
           </div>
@@ -267,25 +267,25 @@ export default function SurgeonProfilesManager() {
               <>
                 <button
                   onClick={() => setShowAddForm(true)}
-                  className="flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 rounded-lg transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-green-500 hover:bg-green-600 rounded-lg transition-colors text-sm"
                 >
-                  <Plus className="w-4 h-4" />
+                  <Plus className="w-3.5 h-3.5" />
                   <span className="font-medium">Add Real Surgeon</span>
                 </button>
                 <button
                   onClick={handleGenerateMissing}
                   disabled={generating || loading}
-                  className="flex items-center gap-2 px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                 >
-                  {generating ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
+                  {generating ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <RefreshCw className="w-3.5 h-3.5" />}
                   <span className="font-medium">Generate Missing</span>
                 </button>
                 <button
                   onClick={handleGenerateAll}
                   disabled={generating || loading || surgeons.length > 0}
-                  className="flex items-center gap-2 px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                 >
-                  {generating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+                  {generating ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}
                   <span className="font-medium">Generate All (Demo)</span>
                 </button>
               </>
@@ -295,7 +295,7 @@ export default function SurgeonProfilesManager() {
                   setShowAddForm(false);
                   resetForm();
                 }}
-                className="flex items-center gap-2 px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-colors"
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded-lg transition-colors text-sm"
               >
                 <span className="font-medium">← Back to List</span>
               </button>
@@ -304,43 +304,43 @@ export default function SurgeonProfilesManager() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-3 gap-4">
-          <div className="bg-white/10 rounded-lg p-3">
-            <div className="text-2xl font-bold">{totalSurgeons}</div>
-            <div className="text-sm text-blue-100">Total Surgeons</div>
+        <div className="grid grid-cols-3 gap-3">
+          <div className="bg-white/10 rounded-lg p-2.5">
+            <div className="text-xl font-bold">{totalSurgeons}</div>
+            <div className="text-xs text-blue-100">Total Surgeons</div>
           </div>
-          <div className="bg-white/10 rounded-lg p-3">
-            <div className="text-2xl font-bold">{fullTimeEquivalent}</div>
-            <div className="text-sm text-blue-100">FTE (Full-Time Equivalent)</div>
+          <div className="bg-white/10 rounded-lg p-2.5">
+            <div className="text-xl font-bold">{fullTimeEquivalent}</div>
+            <div className="text-xs text-blue-100">FTE (Full-Time Equivalent)</div>
           </div>
-          <div className="bg-white/10 rounded-lg p-3">
-            <div className="text-2xl font-bold flex items-center gap-2">
+          <div className="bg-white/10 rounded-lg p-2.5">
+            <div className="text-xl font-bold flex items-center gap-2">
               {gapsCount}
-              {gapsCount > 0 ? <AlertCircle className="w-5 h-5 text-yellow-300" /> : <CheckCircle className="w-5 h-5 text-green-300" />}
+              {gapsCount > 0 ? <AlertCircle className="w-4 h-4 text-yellow-300" /> : <CheckCircle className="w-4 h-4 text-green-300" />}
             </div>
-            <div className="text-sm text-blue-100">Specialty Gaps</div>
+            <div className="text-xs text-blue-100">Specialty Gaps</div>
           </div>
         </div>
       </div>
 
       {/* Coverage Report */}
       {loadingCoverage ? (
-        <div className="bg-white rounded-lg border border-gray-200 p-6 text-center">
-          <Loader2 className="w-6 h-6 animate-spin mx-auto text-blue-600 mb-2" />
-          <p className="text-sm text-gray-600">Loading coverage report...</p>
+        <div className="bg-white rounded-lg border border-gray-200 p-4 text-center">
+          <Loader2 className="w-5 h-5 animate-spin mx-auto text-blue-600 mb-1.5" />
+          <p className="text-xs text-gray-600">Loading coverage report...</p>
         </div>
       ) : coverage.length > 0 && (
         <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
-          <div className="px-4 py-3 border-b border-gray-200 bg-gray-50">
+          <div className="px-3 py-2 border-b border-gray-200 bg-gray-50">
             <h3 className="text-sm font-semibold text-gray-900">Coverage Report</h3>
             <p className="text-xs text-gray-600 mt-0.5">Surgeons per specialty/subspecialty</p>
           </div>
-          <div className="p-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div className="p-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
               {coverage.map((item, idx) => (
                 <div
                   key={idx}
-                  className={`border rounded-lg p-3 ${
+                  className={`border rounded-lg p-2 ${
                     item.gap > 0 ? 'border-red-300 bg-red-50' :
                     item.gap < 0 ? 'border-blue-300 bg-blue-50' :
                     'border-green-300 bg-green-50'
@@ -348,7 +348,7 @@ export default function SurgeonProfilesManager() {
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
-                      <div className="font-semibold text-sm text-gray-900">
+                      <div className="font-semibold text-xs text-gray-900">
                         {item.specialtyName}
                       </div>
                       {item.subspecialtyName && (
@@ -356,7 +356,7 @@ export default function SurgeonProfilesManager() {
                       )}
                     </div>
                     <div className="text-right">
-                      <div className="text-lg font-bold text-gray-900">
+                      <div className="text-base font-bold text-gray-900">
                         {item.existingCount}/{item.requiredCount}
                       </div>
                       {item.gap !== 0 && (
@@ -376,19 +376,19 @@ export default function SurgeonProfilesManager() {
       {/* Manual Entry Form */}
       {showAddForm && (
         <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
-          <div className="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-green-50 to-blue-50">
-            <h3 className="text-lg font-semibold text-gray-900">Add Real Surgeon (Pilot Data)</h3>
-            <p className="text-sm text-gray-600 mt-1">Manually enter consultant surgeon details for live pilot deployment</p>
+          <div className="px-4 py-2.5 border-b border-gray-200 bg-gradient-to-r from-green-50 to-blue-50">
+            <h3 className="text-base font-semibold text-gray-900">Add Real Surgeon (Pilot Data)</h3>
+            <p className="text-xs text-gray-600 mt-0.5">Manually enter consultant surgeon details for live pilot deployment</p>
           </div>
-          <div className="p-6 space-y-6">
+          <div className="p-4 space-y-4">
             {/* Name and Title Row */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Title *</label>
+                <label className="block text-xs font-medium text-gray-700 mb-1">Title *</label>
                 <select
                   value={formTitle}
                   onChange={(e) => setFormTitle(e.target.value as any)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
                   <option value="Mr">Mr</option>
                   <option value="Ms">Ms</option>
@@ -398,35 +398,35 @@ export default function SurgeonProfilesManager() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
+                <label className="block text-xs font-medium text-gray-700 mb-1">First Name *</label>
                 <input
                   type="text"
                   value={formFirstName}
                   onChange={(e) => setFormFirstName(e.target.value)}
                   placeholder="e.g., James"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
+                <label className="block text-xs font-medium text-gray-700 mb-1">Last Name *</label>
                 <input
                   type="text"
                   value={formLastName}
                   onChange={(e) => setFormLastName(e.target.value)}
                   placeholder="e.g., Smith"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
             </div>
 
             {/* Specialty and Subspecialty Row */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Specialty *</label>
+                <label className="block text-xs font-medium text-gray-700 mb-1">Specialty *</label>
                 <select
                   value={formSpecialtyId}
                   onChange={(e) => setFormSpecialtyId(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
                   <option value="">Select specialty...</option>
                   {configuredSpecialties.map(spec => (
@@ -435,35 +435,35 @@ export default function SurgeonProfilesManager() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Primary Subspecialty</label>
+                <label className="block text-xs font-medium text-gray-700 mb-1">Primary Subspecialty</label>
                 <input
                   type="text"
                   value={formPrimarySubspecialty}
                   onChange={(e) => setFormPrimarySubspecialty(e.target.value)}
                   placeholder="e.g., Foot & Ankle, Colorectal, etc."
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
-                <p className="text-xs text-gray-500 mt-1">Leave blank for general practice</p>
+                <p className="text-xs text-gray-500 mt-0.5">Leave blank for general practice</p>
               </div>
             </div>
 
             {/* General Competencies */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">General Competencies</label>
+              <label className="block text-xs font-medium text-gray-700 mb-1">General Competencies</label>
               <textarea
                 value={formGeneralCompetencies}
                 onChange={(e) => setFormGeneralCompetencies(e.target.value)}
                 placeholder="e.g., General Trauma Orthopaedics, Emergency Surgery (comma-separated)"
                 rows={2}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
-              <p className="text-xs text-gray-500 mt-1">What else can this surgeon do? Leave blank if subspecialty covers all</p>
+              <p className="text-xs text-gray-500 mt-0.5">What else can this surgeon do? Leave blank if subspecialty covers all</p>
             </div>
 
             {/* Employment Details Row */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Employment Type</label>
+                <label className="block text-xs font-medium text-gray-700 mb-1">Employment Type</label>
                 <select
                   value={formEmploymentType}
                   onChange={(e) => {
@@ -478,7 +478,7 @@ export default function SurgeonProfilesManager() {
                       setFormMaxLists('2');
                     }
                   }}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
                   <option value="Full-time">Full-time</option>
                   <option value="Part-time">Part-time</option>
@@ -487,7 +487,7 @@ export default function SurgeonProfilesManager() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">FTE</label>
+                <label className="block text-xs font-medium text-gray-700 mb-1">FTE</label>
                 <input
                   type="number"
                   step="0.1"
@@ -495,61 +495,61 @@ export default function SurgeonProfilesManager() {
                   max="1.0"
                   value={formFTE}
                   onChange={(e) => setFormFTE(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
-                <p className="text-xs text-gray-500 mt-1">0.5 = part-time, 1.0 = full-time</p>
+                <p className="text-xs text-gray-500 mt-0.5">0.5 = part-time, 1.0 = full-time</p>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Lists/Week</label>
+                <label className="block text-xs font-medium text-gray-700 mb-1">Lists/Week</label>
                 <input
                   type="number"
                   min="1"
                   max="5"
                   value={formMaxLists}
                   onChange={(e) => setFormMaxLists(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
-                <p className="text-xs text-gray-500 mt-1">Typically 2-5</p>
+                <p className="text-xs text-gray-500 mt-0.5">Typically 2-5</p>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Annual Leave (Days)</label>
+                <label className="block text-xs font-medium text-gray-700 mb-1">Annual Leave (Days)</label>
                 <input
                   type="number"
                   min="20"
                   max="35"
                   value={formAnnualLeave}
                   onChange={(e) => setFormAnnualLeave(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-2.5 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
-                <p className="text-xs text-gray-500 mt-1">Typically 25-30</p>
+                <p className="text-xs text-gray-500 mt-0.5">Typically 25-30</p>
               </div>
             </div>
 
             {/* Action Buttons */}
-            <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-200">
+            <div className="flex items-center justify-end gap-2 pt-3 border-t border-gray-200">
               <button
                 onClick={() => {
                   setShowAddForm(false);
                   resetForm();
                 }}
                 disabled={saving}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+                className="px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
               >
                 Cancel
               </button>
               <button
                 onClick={handleManualAdd}
                 disabled={saving || !formFirstName.trim() || !formLastName.trim() || !formSpecialtyId}
-                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {saving ? (
                   <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
                     <span>Saving...</span>
                   </>
                 ) : (
                   <>
-                    <Plus className="w-4 h-4" />
+                    <Plus className="w-3.5 h-3.5" />
                     <span>Save Surgeon</span>
                   </>
                 )}
@@ -566,7 +566,7 @@ export default function SurgeonProfilesManager() {
             <div className="flex min-w-full">
               <button
                 onClick={() => setActiveSpecialtyTab('all')}
-                className={`px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
+                className={`px-3 py-2 text-xs font-medium whitespace-nowrap border-b-2 transition-colors ${
                   activeSpecialtyTab === 'all'
                     ? 'text-blue-700 border-blue-700 bg-blue-50'
                     : 'text-gray-600 border-transparent hover:text-blue-700 hover:bg-gray-50'
@@ -580,7 +580,7 @@ export default function SurgeonProfilesManager() {
                   <button
                     key={specialty}
                     onClick={() => setActiveSpecialtyTab(specialty)}
-                    className={`px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
+                    className={`px-3 py-2 text-xs font-medium whitespace-nowrap border-b-2 transition-colors ${
                       activeSpecialtyTab === specialty
                         ? 'text-blue-700 border-blue-700 bg-blue-50'
                         : 'text-gray-600 border-transparent hover:text-blue-700 hover:bg-gray-50'
@@ -594,13 +594,13 @@ export default function SurgeonProfilesManager() {
           </div>
 
           {/* Search within active tab */}
-          <div className="p-4">
+          <div className="p-3">
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search by name, subspecialty, or competency..."
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
         </div>
@@ -610,76 +610,76 @@ export default function SurgeonProfilesManager() {
       {!showAddForm && (
         <>
           {loading ? (
-            <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
-              <Loader2 className="w-8 h-8 animate-spin mx-auto text-blue-600 mb-3" />
-              <p className="text-sm text-gray-600">Loading surgeons...</p>
+            <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
+              <Loader2 className="w-6 h-6 animate-spin mx-auto text-blue-600 mb-2" />
+              <p className="text-xs text-gray-600">Loading surgeons...</p>
             </div>
           ) : filteredSurgeons.length === 0 ? (
-            <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
-              <div className="text-gray-400 mb-3">
-                <svg className="w-16 h-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
+              <div className="text-gray-400 mb-2">
+                <svg className="w-12 h-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Surgeons Found</h3>
-              <p className="text-sm text-gray-600 mb-4">
+              <h3 className="text-base font-semibold text-gray-900 mb-1">No Surgeons Found</h3>
+              <p className="text-xs text-gray-600 mb-3">
                 {surgeons.length === 0
                   ? 'Click "Generate All" to auto-generate surgeon profiles based on your configured specialties.'
                   : 'No surgeons match your search criteria.'}
               </p>
             </div>
           ) : (
-            <div className="space-y-6">
+            <div className="space-y-3">
               {/* Group by Subspecialty */}
               {Object.entries(surgeonsBySubspecialty)
                 .sort(([a], [b]) => a.localeCompare(b))
                 .map(([subspecialty, subspecialtySurgeons]) => (
                   <div key={subspecialty} className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-                    <div className="px-4 py-3 bg-gradient-to-r from-gray-50 to-blue-50 border-b border-gray-200">
-                      <h3 className="font-semibold text-gray-900">{subspecialty}</h3>
+                    <div className="px-3 py-2 bg-gradient-to-r from-gray-50 to-blue-50 border-b border-gray-200">
+                      <h3 className="text-sm font-semibold text-gray-900">{subspecialty}</h3>
                       <p className="text-xs text-gray-600 mt-0.5">{subspecialtySurgeons.length} surgeon{subspecialtySurgeons.length !== 1 ? 's' : ''}</p>
                     </div>
                     <div className="overflow-x-auto">
                       <table className="w-full">
                         <thead className="bg-gray-50 border-b border-gray-200">
                           <tr>
-                            <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700">Name</th>
-                            <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700">Primary Expertise</th>
-                            <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700">Can Also Do</th>
-                            <th className="px-4 py-3 text-center text-xs font-semibold text-gray-700">Employment</th>
-                            <th className="px-4 py-3 text-center text-xs font-semibold text-gray-700">Lists/Wk</th>
-                            <th className="px-4 py-3 text-center text-xs font-semibold text-gray-700">Actions</th>
+                            <th className="px-3 py-2 text-left text-xs font-semibold text-gray-700">Name</th>
+                            <th className="px-3 py-2 text-left text-xs font-semibold text-gray-700">Primary Expertise</th>
+                            <th className="px-3 py-2 text-left text-xs font-semibold text-gray-700">Can Also Do</th>
+                            <th className="px-3 py-2 text-center text-xs font-semibold text-gray-700">Employment</th>
+                            <th className="px-3 py-2 text-center text-xs font-semibold text-gray-700">Lists/Wk</th>
+                            <th className="px-3 py-2 text-center text-xs font-semibold text-gray-700">Actions</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-200">
                           {subspecialtySurgeons.map((surgeon) => (
                             <tr key={surgeon.id} className="hover:bg-gray-50 transition-colors">
-                              <td className="px-4 py-3">
-                                <div className="font-medium text-gray-900">
+                              <td className="px-3 py-2">
+                                <div className="text-sm font-medium text-gray-900">
                                   {surgeon.title} {surgeon.firstName} {surgeon.lastName}
                                 </div>
                                 <div className="text-xs text-gray-500">{surgeon.initials}</div>
                               </td>
-                              <td className="px-4 py-3">
-                                <div className="text-sm font-medium text-blue-700">
+                              <td className="px-3 py-2">
+                                <div className="text-xs font-medium text-blue-700">
                                   {surgeon.primarySubspecialty || 'General Practice'}
                                 </div>
                               </td>
-                              <td className="px-4 py-3">
+                              <td className="px-3 py-2">
                                 {surgeon.generalCompetencies && surgeon.generalCompetencies.length > 0 ? (
                                   <div className="flex flex-wrap gap-1">
                                     {surgeon.generalCompetencies.map((comp, idx) => (
-                                      <span key={idx} className="inline-block px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded-full">
+                                      <span key={idx} className="inline-block px-1.5 py-0.5 text-xs bg-gray-100 text-gray-700 rounded">
                                         {comp}
                                       </span>
                                     ))}
                                   </div>
                                 ) : (
-                                  <span className="text-sm text-gray-400">—</span>
+                                  <span className="text-xs text-gray-400">—</span>
                                 )}
                               </td>
-                              <td className="px-4 py-3 text-center">
-                                <span className={`inline-block px-2 py-1 text-xs font-medium rounded-full ${
+                              <td className="px-3 py-2 text-center">
+                                <span className={`inline-block px-1.5 py-0.5 text-xs font-medium rounded ${
                                   surgeon.employmentType === 'Full-time' ? 'bg-green-100 text-green-800' :
                                   surgeon.employmentType === 'Part-time' ? 'bg-blue-100 text-blue-800' :
                                   surgeon.employmentType === 'Job-share' ? 'bg-purple-100 text-purple-800' :
@@ -687,20 +687,20 @@ export default function SurgeonProfilesManager() {
                                 }`}>
                                   {surgeon.employmentType}
                                 </span>
-                                <div className="text-xs text-gray-500 mt-1">{surgeon.fte} FTE</div>
+                                <div className="text-xs text-gray-500 mt-0.5">{surgeon.fte} FTE</div>
                               </td>
-                              <td className="px-4 py-3 text-center">
+                              <td className="px-3 py-2 text-center">
                                 <div className="text-sm font-medium text-gray-900">{surgeon.maxListsPerWeek}</div>
-                                <div className="text-xs text-gray-500">{surgeon.annualLeaveDays} days leave</div>
+                                <div className="text-xs text-gray-500">{surgeon.annualLeaveDays} days</div>
                               </td>
-                              <td className="px-4 py-3">
-                                <div className="flex items-center justify-center gap-2">
+                              <td className="px-3 py-2">
+                                <div className="flex items-center justify-center gap-1">
                                   <button
                                     onClick={() => handleDelete(surgeon)}
                                     className="p-1 text-red-600 hover:bg-red-50 rounded transition-colors"
                                     title="Delete"
                                   >
-                                    <Trash2 className="w-4 h-4" />
+                                    <Trash2 className="w-3.5 h-3.5" />
                                   </button>
                                 </div>
                               </td>

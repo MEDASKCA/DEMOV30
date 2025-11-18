@@ -3,9 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, MessageSquare, Heart, Share2, Plus, Image as ImageIcon, Smile, ThumbsUp, ThumbsDown, X, Shield } from 'lucide-react';
 import { mockStaffProfiles, mockPosts, getStaffById, getTimeAgo, type Post as PostType, type Comment as CommentType, type StaffProfile } from '@/lib/socialMockData';
-import TomAIChatPanel from '@/components/TomAIChatPanel';
 import ShareModal from '@/components/ShareModal';
-import AdvertsPanel from '@/components/AdvertsPanel';
 import UserProfileModal from '@/components/UserProfileModal';
 import { useRouter } from 'next/navigation';
 
@@ -194,15 +192,10 @@ export default function FeedsView() {
 
   return (
     <div className="h-full flex flex-col bg-gray-50 dark:bg-slate-900 overflow-hidden">
-      {/* Desktop View - Split with TOM AI */}
-      <div className="hidden md:grid md:grid-cols-4 flex-1 overflow-hidden">
-        {/* TOM AI Panel - Left Side (Desktop) */}
-        <div className="col-span-1 bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-slate-800 flex flex-col overflow-hidden">
-          <TomAIChatPanel />
-        </div>
-
-        {/* Posts Feed - Middle (Desktop) */}
-        <div className="col-span-2 flex flex-col overflow-hidden bg-white dark:bg-slate-900">
+      {/* Desktop View - Posts Feed */}
+      <div className="hidden md:flex flex-1 overflow-hidden">
+        {/* Posts Feed (Desktop) */}
+        <div className="flex-1 flex flex-col overflow-hidden bg-white dark:bg-slate-900">
           <div className="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 px-4 py-3">
             <h2 className="text-xl font-bold text-gray-900 dark:text-slate-100">Feeds</h2>
           </div>
@@ -569,25 +562,12 @@ export default function FeedsView() {
           </div>
           </div>
         </div>
-
-        {/* Adverts Panel - Right Side (Desktop) */}
-        <div className="col-span-1 bg-white border-l border-gray-200 flex flex-col overflow-hidden">
-          <AdvertsPanel />
-        </div>
       </div>
 
       {/* Mobile View */}
       <div className="md:hidden flex flex-col h-full overflow-hidden bg-gray-50">
-        {/* Header */}
-        <div className="text-white px-4 py-4 flex-shrink-0" style={{background: 'linear-gradient(135deg, #3B82F6 0%, #06B6D4 50%, #8B5CF6 100%)'}}>
-          <div>
-            <h2 className="text-lg font-bold">Feeds</h2>
-            <p className="text-xs text-white/80 mt-0.5">Theatre staff collaboration</p>
-          </div>
-        </div>
-
         {/* Content */}
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto pt-4">
           {/* Stories Section */}
           <div className="bg-white border-b border-gray-200 p-3">
             <div className="flex gap-3 overflow-x-auto">

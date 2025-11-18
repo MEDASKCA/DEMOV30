@@ -795,7 +795,7 @@ export default function StaffAllocationPage() {
               onClick={() => router.push('/admin/procedures/opcs4-database')}
               className="px-4 py-4 font-semibold transition-colors border-b-2 whitespace-nowrap text-gray-600 border-transparent hover:text-gray-900 focus:outline-none"
             >
-              Cases
+              Procedures & Preferences
             </button>
             <button
               onClick={() => router.push('/admin/readiness')}
