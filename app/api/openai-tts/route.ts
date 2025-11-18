@@ -12,7 +12,7 @@ export const dynamic = 'force-dynamic';
  */
 export async function POST(request: NextRequest) {
   try {
-    const { text, voice = 'onyx' } = await request.json();
+    const { text, voice = 'fable' } = await request.json(); // Changed to fable (male, expressive) as default
 
     if (!text) {
       return new Response('Text is required', { status: 400 });

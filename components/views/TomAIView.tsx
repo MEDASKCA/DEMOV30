@@ -80,7 +80,8 @@ export default function TomAIChatPanel({ showHeader = true, onMenuOpen }: TomAIC
     pitch: 1.0,
     volume: 1.0,
     selectedVoice: '',
-    openaiVoice: 'arbor' // arbor (newest, most natural & expressive), alloy, echo, fable, onyx, nova, shimmer
+    openaiVoice: 'fable', // fable (male, expressive) - alternatives: echo (male, clear), arbor (newest, natural)
+    wakeWordEnabled: false // Enable wake word detection (say "TOM" to activate)
   });
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -301,6 +302,44 @@ export default function TomAIChatPanel({ showHeader = true, onMenuOpen }: TomAIC
     isVoiceModeRef.current = isVoiceMode;
   }, [isVoiceMode]);
 
+  // Cleanup: Stop all speech when component unmounts or user navigates away
+  useEffect(() => {
+    const cleanup = () => {
+      console.log('🛑 Stopping all speech and voice recognition');
+
+      // Stop all speech synthesis
+      if (typeof window !== 'undefined' && window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+
+      // Stop voice recognition
+      try {
+        voiceModeRecognitionRef.current?.stop();
+        recognitionRef.current?.stop();
+      } catch (e) {
+        console.log('Voice recognition already stopped');
+      }
+
+      // Clear any pending timeouts
+      if (messageTimeoutRef.current) {
+        clearTimeout(messageTimeoutRef.current);
+      }
+    };
+
+    // Handle page unload/navigation
+    const handleBeforeUnload = () => {
+      cleanup();
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    // Cleanup on unmount
+    return () => {
+      cleanup();
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+
   // Handle navigation commands
   const handleNavigationCommand = (text: string) => {
     const navMatch = text.match(/\[NAV:(\w+)\]/);
@@ -464,6 +503,30 @@ export default function TomAIChatPanel({ showHeader = true, onMenuOpen }: TomAIC
             currentTranscript = '';
             setInputMessage('');
             return;
+          }
+
+          // 🎯 WAKE WORD DETECTION - Check if wake word is enabled
+          if (voiceSettings.wakeWordEnabled) {
+            const lowerTranscript = currentTranscript.toLowerCase();
+            const startsWithTom = lowerTranscript.startsWith('tom ') || lowerTranscript === 'tom';
+
+            if (!startsWithTom) {
+              console.log('⚠️ Wake word not detected. Ignoring:', currentTranscript);
+              currentTranscript = '';
+              setInputMessage('');
+              return;
+            }
+
+            // Remove "TOM" from the beginning
+            currentTranscript = currentTranscript.replace(/^tom\s+/i, '').trim();
+            console.log('✅ Wake word detected! Processing:', currentTranscript);
+
+            if (currentTranscript.length === 0) {
+              console.log('⚠️ No command after wake word');
+              currentTranscript = '';
+              setInputMessage('');
+              return;
+            }
           }
 
           // 🔊 DETECTION CLICK - Speech detected!
@@ -1166,6 +1229,29 @@ export default function TomAIChatPanel({ showHeader = true, onMenuOpen }: TomAIC
                       </select>
                     </div>
 
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 dark:text-gray-300">
+                          Wake Word Detection
+                        </label>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                          Say "TOM" to activate
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => setVoiceSettings(prev => ({ ...prev, wakeWordEnabled: !prev.wakeWordEnabled }))}
+                        className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                          voiceSettings.wakeWordEnabled ? 'bg-blue-500' : 'bg-gray-300 dark:bg-gray-600'
+                        }`}
+                      >
+                        <span
+                          className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${
+                            voiceSettings.wakeWordEnabled ? 'translate-x-5' : 'translate-x-0.5'
+                          }`}
+                        />
+                      </button>
+                    </div>
+
                     <button
                       onClick={() => speakMessage("Hello! This is how I sound with these settings.")}
                       className="w-full py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm rounded-lg font-medium transition-colors"
@@ -1378,6 +1464,30 @@ export default function TomAIChatPanel({ showHeader = true, onMenuOpen }: TomAIC
                     <option value="nova">Nova</option>
                     <option value="shimmer">Shimmer</option>
                   </select>
+                </div>
+
+                {/* Wake Word Toggle */}
+                <div className="flex items-center justify-between">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                      Wake Word Detection
+                    </label>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                      Say "TOM" to activate (like Alexa)
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setVoiceSettings(prev => ({ ...prev, wakeWordEnabled: !prev.wakeWordEnabled }))}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 ${
+                      voiceSettings.wakeWordEnabled ? 'bg-teal-500' : 'bg-gray-300 dark:bg-gray-600'
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                        voiceSettings.wakeWordEnabled ? 'translate-x-6' : 'translate-x-1'
+                      }`}
+                    />
+                  </button>
                 </div>
 
                 {/* Test Button */}

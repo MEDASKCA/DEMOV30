@@ -134,6 +134,8 @@ export default function CommunicationHub() {
   const [messageInput, setMessageInput] = useState('');
   const [mobileView, setMobileView] = useState<'messenger' | 'feeds'>('messenger'); // For Feeds tab on mobile
   const [isAdvertsCollapsed, setIsAdvertsCollapsed] = useState(false); // Collapse state for adverts panel
+  const [isInCall, setIsInCall] = useState(false); // Track if user is in a call
+  const [callType, setCallType] = useState<'voice' | 'video' | null>(null); // Track call type
 
   return (
     <div className="h-full flex flex-col bg-white dark:bg-slate-900">
@@ -485,10 +487,18 @@ export default function CommunicationHub() {
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <button className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-colors" title="Voice call">
+                        <button
+                          onClick={() => { setIsInCall(true); setCallType('voice'); }}
+                          className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-colors"
+                          title="Voice call"
+                        >
                           <Phone className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                         </button>
-                        <button className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-colors" title="Video call">
+                        <button
+                          onClick={() => { setIsInCall(true); setCallType('video'); }}
+                          className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-colors"
+                          title="Video call"
+                        >
                           <Video className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                         </button>
                         <button className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-colors">
@@ -498,8 +508,8 @@ export default function CommunicationHub() {
                     </div>
                   </div>
 
-                  {/* Chat Messages */}
-                  <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50 dark:bg-slate-900">
+                  {/* Chat Messages - Full height on mobile */}
+                  <div className="flex-1 overflow-y-auto p-3 md:p-4 space-y-3 md:space-y-4 bg-gray-50 dark:bg-slate-900">
                     {/* Mock messages */}
                     <div className="flex gap-2">
                       {selectedConversation.photoUrl ? (
@@ -540,9 +550,9 @@ export default function CommunicationHub() {
                     </div>
                   </div>
 
-                  {/* Message Input */}
-                  <div className="flex-shrink-0 p-4 border-t border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900">
-                    <div className="flex items-end gap-2">
+                  {/* Message Input - Better mobile layout */}
+                  <div className="flex-shrink-0 p-3 md:p-4 border-t border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+                    <div className="flex items-end gap-2 max-w-full mx-auto">
                       <button className="p-2 text-blue-600 dark:text-blue-400 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-colors">
                         <Plus className="w-5 h-5" />
                       </button>
@@ -597,6 +607,128 @@ export default function CommunicationHub() {
           </div>
         )}
       </div>
+
+      {/* Call/Video Call UI Overlay */}
+      {isInCall && selectedConversation && (
+        <div className="fixed inset-0 z-[200] bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex flex-col">
+          {/* Call Header */}
+          <div className="flex-shrink-0 p-6 text-center text-white">
+            <p className="text-sm opacity-75 mb-2">
+              {callType === 'video' ? 'Video Call' : 'Voice Call'}
+            </p>
+            <h2 className="text-2xl font-bold mb-1">{selectedConversation.name}</h2>
+            <p className="text-sm opacity-75">Calling...</p>
+          </div>
+
+          {/* Call Content */}
+          <div className="flex-1 flex items-center justify-center p-8">
+            {callType === 'video' ? (
+              // Video Call - Show participant(s) video
+              <div className="w-full h-full max-w-4xl max-h-[600px] relative">
+                {/* Main Video (other person) */}
+                <div className="w-full h-full bg-gray-800 rounded-2xl overflow-hidden shadow-2xl relative">
+                  {selectedConversation.photoUrl ? (
+                    <img
+                      src={selectedConversation.photoUrl}
+                      alt={selectedConversation.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-4xl">
+                        {selectedConversation.avatar}
+                      </div>
+                    </div>
+                  )}
+                  {/* Connecting overlay */}
+                  <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                    <div className="text-white text-center">
+                      <div className="w-16 h-16 rounded-full border-4 border-white/20 border-t-white mx-auto mb-4 animate-spin" />
+                      <p className="text-lg">Connecting...</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Picture-in-Picture (your video) */}
+                <div className="absolute top-4 right-4 w-32 h-40 bg-gray-700 rounded-xl overflow-hidden shadow-lg border-2 border-white/20">
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-teal-500 to-blue-600 flex items-center justify-center text-white font-bold text-sm">
+                      AM
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              // Voice Call - Show profile picture
+              <div className="text-center">
+                {selectedConversation.photoUrl ? (
+                  <img
+                    src={selectedConversation.photoUrl}
+                    alt={selectedConversation.name}
+                    className="w-48 h-48 rounded-full object-cover mx-auto mb-8 shadow-2xl border-4 border-white/10"
+                  />
+                ) : (
+                  <div className="w-48 h-48 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-6xl mx-auto mb-8 shadow-2xl border-4 border-white/10">
+                    {selectedConversation.avatar}
+                  </div>
+                )}
+                {/* Call status animation */}
+                <div className="flex items-center justify-center gap-2 text-white/60">
+                  <div className="w-2 h-2 rounded-full bg-white/60 animate-pulse" />
+                  <div className="w-2 h-2 rounded-full bg-white/60 animate-pulse" style={{ animationDelay: '0.2s' }} />
+                  <div className="w-2 h-2 rounded-full bg-white/60 animate-pulse" style={{ animationDelay: '0.4s' }} />
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Call Controls */}
+          <div className="flex-shrink-0 pb-safe">
+            <div className="max-w-md mx-auto px-8 py-6">
+              <div className="flex items-center justify-center gap-4 mb-4">
+                {/* Mute/Unmute */}
+                <button className="w-14 h-14 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm flex items-center justify-center transition-all">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                  </svg>
+                </button>
+
+                {/* Video Toggle (only for video calls) */}
+                {callType === 'video' && (
+                  <button className="w-14 h-14 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm flex items-center justify-center transition-all">
+                    <Video className="w-6 h-6 text-white" />
+                  </button>
+                )}
+
+                {/* End Call */}
+                <button
+                  onClick={() => { setIsInCall(false); setCallType(null); }}
+                  className="w-16 h-16 rounded-full bg-red-500 hover:bg-red-600 flex items-center justify-center transition-all shadow-lg"
+                >
+                  <Phone className="w-7 h-7 text-white rotate-[135deg]" />
+                </button>
+
+                {/* Speaker/Audio Output */}
+                <button className="w-14 h-14 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm flex items-center justify-center transition-all">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                  </svg>
+                </button>
+
+                {/* More Options */}
+                <button className="w-14 h-14 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm flex items-center justify-center transition-all">
+                  <MoreVertical className="w-6 h-6 text-white" />
+                </button>
+              </div>
+
+              {/* Call Timer */}
+              <div className="text-center text-white/60 text-sm">
+                00:00
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

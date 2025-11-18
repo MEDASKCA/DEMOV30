@@ -13,12 +13,14 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
   const [isTomCollapsed, setIsTomCollapsed] = useState(false);
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const [showTomPanel, setShowTomPanel] = useState(true); // Default to true since default view is chat
+  const [currentView, setCurrentView] = useState<string | null>('chat'); // Track current view
 
   // Only show TOM panel on chat view, hide on feeds/home view
   useEffect(() => {
-    const currentView = searchParams?.get('view');
-    if (currentView) {
-      setShowTomPanel(currentView === 'chat');
+    const view = searchParams?.get('view');
+    if (view) {
+      setCurrentView(view);
+      setShowTomPanel(view === 'chat');
     }
   }, [searchParams]);
 
@@ -52,7 +54,8 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
 
       {/* TOM by MEDASKCA Header */}
       <div className="text-white flex-shrink-0 shadow-lg z-[110]" style={{background: 'linear-gradient(135deg, #3B82F6 0%, #06B6D4 50%, #8B5CF6 100%)'}}>
-        <div className="px-3 md:px-6 py-2 md:py-3 flex items-center justify-between">
+        {/* Desktop Header */}
+        <div className="hidden md:flex px-6 py-3 items-center justify-between">
           {/* Left: Branding */}
           <div>
             <h1 className="text-xl font-bold">TOM by MEDASKCA</h1>
@@ -106,7 +109,7 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
                   <button
                     onClick={() => {
                       setShowAccountMenu(false);
-                      // TODO: Navigate to settings
+                      router.push('/settings');
                     }}
                     className="w-full flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 transition-colors text-left"
                   >
@@ -116,7 +119,7 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
                   <button
                     onClick={() => {
                       setShowAccountMenu(false);
-                      // TODO: Navigate to help
+                      router.push('/help');
                     }}
                     className="w-full flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 transition-colors text-left"
                   >
@@ -139,6 +142,92 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
             </div>
           </div>
         </div>
+
+        {/* Mobile Header - Only show on TOM and Feeds pages */}
+        {(currentView === 'chat' || currentView === 'feeds') && (
+        <div className="md:hidden px-3 py-2.5 flex items-center justify-between gap-2">
+          {/* Left: Compact Branding */}
+          <div className="flex-1 min-w-0">
+            <h1 className="text-base font-bold leading-tight">TOM by MEDASKCA</h1>
+            <p className="text-xs text-white/90 leading-tight">Theatre Operations Manager</p>
+            <p className="text-[10px] italic text-white/80 leading-tight">Demo for NHSCEP Cohort 10</p>
+          </div>
+
+          {/* Right: Hospital Icon & Profile - Compact */}
+          <div className="flex items-center gap-1.5 flex-shrink-0">
+            {/* Hospital Selector - Icon Only on Mobile */}
+            <HospitalSelector />
+
+            {/* User Profile - Icon Only on Mobile */}
+            <div className="relative" data-account-menu>
+              <button
+                onClick={() => setShowAccountMenu(!showAccountMenu)}
+                className="flex items-center bg-white/10 hover:bg-white/20 rounded-full p-1.5 transition-colors"
+              >
+                <img
+                  src="/profile/alexander-monterubio.jpg"
+                  alt="Alexander Monterubio"
+                  className="w-8 h-8 rounded-full object-cover border border-white/30"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                    const fallback = document.createElement('div');
+                    fallback.className = 'w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white font-bold text-xs border border-white/30';
+                    fallback.textContent = 'AM';
+                    e.currentTarget.parentNode?.insertBefore(fallback, e.currentTarget);
+                  }}
+                />
+              </button>
+
+              {/* Dropdown Menu - Same for Mobile */}
+              {showAccountMenu && (
+                <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-[120]">
+                  <button
+                    onClick={() => {
+                      setShowAccountMenu(false);
+                      router.push('/profile');
+                    }}
+                    className="w-full flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 transition-colors text-left"
+                  >
+                    <User className="w-4 h-4" />
+                    <span className="text-sm font-medium">Profile</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowAccountMenu(false);
+                      router.push('/settings');
+                    }}
+                    className="w-full flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 transition-colors text-left"
+                  >
+                    <Settings className="w-4 h-4" />
+                    <span className="text-sm font-medium">Settings</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowAccountMenu(false);
+                      router.push('/help');
+                    }}
+                    className="w-full flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 transition-colors text-left"
+                  >
+                    <HelpCircle className="w-4 h-4" />
+                    <span className="text-sm font-medium">Help & Support</span>
+                  </button>
+                  <div className="border-t border-gray-200 my-2"></div>
+                  <button
+                    onClick={() => {
+                      setShowAccountMenu(false);
+                      router.push('/');
+                    }}
+                    className="w-full flex items-center gap-3 px-4 py-2.5 text-red-600 hover:bg-red-50 transition-colors text-left"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span className="text-sm font-medium">Sign Out</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+        )}
       </div>
 
       {/* Content Area with TOM Panel */}

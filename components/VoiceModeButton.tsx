@@ -11,6 +11,7 @@ interface VoiceModeButtonProps {
 export default function VoiceModeButton({ onClick, voiceState = 'idle' }: VoiceModeButtonProps) {
   const [mounted, setMounted] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     setMounted(true);
@@ -80,20 +81,35 @@ export default function VoiceModeButton({ onClick, voiceState = 'idle' }: VoiceM
     <motion.div
       drag
       dragConstraints={{
-        top: 100,
-        left: 20,
-        right: 20,
-        bottom: 100
+        top: -(window.innerHeight - 200),
+        left: -(window.innerWidth - 100),
+        right: window.innerWidth - 100,
+        bottom: window.innerHeight - 200
       }}
-      dragElastic={0.1}
-      dragTransition={{ bounceStiffness: 600, bounceDamping: 20 }}
-      onDragStart={() => setIsDragging(true)}
+      dragElastic={0.05}
+      dragTransition={{ bounceStiffness: 600, bounceDamping: 30 }}
+      dragMomentum={false}
+      onDragStart={() => {
+        console.log('Drag started');
+        setIsDragging(true);
+      }}
+      onDrag={(event, info) => {
+        setPosition({ x: info.point.x, y: info.point.y });
+      }}
       onDragEnd={() => {
+        console.log('Drag ended');
         // Delay to prevent click after drag
-        setTimeout(() => setIsDragging(false), 100);
+        setTimeout(() => setIsDragging(false), 150);
       }}
       initial={{ x: 0, y: 0 }}
-      className="fixed bottom-20 right-6 z-50 md:hidden flex items-center gap-3"
+      style={{
+        touchAction: 'none', // Prevent touch scrolling while dragging
+        userSelect: 'none',
+        WebkitUserSelect: 'none',
+        MozUserSelect: 'none',
+        msUserSelect: 'none'
+      }}
+      className="fixed bottom-20 right-6 z-[9999] md:hidden flex items-center gap-3"
     >
       {/* Status Label */}
       {voiceState !== 'idle' && (

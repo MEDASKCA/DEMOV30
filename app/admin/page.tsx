@@ -1016,14 +1016,7 @@ export default function AdminPage() {
       <div className="md:hidden">
         <AdminBottomNav
           currentPage={currentPage}
-          onNavigate={(page) => {
-            setCurrentPage(page);
-            if (page === 'ai') {
-              setCurrentView('chat');
-            } else if (page === 'home') {
-              setCurrentView('feeds');
-            }
-          }}
+          onNavigate={handleBottomNavClick}
         />
       </div>
 

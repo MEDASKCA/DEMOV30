@@ -67,7 +67,7 @@ export const mockStaffProfiles: StaffProfile[] = [
     role: 'Senior Scrub Team Leader • RN, Band 7',
     specialty: 'Orthopaedics & Trauma',
     trust: 'Barts Health NHS Trust',
-    avatar: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=150&h=150&fit=crop&crop=faces',
+    avatar: '/profile/alexander-monterubio.jpg',
     initials: 'AM'
   },
   {

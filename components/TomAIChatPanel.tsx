@@ -35,7 +35,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
     pitch: 1.0,
     volume: 1.0,
     selectedVoice: '',
-    openaiVoice: 'arbor' // arbor (newest, most natural & expressive), alloy, echo, fable, onyx, nova, shimmer
+    openaiVoice: 'fable' // fable (male, expressive) - alternatives: echo (male, clear), arbor (newest, natural)
   });
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
   const abortControllerRef = useRef<AbortController | null>(null);
