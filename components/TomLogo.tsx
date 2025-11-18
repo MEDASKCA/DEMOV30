@@ -8,7 +8,7 @@ interface TomLogoProps {
   isSpeaking?: boolean;
   size?: number;
   className?: string;
-  variant?: 'fixed' | 'inline';
+  variant?: 'fixed' | 'inline' | 'standalone';
 }
 
 export default function TomLogo({
