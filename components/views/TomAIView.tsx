@@ -958,8 +958,17 @@ export default function TomAIChatPanel({ showHeader = true, onMenuOpen }: TomAIC
 
     console.log('🔊 Using browser speech synthesis (fallback)');
 
+    // Strip markdown formatting so browser doesn't say "asterisk asterisk"
+    const cleanText = text
+      .replace(/\*\*([^*]+)\*\*/g, '$1')  // **bold** -> bold
+      .replace(/\*([^*]+)\*/g, '$1')       // *italic* -> italic
+      .replace(/_([^_]+)_/g, '$1')         // _italic_ -> italic
+      .replace(/`([^`]+)`/g, '$1')         // `code` -> code
+      .replace(/#+\s/g, '')                // ## heading -> heading
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1'); // [link](url) -> link
+
     setTimeout(() => {
-      const utterance = new SpeechSynthesisUtterance(text);
+      const utterance = new SpeechSynthesisUtterance(cleanText);
       const voices = window.speechSynthesis.getVoices();
 
       let selectedVoice = null;
