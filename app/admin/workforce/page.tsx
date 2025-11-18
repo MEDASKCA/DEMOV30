@@ -297,7 +297,7 @@ function WorkforcePageContent() {
                 onClick={() => handleTabChange(item.id)}
                 className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all whitespace-nowrap ${
                   isActive
-                    ? 'bg-cyan-500 text-teal-900'
+                    ? 'bg-cyan-500 text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >

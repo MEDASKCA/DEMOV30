@@ -164,7 +164,7 @@ export default function ConsultantPreferencesContent() {
               Manage consultant availability, preferences, and patient waiting lists
             </p>
           </div>
-          <button className="hidden md:flex items-center gap-2 px-4 py-2 bg-cyan-500 text-teal-900 rounded-lg hover:bg-cyan-600 transition-colors font-semibold text-sm">
+          <button className="hidden md:flex items-center gap-2 px-4 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition-colors font-semibold text-sm">
             <Plus className="w-4 h-4" />
             Add Consultant
           </button>
@@ -243,7 +243,7 @@ export default function ConsultantPreferencesContent() {
                     )}
                   </div>
                 </div>
-                <div className="bg-cyan-500 text-teal-900 px-2 md:px-3 py-1 rounded-full flex-shrink-0">
+                <div className="bg-cyan-500 text-white px-2 md:px-3 py-1 rounded-full flex-shrink-0">
                   <div className="text-base md:text-lg font-bold leading-tight">{consultant.waitingPatients}</div>
                   <div className="text-[8px] md:text-[9px] font-semibold">WAITING</div>
                 </div>
@@ -308,7 +308,7 @@ export default function ConsultantPreferencesContent() {
               {/* Edit Button */}
               <button
                 onClick={() => handleEditClick(consultant)}
-                className="w-full mt-2 px-3 md:px-4 py-1.5 md:py-2 bg-cyan-500 text-teal-900 rounded-lg hover:bg-cyan-600 transition-colors font-semibold text-xs md:text-sm"
+                className="w-full mt-2 px-3 md:px-4 py-1.5 md:py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition-colors font-semibold text-xs md:text-sm"
               >
                 Edit Preferences
               </button>
@@ -322,7 +322,7 @@ export default function ConsultantPreferencesContent() {
       {showEditModal && selectedConsultant && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 md:p-4">
           <div className="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="sticky top-0 bg-cyan-500 text-teal-900 px-4 md:px-6 py-3 md:py-4 rounded-t-lg">
+            <div className="sticky top-0 bg-cyan-500 text-white px-4 md:px-6 py-3 md:py-4 rounded-t-lg">
               <div className="flex items-center justify-between gap-2">
                 <div className="flex-1 min-w-0">
                   <h2 className="text-base md:text-xl font-bold truncate">{selectedConsultant.name}</h2>
@@ -366,7 +366,7 @@ export default function ConsultantPreferencesContent() {
                       onClick={() => toggleDay('preferred', day)}
                       className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                         selectedConsultant.preferredDays.includes(day)
-                          ? 'bg-cyan-500 text-teal-900'
+                          ? 'bg-cyan-500 text-white'
                           : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                       }`}
                     >
@@ -430,7 +430,7 @@ export default function ConsultantPreferencesContent() {
                 </button>
                 <button
                   onClick={handleSavePreferences}
-                  className="flex-1 flex items-center justify-center gap-2 px-4 md:px-6 py-2 md:py-3 bg-cyan-500 text-teal-900 rounded-lg hover:bg-cyan-600 transition-colors font-semibold text-sm md:text-base"
+                  className="flex-1 flex items-center justify-center gap-2 px-4 md:px-6 py-2 md:py-3 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition-colors font-semibold text-sm md:text-base"
                 >
                   <Save className="w-4 h-4 md:w-5 md:h-5" />
                   Save Preferences

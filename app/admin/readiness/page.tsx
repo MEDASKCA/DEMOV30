@@ -435,11 +435,11 @@ export default function TheatreReadinessPage() {
                 type="date"
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
-                className="px-1.5 py-1 text-[10px] rounded bg-cyan-500 text-teal-900 font-semibold border-0 w-24"
+                className="px-1.5 py-1 text-[10px] rounded bg-cyan-500 text-white font-semibold border-0 w-24"
               />
               <button
                 onClick={handleRefresh}
-                className="p-1.5 bg-cyan-500 text-teal-900 rounded transition-colors hover:bg-cyan-600"
+                className="p-1.5 bg-cyan-500 text-white rounded transition-colors hover:bg-cyan-600"
                 disabled={refreshing}
               >
                 <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin' : ''}`} />
@@ -633,7 +633,7 @@ export default function TheatreReadinessPage() {
                     )}
                   </div>
                   {!selectedTheatreData.readinessSignedOff && (
-                    <button className="px-2 md:px-3 py-1 md:py-1.5 bg-cyan-500 text-teal-900 rounded-lg hover:bg-cyan-600 text-[10px] md:text-xs font-semibold">
+                    <button className="px-2 md:px-3 py-1 md:py-1.5 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 text-[10px] md:text-xs font-semibold">
                       Sign Off
                     </button>
                   )}

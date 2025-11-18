@@ -854,7 +854,7 @@ export default function AdminSchedulePage() {
               onClick={() => setActiveTab('schedule')}
               className={`flex items-center gap-2 px-3 md:px-4 py-2 text-xs md:text-sm font-semibold rounded-lg transition-all whitespace-nowrap ${
                 activeTab === 'schedule'
-                  ? 'bg-cyan-500 text-teal-900'
+                  ? 'bg-cyan-500 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
@@ -865,7 +865,7 @@ export default function AdminSchedulePage() {
               onClick={() => setActiveTab('consultants')}
               className={`flex items-center gap-2 px-3 md:px-4 py-2 text-xs md:text-sm font-semibold rounded-lg transition-all whitespace-nowrap ${
                 activeTab === 'consultants'
-                  ? 'bg-cyan-500 text-teal-900'
+                  ? 'bg-cyan-500 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
@@ -876,7 +876,7 @@ export default function AdminSchedulePage() {
               onClick={() => setActiveTab('profiles')}
               className={`flex items-center gap-2 px-3 md:px-4 py-2 text-xs md:text-sm font-semibold rounded-lg transition-all whitespace-nowrap ${
                 activeTab === 'profiles'
-                  ? 'bg-cyan-500 text-teal-900'
+                  ? 'bg-cyan-500 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
@@ -920,7 +920,7 @@ export default function AdminSchedulePage() {
               <button
                 onClick={() => setViewMode('week')}
                 className={`px-2 py-1 md:px-3 md:py-1.5 text-xs md:text-sm rounded-md transition-colors font-semibold ${
-                  viewMode === 'week' ? 'bg-cyan-500 text-teal-900' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  viewMode === 'week' ? 'bg-cyan-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}
               >
                 Week
@@ -928,7 +928,7 @@ export default function AdminSchedulePage() {
               <button
                 onClick={() => setViewMode('month')}
                 className={`px-2 py-1 md:px-3 md:py-1.5 text-xs md:text-sm rounded-md transition-colors font-semibold ${
-                  viewMode === 'month' ? 'bg-cyan-500 text-teal-900' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  viewMode === 'month' ? 'bg-cyan-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}
               >
                 Month
@@ -937,7 +937,7 @@ export default function AdminSchedulePage() {
 
             <button
               onClick={goToThisWeek}
-              className="px-2 py-1 md:px-4 md:py-2 bg-cyan-500 text-teal-900 text-xs md:text-sm rounded-lg hover:bg-cyan-600 transition-colors font-semibold flex-shrink-0"
+              className="px-2 py-1 md:px-4 md:py-2 bg-cyan-500 text-white text-xs md:text-sm rounded-lg hover:bg-cyan-600 transition-colors font-semibold flex-shrink-0"
             >
               Today
             </button>
@@ -1097,7 +1097,7 @@ export default function AdminSchedulePage() {
                   return (
                     <React.Fragment key={unitName}>
                       {/* Unit Header Row */}
-                      <tr className="bg-cyan-500 text-teal-900 border-b-2 border-gray-300">
+                      <tr className="bg-cyan-500 text-white border-b-2 border-gray-300">
                         <td
                           colSpan={weekDays.length + 1}
                           className={`${viewMode === 'month' ? 'px-2 py-1.5 text-base' : 'px-2 py-2 md:px-4 md:py-3 text-sm md:text-xl'} font-bold sticky left-0 z-10 text-center`}
@@ -1268,7 +1268,7 @@ export default function AdminSchedulePage() {
                   {/* Unit Header */}
                   <button
                     onClick={() => toggleUnit(unitName)}
-                    className="w-full px-3 py-2.5 flex items-center justify-between bg-cyan-500 text-teal-900 transition-colors active:scale-[0.99] hover:bg-cyan-600"
+                    className="w-full px-3 py-2.5 flex items-center justify-between bg-cyan-500 text-white transition-colors active:scale-[0.99] hover:bg-cyan-600"
                   >
                     <div className="flex items-center gap-2">
                       <span className="text-sm font-bold">{displayUnitName}</span>
@@ -1465,7 +1465,7 @@ export default function AdminSchedulePage() {
       {showAllocationModal && selectedCell && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="sticky top-0 bg-cyan-500 text-teal-900 px-6 py-4 rounded-t-lg">
+            <div className="sticky top-0 bg-cyan-500 text-white px-6 py-4 rounded-t-lg">
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-xl font-bold">{selectedCell.theatreName}</h2>
@@ -1595,7 +1595,7 @@ export default function AdminSchedulePage() {
                   <button
                     onClick={handleSaveAllocation}
                     disabled={savingAllocation}
-                    className="flex-1 bg-cyan-500 text-teal-900 px-6 py-3 rounded-lg hover:bg-cyan-600 transition-all font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    className="flex-1 bg-cyan-500 text-white px-6 py-3 rounded-lg hover:bg-cyan-600 transition-all font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
                     {savingAllocation ? (
                       <>

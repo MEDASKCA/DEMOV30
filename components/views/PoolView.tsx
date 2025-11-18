@@ -186,7 +186,7 @@ export default function PoolView() {
             </button>
             <button
               onClick={exportToCSV}
-              className="flex items-center gap-1 md:gap-2 px-2 md:px-3 py-1.5 md:py-2 text-xs md:text-sm bg-cyan-500 text-teal-900 rounded-lg hover:bg-cyan-600 transition-colors font-semibold"
+              className="flex items-center gap-1 md:gap-2 px-2 md:px-3 py-1.5 md:py-2 text-xs md:text-sm bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition-colors font-semibold"
             >
               <Download className="h-3 w-3 md:h-4 md:w-4" />
               Export
@@ -212,7 +212,7 @@ export default function PoolView() {
           </button>
           <button
             onClick={exportToCSV}
-            className="flex items-center gap-1 px-2 py-1.5 text-xs bg-cyan-500 text-teal-900 rounded-lg hover:bg-cyan-600 transition-colors font-semibold"
+            className="flex items-center gap-1 px-2 py-1.5 text-xs bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition-colors font-semibold"
           >
             <Download className="h-3 w-3" />
             Export
@@ -410,7 +410,7 @@ export default function PoolView() {
                 <button
                   onClick={applyFilters}
                   disabled={loading}
-                  className="flex items-center gap-1 md:gap-2 px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm bg-cyan-500 text-teal-900 rounded-lg hover:bg-cyan-600 transition-colors disabled:opacity-50 font-semibold"
+                  className="flex items-center gap-1 md:gap-2 px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition-colors disabled:opacity-50 font-semibold"
                 >
                   <Filter className="h-3 w-3 md:h-4 md:w-4" />
                   Apply Filters
@@ -548,7 +548,7 @@ export default function PoolView() {
               <p className="text-xs md:text-sm text-gray-500">No schedule lists found matching your filters.</p>
               <button
                 onClick={clearFilters}
-                className="mt-3 md:mt-4 px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm bg-cyan-500 text-teal-900 rounded-lg hover:bg-cyan-600 transition-colors font-semibold"
+                className="mt-3 md:mt-4 px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition-colors font-semibold"
               >
                 Clear Filters
               </button>

@@ -607,7 +607,7 @@ export default function OPCS4DatabasePage() {
                   </p>
 
                   <div className="flex flex-wrap items-center gap-2">
-                    <label className="flex items-center justify-center gap-2 px-4 py-2 text-sm bg-cyan-500 text-teal-900 font-semibold rounded hover:shadow-lg transition-all cursor-pointer">
+                    <label className="flex items-center justify-center gap-2 px-4 py-2 text-sm bg-cyan-500 text-white font-semibold rounded hover:shadow-lg transition-all cursor-pointer">
                       <Upload className="w-4 h-4" />
                       <span className="font-medium">Upload File</span>
                       <input
@@ -653,7 +653,7 @@ export default function OPCS4DatabasePage() {
                       />
                     </label>
 
-                    <button className="px-4 py-2 text-sm font-medium bg-cyan-500 text-teal-900 rounded hover:bg-cyan-600 transition-colors">
+                    <button className="px-4 py-2 text-sm font-medium bg-cyan-500 text-white rounded hover:bg-cyan-600 transition-colors">
                       Check NHS Digital
                     </button>
                   </div>

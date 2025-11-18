@@ -208,7 +208,7 @@ function AdminListsPageContent() {
             onClick={() => handleTabChange('waiting-list')}
             className={`flex items-center gap-2 px-3 md:px-4 py-2 text-xs md:text-sm font-semibold rounded-lg transition-all ${
               activeTab === 'waiting-list'
-                ? 'bg-cyan-500 text-teal-900'
+                ? 'bg-cyan-500 text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
@@ -219,7 +219,7 @@ function AdminListsPageContent() {
             onClick={() => handleTabChange('procedures-pool')}
             className={`flex items-center gap-2 px-3 md:px-4 py-2 text-xs md:text-sm font-semibold rounded-lg transition-all ${
               activeTab === 'procedures-pool'
-                ? 'bg-cyan-500 text-teal-900'
+                ? 'bg-cyan-500 text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >

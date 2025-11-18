@@ -1305,20 +1305,20 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
             <label className="text-sm font-medium text-gray-700">Font Size:</label>
             <button
               onClick={() => setFontSize(prev => Math.max(50, prev - 10))}
-              className="px-2 py-1 bg-gray-200 text-gray-700 text-sm rounded hover:bg-gray-300"
+              className="px-2 py-1 bg-gray-200 text-gray-700 text-sm rounded hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
             >
               -
             </button>
-            <span className="text-sm font-medium text-gray-700 w-12 text-center">{fontSize}%</span>
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300 w-12 text-center">{fontSize}%</span>
             <button
               onClick={() => setFontSize(prev => Math.min(200, prev + 10))}
-              className="px-2 py-1 bg-gray-200 text-gray-700 text-sm rounded hover:bg-gray-300"
+              className="px-2 py-1 bg-gray-200 text-gray-700 text-sm rounded hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
             >
               +
             </button>
             <button
               onClick={() => setFontSize(typeof window !== 'undefined' && window.innerWidth < 768 ? 110 : 180)}
-              className="px-2 py-1 bg-gray-200 text-gray-700 text-xs rounded hover:bg-gray-300"
+              className="px-2 py-1 bg-gray-200 text-gray-700 text-xs rounded hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
             >
               Reset
             </button>
@@ -1328,13 +1328,13 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => window.print()}
-              className="px-2 py-1 bg-gray-200 text-gray-700 text-xs rounded hover:bg-gray-300 flex items-center gap-1"
+              className="px-2 py-1 bg-gray-200 text-gray-700 text-xs rounded hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 flex items-center gap-1"
             >
               <Printer className="w-3 h-3 sm:w-4 sm:h-4" />
               Print
             </button>
 
-            <button className="px-2 py-1 bg-gray-200 text-gray-700 text-xs rounded hover:bg-gray-300 flex items-center gap-1">
+            <button className="px-2 py-1 bg-gray-200 text-gray-700 text-xs rounded hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 flex items-center gap-1">
               <Save className="w-3 h-3 sm:w-4 sm:h-4" />
               Save
             </button>

@@ -717,11 +717,19 @@ export default function ProceduresView({ onBack, isAdmin = false, socUnlocked: s
                   };
 
                   return (
-                    <div key={`${procedure.name}-${index}`} className="hover:bg-gray-50 transition-colors">
+                    <div key={`${procedure.name}-${index}`} className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                       {/* Procedure Header */}
-                      <button
+                      <div
                         onClick={() => toggleProcedure(procedure.name)}
-                        className="w-full px-4 py-3 flex items-center justify-between text-left"
+                        className="w-full px-4 py-3 flex items-center justify-between cursor-pointer"
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            toggleProcedure(procedure.name);
+                          }
+                        }}
                       >
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
@@ -741,7 +749,7 @@ export default function ProceduresView({ onBack, isAdmin = false, socUnlocked: s
                             {/* Interactive Score Dropdowns */}
                             <div className="flex flex-wrap items-center gap-2 ml-24" onClick={(e) => e.stopPropagation()}>
                               {/* Complexity Dropdown */}
-                              <div className="flex items-center gap-1 px-2 py-1 bg-purple-50 rounded border border-purple-200">
+                              <div className="flex items-center gap-1 px-2 py-1 bg-white rounded border border-purple-200">
                                 <span className="font-medium text-purple-900">Complexity:</span>
                                 <select
                                   value={currentScores.complexity}
@@ -755,7 +763,7 @@ export default function ProceduresView({ onBack, isAdmin = false, socUnlocked: s
                               </div>
 
                               {/* Duration Dropdown */}
-                              <div className="flex items-center gap-1 px-2 py-1 bg-blue-50 rounded border border-blue-200">
+                              <div className="flex items-center gap-1 px-2 py-1 bg-white rounded border border-blue-200">
                                 <span className="font-medium text-blue-900">Duration:</span>
                                 <select
                                   value={currentScores.duration}
@@ -776,7 +784,7 @@ export default function ProceduresView({ onBack, isAdmin = false, socUnlocked: s
                               </div>
 
                               {/* Variability Dropdown */}
-                              <div className="flex items-center gap-1 px-2 py-1 bg-green-50 rounded border border-green-200">
+                              <div className="flex items-center gap-1 px-2 py-1 bg-white rounded border border-green-200">
                                 <span className="font-medium text-green-900">Variability:</span>
                                 <select
                                   value={currentScores.variability}
@@ -789,7 +797,7 @@ export default function ProceduresView({ onBack, isAdmin = false, socUnlocked: s
                               </div>
 
                               {/* Surgeon Factor Dropdown */}
-                              <div className="flex items-center gap-1 px-2 py-1 bg-orange-50 rounded border border-orange-200">
+                              <div className="flex items-center gap-1 px-2 py-1 bg-white rounded border border-orange-200">
                                 <span className="font-medium text-orange-900">Surgeon:</span>
                                 <select
                                   value={currentScores.surgeon}
@@ -861,7 +869,7 @@ export default function ProceduresView({ onBack, isAdmin = false, socUnlocked: s
                             <ChevronRight className="w-5 h-5 text-gray-400" />
                           )}
                         </div>
-                      </button>
+                      </div>
 
                       {/* Expanded Content */}
                       {isExpanded && (
