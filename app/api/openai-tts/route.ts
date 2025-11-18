@@ -20,13 +20,17 @@ export async function POST(request: NextRequest) {
 
     const apiKey = process.env.OPENAI_API_KEY;
 
+    console.log('🔑 API Key Check:', apiKey ? `Found (starts with: ${apiKey.substring(0, 12)}...)` : 'NOT FOUND');
+
     if (!apiKey) {
-      console.log('OpenAI API key not configured');
+      console.log('❌ OpenAI API key not configured - falling back to browser voice');
       return new Response(JSON.stringify({ useBrowserVoice: true }), {
         status: 200,
         headers: { 'Content-Type': 'application/json' }
       });
     }
+
+    console.log('✅ API key found, calling OpenAI TTS with voice:', voice);
 
     const openai = new OpenAI({ apiKey });
 
