@@ -340,7 +340,7 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
         />
 
         {/* Main Content - Adjusted for TOM panel */}
-        <div className={`flex-1 transition-all duration-300 overflow-hidden ${showTomPanel && (isTomCollapsed ? 'md:pl-16' : 'md:pl-80')}`}>
+        <div className={`flex-1 transition-all duration-300 overflow-y-auto ${showTomPanel && (isTomCollapsed ? 'md:pl-16' : 'md:pl-80')}`}>
           {children}
         </div>
       </div>
