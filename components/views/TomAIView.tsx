@@ -52,7 +52,7 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
     pitch: 1.0,
     volume: 1.0,
     selectedVoice: '',
-    openaiVoice: 'fable' // alloy, echo, fable (British male), onyx (deep male), nova, shimmer
+    openaiVoice: 'fable' // alloy, echo (expressive male), fable (British professional male), onyx (deep male), nova, shimmer
   });
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -757,11 +757,6 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
           33% { transform: translateY(-20px) translateX(10px); }
           66% { transform: translateY(10px) translateX(-10px); }
         }
-
-        @keyframes voice-bars {
-          0%, 100% { height: 20px; }
-          50% { height: 60px; }
-        }
       `}</style>
 
       {showHeader && !isVoiceMode && (
@@ -919,29 +914,6 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
                 </div>
               )}
             </div>
-
-            {/* Voice Visualization Bars */}
-            {(voiceUiMode === 'listening' || voiceUiMode === 'speaking') && (
-              <div className="flex items-center justify-center gap-2 h-20 mt-4">
-                {[...Array(7)].map((_, i) => (
-                  <div
-                    key={i}
-                    className={`w-3 rounded-full ${
-                      voiceUiMode === 'speaking'
-                        ? 'bg-gradient-to-t from-teal-500 to-teal-300'
-                        : 'bg-gradient-to-t from-blue-500 to-blue-300'
-                    }`}
-                    style={{
-                      animationName: 'voice-bars',
-                      animationDuration: `${0.3 + Math.random() * 0.3}s`,
-                      animationTimingFunction: 'ease-in-out',
-                      animationIterationCount: 'infinite',
-                      animationDelay: `${i * 0.05}s`
-                    }}
-                  />
-                ))}
-              </div>
-            )}
           </div>
 
           {/* Voice Settings Panel */}
@@ -990,8 +962,31 @@ export default function TomAIChatPanel({ showHeader = true }: TomAIChatPanelProp
             </div>
           )}
 
+          {/* Chat History Transcript - Bottom Panel */}
+          <div className="absolute bottom-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-t border-gray-200 dark:border-slate-700 max-h-48 overflow-y-auto">
+            <div className="p-4 space-y-3">
+              <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">Conversation</h3>
+              {messages.slice(-5).map((message) => (
+                <div
+                  key={message.id}
+                  className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                >
+                  <div
+                    className={`max-w-[85%] rounded-lg px-3 py-2 text-xs ${
+                      message.role === 'user'
+                        ? 'bg-blue-500 text-white'
+                        : 'bg-gray-100 dark:bg-slate-800 text-gray-900 dark:text-slate-100'
+                    }`}
+                  >
+                    <p className="whitespace-pre-wrap">{message.content}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* Controls */}
-          <div className="absolute bottom-8 left-0 right-0 flex items-center justify-center gap-4 px-4">
+          <div className="absolute bottom-52 left-0 right-0 flex items-center justify-center gap-4 px-4">
             <button
               onClick={() => setShowVoiceSettings(!showVoiceSettings)}
               className={`p-3 rounded-full backdrop-blur-sm shadow-lg hover:shadow-xl transition-all hover:scale-105 border ${
