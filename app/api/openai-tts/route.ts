@@ -52,7 +52,13 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error: any) {
-    console.error('OpenAI TTS Error:', error);
+    console.error('❌ OpenAI TTS Error Details:', {
+      message: error.message,
+      status: error.status,
+      code: error.code,
+      type: error.type,
+      fullError: JSON.stringify(error, null, 2)
+    });
 
     // Fallback to browser voice
     return new Response(JSON.stringify({ useBrowserVoice: true }), {
