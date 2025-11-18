@@ -550,8 +550,8 @@ export default function CommunicationHub() {
                     </div>
                   </div>
 
-                  {/* Message Input - Better mobile layout */}
-                  <div className="flex-shrink-0 p-3 md:p-4 border-t border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+                  {/* Message Input - Better mobile layout, flush with bottom nav */}
+                  <div className="flex-shrink-0 pt-3 px-3 pb-1 md:p-4 border-t border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900">
                     <div className="flex items-end gap-2 max-w-full mx-auto">
                       <button className="p-2 text-blue-600 dark:text-blue-400 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-colors">
                         <Plus className="w-5 h-5" />

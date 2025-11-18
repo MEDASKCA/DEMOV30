@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import TomLogo from '../TomLogo';
 import { History, Plus, Mic2, Trash2, X, Menu, Settings, HelpCircle, MessageSquarePlus, Archive } from 'lucide-react';
 
@@ -55,6 +55,7 @@ export default function TomAIChatPanel({ showHeader = true, onMenuOpen }: TomAIC
     }
   }, [onMenuOpen]);
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [currentConversationId, setCurrentConversationId] = useState<string>('');
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [showSidebar, setShowSidebar] = useState(false);
@@ -301,6 +302,17 @@ export default function TomAIChatPanel({ showHeader = true, onMenuOpen }: TomAIC
   useEffect(() => {
     isVoiceModeRef.current = isVoiceMode;
   }, [isVoiceMode]);
+
+  // Auto-start voice mode if voiceMode query parameter is present
+  useEffect(() => {
+    const voiceModeParam = searchParams?.get('voiceMode');
+    if (voiceModeParam === 'true' && !isVoiceMode) {
+      console.log('🎙️ Auto-starting voice mode from query parameter');
+      handleVoiceMode();
+      // Remove the query parameter after triggering
+      router.replace('/admin?view=chat');
+    }
+  }, [searchParams]);
 
   // Cleanup: Stop all speech when component unmounts or user navigates away
   useEffect(() => {
@@ -1524,8 +1536,8 @@ export default function TomAIChatPanel({ showHeader = true, onMenuOpen }: TomAIC
             </div>
           </div>
 
-          {/* Controls */}
-          <div className="absolute bottom-52 left-0 right-0 flex items-center justify-center gap-4 px-4">
+          {/* Controls - Positioned lower to avoid orb */}
+          <div className="absolute bottom-20 md:bottom-52 left-0 right-0 flex items-center justify-center gap-4 px-4">
             <button
               onClick={() => setShowVoiceSettings(!showVoiceSettings)}
               className={`p-3 rounded-full backdrop-blur-sm shadow-lg hover:shadow-xl transition-all hover:scale-105 border ${

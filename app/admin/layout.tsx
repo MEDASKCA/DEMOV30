@@ -247,7 +247,7 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
         {/* Voice Mode Button - Mobile Only */}
         <VoiceModeButton
           onClick={() => {
-            router.push('/admin?view=chat');
+            router.push('/admin?view=chat&voiceMode=true');
           }}
           voiceState="idle"
         />
