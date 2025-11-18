@@ -1012,13 +1012,10 @@ export default function TomAIChatPanel({ showHeader = true, onMenuOpen }: TomAIC
       };
 
       utterance.onerror = (event) => {
-        console.error('❌ Browser speech error:', event.error || 'Unknown error');
-        console.error('Error details:', {
-          type: event.type,
-          error: event.error,
-          charIndex: event.charIndex,
-          elapsedTime: event.elapsedTime
-        });
+        // Only log meaningful errors (browser sometimes reports empty errors)
+        if (event.error && event.error !== 'interrupted') {
+          console.warn('🔊 Speech synthesis issue:', event.error);
+        }
         isSpeakingRef.current = false;
 
         // Restart listening if in voice mode
