@@ -374,7 +374,7 @@ export default function CommunicationHub() {
             </div>
 
             {/* Messenger - Left Side (Desktop always, Mobile conditional) */}
-            <div className={`${mobileView === 'messenger' ? 'flex' : 'hidden'} md:flex w-full md:w-96 border-r border-gray-200 dark:border-slate-800 flex-col bg-white dark:bg-slate-900`}>
+            <div className={`${mobileView === 'messenger' ? 'flex' : 'hidden'} md:flex w-full md:w-96 border-r border-gray-200 dark:border-slate-800 flex-col bg-white dark:bg-slate-900 h-full pb-[68px] md:pb-0`}>
               {!selectedConversation ? (
                 <>
                   {/* Messenger Header - List View */}
@@ -550,8 +550,8 @@ export default function CommunicationHub() {
                     </div>
                   </div>
 
-                  {/* Message Input - Better mobile layout, flush with bottom nav */}
-                  <div className="flex-shrink-0 pt-3 px-3 pb-1 md:p-4 border-t border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+                  {/* Message Input - Sticky at bottom, minimal gap to bottom nav */}
+                  <div className="flex-shrink-0 pt-2 px-2 pb-1 md:p-4 border-t border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900">
                     <div className="flex items-end gap-2 max-w-full mx-auto">
                       <button className="p-2 text-blue-600 dark:text-blue-400 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full transition-colors">
                         <Plus className="w-5 h-5" />

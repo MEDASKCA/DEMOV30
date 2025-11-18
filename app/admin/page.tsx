@@ -33,14 +33,16 @@ import HelpSupportView from '@/components/views/HelpSupportView';
 export default function AdminPage() {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
-  const [currentPage, setCurrentPage] = useState<'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu' | 'workforce' | 'inventory'>('home');
-  const [currentView, setCurrentView] = useState<string>('feeds');
+  const [currentPage, setCurrentPage] = useState<'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu' | 'workforce' | 'inventory'>('ai');
+  const [currentView, setCurrentView] = useState<string>('chat');
   const [showDrawer, setShowDrawer] = useState(false);
   const [drawerType, setDrawerType] = useState<'theatres' | 'menu' | 'workforce' | 'inventory' | 'ops' | 'alerts' | null>(null);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    // Set default view to TOM chat on load
+    router.push('/admin?view=chat', { scroll: false });
   }, []);
 
   // Hospital config state

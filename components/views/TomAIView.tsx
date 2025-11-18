@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import TomLogo from '../TomLogo';
 import { History, Plus, Mic2, Trash2, X, Menu, Settings, HelpCircle, MessageSquarePlus, Archive } from 'lucide-react';
+import { useListening } from '@/contexts/ListeningContext';
 
 interface Message {
   id: string;
@@ -56,6 +57,7 @@ export default function TomAIChatPanel({ showHeader = true, onMenuOpen }: TomAIC
   }, [onMenuOpen]);
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { setVoiceState } = useListening();
   const [currentConversationId, setCurrentConversationId] = useState<string>('');
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [showSidebar, setShowSidebar] = useState(false);
@@ -314,6 +316,13 @@ export default function TomAIChatPanel({ showHeader = true, onMenuOpen }: TomAIC
     }
   }, [searchParams]);
 
+  // Sync voice UI mode with global context for floating button
+  useEffect(() => {
+    // Map 'thinking' to 'processing' for the button
+    const mappedState = voiceUiMode === 'thinking' ? 'processing' : voiceUiMode;
+    setVoiceState(mappedState as 'idle' | 'listening' | 'processing' | 'speaking');
+  }, [voiceUiMode, setVoiceState]);
+
   // Cleanup: Stop all speech when component unmounts or user navigates away
   useEffect(() => {
     const cleanup = () => {
@@ -546,7 +555,7 @@ export default function TomAIChatPanel({ showHeader = true, onMenuOpen }: TomAIC
 
           setInputMessage(currentTranscript);
 
-          // Set timeout to send message after 1.5 seconds of silence
+          // Set timeout to send message after 0.8 seconds of silence (faster response like ChatGPT)
           messageTimeoutRef.current = setTimeout(() => {
             if (currentTranscript && isVoiceModeRef.current) {
               console.log('Sending message after silence:', currentTranscript);
@@ -561,7 +570,7 @@ export default function TomAIChatPanel({ showHeader = true, onMenuOpen }: TomAIC
               handleSendMessageInternal(currentTranscript);
               currentTranscript = '';
             }
-          }, 1500);
+          }, 800);
         } else {
           // Update interim transcript display (but don't show if too short)
           if (interimTranscript.length >= 3) {
@@ -884,6 +893,20 @@ export default function TomAIChatPanel({ showHeader = true, onMenuOpen }: TomAIC
             console.log('✅ OpenAI TTS playback ended');
             isSpeakingRef.current = false;
             URL.revokeObjectURL(audioUrl);
+
+            // Restart listening after speaking finishes
+            if (isVoiceModeRef.current) {
+              setVoiceUiMode('listening');
+              setTimeout(() => {
+                try {
+                  voiceModeRecognitionRef.current?.start();
+                  console.log('🎤 Restarted listening after OpenAI TTS finished');
+                } catch (e) {
+                  console.log('Could not restart recognition:', e);
+                }
+              }, 200);
+            }
+
             resolve(); // Resolve the promise when audio finishes
           };
 
@@ -891,6 +914,20 @@ export default function TomAIChatPanel({ showHeader = true, onMenuOpen }: TomAIC
             console.error('❌ Audio playback error:', event);
             isSpeakingRef.current = false;
             URL.revokeObjectURL(audioUrl);
+
+            // Restart listening even after error
+            if (isVoiceModeRef.current) {
+              setVoiceUiMode('listening');
+              setTimeout(() => {
+                try {
+                  voiceModeRecognitionRef.current?.start();
+                  console.log('🎤 Restarted listening after audio error');
+                } catch (e) {
+                  console.log('Could not restart after error:', e);
+                }
+              }, 500);
+            }
+
             reject(event);
           };
 
