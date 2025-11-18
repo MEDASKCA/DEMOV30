@@ -60,7 +60,7 @@ export default function TomLeftPanel({ isOpen, onClose, onOpen, onCollapseChange
                 <Menu className="w-4 h-4" />
               </button>
               <div>
-                <h2 className="text-sm font-bold">TOM AI</h2>
+                <h2 className="text-sm font-bold">TOM by MEDASKCA™</h2>
                 <p className="text-xs text-white/80">{getCurrentPageContext()}</p>
               </div>
             </div>
