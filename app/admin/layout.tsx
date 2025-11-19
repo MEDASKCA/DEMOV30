@@ -5,19 +5,28 @@ import TomLeftPanel from '@/components/TomLeftPanel';
 import VoiceModeButton from '@/components/VoiceModeButton';
 import GlobalVoiceOverlay from '@/components/GlobalVoiceOverlay';
 import HospitalSelector from '@/components/HospitalSelector';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { User, Settings, HelpCircle, LogOut, ChevronDown } from 'lucide-react';
 import { useListening } from '@/contexts/ListeningContext';
 
 function AdminLayoutContent({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
   const { voiceState } = useListening();
   const [isTomCollapsed, setIsTomCollapsed] = useState(false);
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const [showTomPanel, setShowTomPanel] = useState(true); // Default to true since default view is chat
   const [currentView, setCurrentView] = useState<string | null>('chat'); // Track current view
   const [showVoiceOverlay, setShowVoiceOverlay] = useState(false); // Global voice overlay state
+  const [isMainAdminPage, setIsMainAdminPage] = useState(true); // Track if we're on main admin page
+
+  // Check if we're on the main admin page or a sub-route
+  useEffect(() => {
+    // Only show header on the main /admin page, not on sub-routes like /admin/operations, /admin/schedule, etc.
+    const onMainPage = pathname === '/admin' || pathname === '/admin/';
+    setIsMainAdminPage(onMainPage);
+  }, [pathname]);
 
   // Only show TOM panel on chat view, hide on feeds/home view
   useEffect(() => {
@@ -56,8 +65,8 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
         <p className="text-sm font-bold whitespace-nowrap">ADMIN DEMO ACCOUNT</p>
       </div>
 
-      {/* TOM by MEDASKCA Header - Only show on chat and feeds pages */}
-      {(currentView === 'chat' || currentView === 'feeds') && (
+      {/* TOM by MEDASKCA Header - Only show on main admin page when view is chat or feeds */}
+      {isMainAdminPage && (currentView === 'chat' || currentView === 'feeds') && (
         <div className="text-white flex-shrink-0 shadow-lg z-[110]" style={{background: 'linear-gradient(135deg, #3B82F6 0%, #06B6D4 50%, #8B5CF6 100%)'}}>
           {/* Desktop Header */}
         <div className="hidden md:flex px-6 py-3 items-center justify-between">
