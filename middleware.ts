@@ -2,9 +2,22 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
-  // Middleware disabled — allow all requests through.
-  // To re-enable auth gating, restore the previous logic that checked
-  // `tom_authenticated` and redirected to /login when needed.
+  const { pathname } = request.nextUrl;
+
+  // Allow access to login page, terms page, and API routes
+  if (pathname.startsWith('/login') || pathname.startsWith('/terms') || pathname.startsWith('/api/')) {
+    return NextResponse.next();
+  }
+
+  // Check if user is authenticated
+  const isAuthenticated = request.cookies.get('tom_authenticated')?.value === 'true';
+
+  if (!isAuthenticated) {
+    // Redirect to login
+    const loginUrl = new URL('/login', request.url);
+    return NextResponse.redirect(loginUrl);
+  }
+
   return NextResponse.next();
 }
 
