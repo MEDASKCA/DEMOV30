@@ -147,32 +147,21 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
           </div>
         </div>
 
-        {/* Mobile Header - Show different headers based on page */}
-        <div className="md:hidden px-3 py-2.5 flex items-center justify-between gap-2">
-          {/* Left: Branding/Title - Full for TOM, Compact for others */}
-          {currentView === 'chat' ? (
-            <div className="flex-1 min-w-0">
-              <h1 className="text-base font-bold leading-tight">TOM by MEDASKCA</h1>
-              <p className="text-xs text-white/90 leading-tight">Theatre Operations Manager</p>
-              <p className="text-[10px] italic text-white/80 leading-tight">Demo for NHSCEP Cohort 10</p>
-            </div>
-          ) : (
-            <div className="flex-1 min-w-0">
-              <h1 className="text-lg font-bold leading-tight">
-                {currentView === 'feeds' ? 'Feeds' :
-                 currentView === 'dashboard' ? 'Dashboard' :
-                 currentView === 'schedule' ? 'Schedule' :
-                 currentView === 'shifts' ? 'Shifts' :
-                 currentView === 'workforce' ? 'Workforce' :
-                 currentView === 'inventory' ? 'Inventory' :
-                 currentView === 'procedures' ? 'Procedures' :
-                 currentView === 'equipment' ? 'Equipment' :
-                 currentView === 'settings' ? 'Settings' :
-                 currentView === 'help' ? 'Help & Support' :
-                 'TOM by MEDASKCA'}
-              </h1>
-            </div>
-          )}
+        {/* Mobile Header - Only show on chat and feeds pages */}
+        {(currentView === 'chat' || currentView === 'feeds') && (
+          <div className="md:hidden px-3 py-2.5 flex items-center justify-between gap-2">
+            {/* Left: Branding/Title - Full for TOM, Compact for Feeds */}
+            {currentView === 'chat' ? (
+              <div className="flex-1 min-w-0">
+                <h1 className="text-base font-bold leading-tight">TOM by MEDASKCA</h1>
+                <p className="text-xs text-white/90 leading-tight">Theatre Operations Manager</p>
+                <p className="text-[10px] italic text-white/80 leading-tight">Demo for NHSCEP Cohort 10</p>
+              </div>
+            ) : (
+              <div className="flex-1 min-w-0">
+                <h1 className="text-lg font-bold leading-tight">Feeds</h1>
+              </div>
+            )}
 
           {/* Right: Hospital Icon & Profile - Compact */}
           <div className="flex items-center gap-1.5 flex-shrink-0">
@@ -248,6 +237,7 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
             </div>
           </div>
         </div>
+        )}
       </div>
 
       {/* Content Area with TOM Panel */}
