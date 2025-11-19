@@ -148,10 +148,9 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
           </div>
         </div>
 
-        {/* Mobile Header - Only show on chat and feeds pages */}
-        {(currentView === 'chat' || currentView === 'feeds') && (
-          <div className="md:hidden px-3 py-2.5 flex items-center justify-between gap-2">
-            {/* Left: Branding/Title - Full for TOM, Compact for Feeds */}
+        {/* Mobile Header */}
+        <div className="md:hidden px-3 py-2.5 flex items-center justify-between gap-2">
+          {/* Left: Branding/Title - Full for TOM, Compact for Feeds */}
             {currentView === 'chat' ? (
               <div className="flex-1 min-w-0">
                 <h1 className="text-base font-bold leading-tight">TOM by MEDASKCA</h1>
@@ -238,9 +237,8 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
             </div>
           </div>
         </div>
-        )}
-        </div>
-      )}
+      </div>
+    )}
 
       {/* Content Area with TOM Panel */}
       <div className="flex-1 flex overflow-hidden relative">
