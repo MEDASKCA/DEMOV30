@@ -740,14 +740,14 @@ export default function ProceduresView({ onBack, isAdmin = false, socUnlocked: s
                               </span>
                             )}
                           </div>
-                          <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500">
+                          <div className="flex flex-col md:flex-row md:flex-wrap md:items-center gap-2 text-xs text-gray-500">
                             <span className="flex items-center gap-1">
                               <span className="font-medium">OPCS-4:</span>
                               <span className="font-bold text-blue-600">{procedure.opcs4.join(', ')}</span>
                             </span>
 
                             {/* Interactive Score Dropdowns */}
-                            <div className="flex flex-wrap items-center gap-2 ml-24" onClick={(e) => e.stopPropagation()}>
+                            <div className="flex flex-wrap items-center gap-2 md:ml-4" onClick={(e) => e.stopPropagation()}>
                               {/* Complexity Dropdown */}
                               <div className="flex items-center gap-1 px-2 py-1 bg-white rounded border border-purple-200">
                                 <span className="font-medium text-purple-900">Complexity:</span>
@@ -828,7 +828,16 @@ export default function ProceduresView({ onBack, isAdmin = false, socUnlocked: s
                                     <Info className="w-4 h-4" />
                                   </div>
                                   {showPCSInfo && (
-                                    <div className="absolute z-50 left-0 top-6 w-80 p-4 bg-white border border-gray-300 rounded-lg shadow-xl text-xs text-gray-700">
+                                    <div className="absolute z-50 left-0 md:left-auto md:right-0 top-6 w-screen max-w-sm md:w-80 p-4 bg-white border border-gray-300 rounded-lg shadow-xl text-xs text-gray-700">
+                                      <button
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          setShowPCSInfo(false);
+                                        }}
+                                        className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 md:hidden"
+                                      >
+                                        <X className="w-4 h-4" />
+                                      </button>
                                       <h4 className="font-bold text-sm text-indigo-900 mb-2">Procedure Complexity Score (PCS)</h4>
                                       <p className="mb-2">A 4-factor scoring system to assess procedure complexity:</p>
                                       <ul className="space-y-1 mb-2">
