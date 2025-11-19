@@ -386,7 +386,7 @@ export default function ProceduresView({ onBack, isAdmin = false, socUnlocked: s
   };
 
   return (
-    <div className="h-full flex flex-col bg-gray-50">
+    <div className="min-h-screen md:h-full w-full flex flex-col bg-gray-50">
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
         {/* Desktop Header - Hide when isAdmin (page has its own header) */}
@@ -441,7 +441,7 @@ export default function ProceduresView({ onBack, isAdmin = false, socUnlocked: s
 
       {/* Main Content */}
       <div className="flex-1 overflow-y-auto p-2 md:p-3">
-        <div className="max-w-full mx-auto space-y-3">
+        <div className="w-full mx-auto space-y-3">
           {/* Amazon-Style Category Boxes - Desktop Only */}
           <div className="hidden md:block">
             <div className="grid grid-cols-3 gap-3">

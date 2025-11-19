@@ -241,6 +241,30 @@ function AdminSchedulePageContent() {
           </div>
         </div>
 
+        {/* Mobile Tab Bar - Horizontal Scrolling */}
+        <div className="md:hidden bg-white border-b border-gray-200 flex-shrink-0 print:hidden">
+          <div className="flex overflow-x-auto scrollbar-hide snap-x snap-mandatory px-2 py-2 gap-2">
+            {sidebarItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleTabChange(item.id)}
+                  className={`flex-shrink-0 snap-start flex items-center gap-2 px-4 py-2.5 rounded-lg transition-all whitespace-nowrap text-sm font-semibold ${
+                    isActive
+                      ? 'bg-gradient-to-r from-blue-600 via-teal-600 to-purple-600 text-white shadow-md'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  <Icon className="w-4 h-4 flex-shrink-0" />
+                  <span>{item.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         {/* Content Area */}
         <div className="flex-1 overflow-auto bg-gray-50 pb-20 md:pb-4">
           <div className="md:p-4 p-6">
