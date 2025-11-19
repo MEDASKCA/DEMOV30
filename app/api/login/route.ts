@@ -3,6 +3,26 @@ import { NextRequest, NextResponse } from 'next/server';
 // Force dynamic rendering for API route
 export const dynamic = 'force-dynamic';
 
+// Helper function to log access attempts
+async function logAccess(request: NextRequest, username: string, status: 'approved' | 'pending' | 'denied') {
+  try {
+    // Create a new request to the access-logs API
+    const baseUrl = request.nextUrl.origin;
+    await fetch(`${baseUrl}/api/access-logs`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-forwarded-for': request.headers.get('x-forwarded-for') || '',
+        'x-real-ip': request.headers.get('x-real-ip') || '',
+        'user-agent': request.headers.get('user-agent') || '',
+      },
+      body: JSON.stringify({ username, status }),
+    });
+  } catch (error) {
+    console.error('Failed to log access:', error);
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { username, password } = await request.json();
@@ -13,6 +33,9 @@ export async function POST(request: NextRequest) {
 
     // Check for immediate approved access
     if (username === approvedCredential.username && password === approvedCredential.password) {
+      // Log approved access
+      await logAccess(request, username, 'approved');
+
       const response = NextResponse.json(
         { success: true, message: 'Authentication successful', approved: true, user: { username: 'nhscep2025', role: 'admin' } },
         { status: 200 }
@@ -40,6 +63,9 @@ export async function POST(request: NextRequest) {
 
     // Check for pending approval access
     if (username === pendingCredential.username && password === pendingCredential.password) {
+      // Log pending access
+      await logAccess(request, username, 'pending');
+
       return NextResponse.json(
         {
           success: false,
@@ -49,6 +75,9 @@ export async function POST(request: NextRequest) {
         { status: 403 }
       );
     }
+
+    // Invalid credentials - log denied access
+    await logAccess(request, username || 'unknown', 'denied');
 
     // Invalid credentials
     return NextResponse.json(
