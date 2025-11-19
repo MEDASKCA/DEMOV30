@@ -56,8 +56,8 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
         <p className="text-sm font-bold whitespace-nowrap">ADMIN DEMO ACCOUNT</p>
       </div>
 
-      {/* TOM by MEDASKCA Header - Only show on chat and feeds pages when no drawer is open */}
-      {(currentView === 'chat' || currentView === 'feeds') && !showDrawer && (
+      {/* TOM by MEDASKCA Header - Only show on chat and feeds pages */}
+      {(currentView === 'chat' || currentView === 'feeds') && (
         <div className="text-white flex-shrink-0 shadow-lg z-[110]" style={{background: 'linear-gradient(135deg, #3B82F6 0%, #06B6D4 50%, #8B5CF6 100%)'}}>
           {/* Desktop Header */}
         <div className="hidden md:flex px-6 py-3 items-center justify-between">
