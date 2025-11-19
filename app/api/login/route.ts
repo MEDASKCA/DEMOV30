@@ -7,24 +7,18 @@ export async function POST(request: NextRequest) {
   try {
     const { username, password } = await request.json();
 
-    // Demo credentials
-    const validCredentials = [
-      { username: 'demo', password: 'nhscep2025', role: 'viewer' },
-      { username: 'admin', password: 'medaskca2025', role: 'admin' },
-      { username: 'theatremanager', password: 'tom2025', role: 'manager' }
-    ];
+    // Two-tier access system
+    const approvedCredential = { username: 'nhscep2025', password: 'cohort10' };
+    const pendingCredential = { username: 'demo', password: 'nhscep2025' };
 
-    const user = validCredentials.find(
-      cred => cred.username === username && cred.password === password
-    );
-
-    if (user) {
+    // Check for immediate approved access
+    if (username === approvedCredential.username && password === approvedCredential.password) {
       const response = NextResponse.json(
-        { success: true, message: 'Authentication successful', user: { username: user.username, role: user.role } },
+        { success: true, message: 'Authentication successful', approved: true, user: { username: 'nhscep2025', role: 'admin' } },
         { status: 200 }
       );
 
-      // Set HTTP-only cookie for security
+      // Set authenticated cookie for immediate access
       response.cookies.set('tom_authenticated', 'true', {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
@@ -33,7 +27,7 @@ export async function POST(request: NextRequest) {
         path: '/',
       });
 
-      response.cookies.set('tom_user', user.username, {
+      response.cookies.set('tom_user', 'nhscep2025', {
         httpOnly: false, // Accessible by client for display
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
@@ -42,12 +36,25 @@ export async function POST(request: NextRequest) {
       });
 
       return response;
-    } else {
+    }
+
+    // Check for pending approval access
+    if (username === pendingCredential.username && password === pendingCredential.password) {
       return NextResponse.json(
-        { success: false, message: 'Invalid credentials' },
-        { status: 401 }
+        {
+          success: false,
+          message: 'Access pending approval. Please contact the administrator or submit a request form.',
+          requiresApproval: true
+        },
+        { status: 403 }
       );
     }
+
+    // Invalid credentials
+    return NextResponse.json(
+      { success: false, message: 'Invalid credentials' },
+      { status: 401 }
+    );
   } catch (error) {
     return NextResponse.json(
       { success: false, message: 'Server error' },
