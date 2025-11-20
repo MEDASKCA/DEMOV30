@@ -34,7 +34,7 @@ export default function AdminPage() {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [currentPage, setCurrentPage] = useState<'ai' | 'home' | 'ops' | 'theatres' | 'alerts' | 'menu' | 'workforce' | 'inventory'>('ai');
-  const [currentView, setCurrentView] = useState<string>('chat');
+  const [currentView, setCurrentView] = useState<string>('feeds');
   const [showDrawer, setShowDrawer] = useState(false);
   const [drawerType, setDrawerType] = useState<'theatres' | 'menu' | 'workforce' | 'inventory' | 'ops' | 'alerts' | null>(null);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);

@@ -16,8 +16,8 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
   const { voiceState } = useListening();
   const [isTomCollapsed, setIsTomCollapsed] = useState(false);
   const [showAccountMenu, setShowAccountMenu] = useState(false);
-  const [showTomPanel, setShowTomPanel] = useState(true); // Default to true since default view is chat
-  const [currentView, setCurrentView] = useState<string | null>('chat'); // Track current view
+  const [showTomPanel, setShowTomPanel] = useState(false); // Default to false since default view is feeds
+  const [currentView, setCurrentView] = useState<string | null>('feeds'); // Track current view
   const [showVoiceOverlay, setShowVoiceOverlay] = useState(false); // Global voice overlay state
   const [isMainAdminPage, setIsMainAdminPage] = useState(true); // Track if we're on main admin page
 
