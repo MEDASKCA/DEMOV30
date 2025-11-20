@@ -21,6 +21,7 @@ import {
   ReadinessStatus,
   CheckItem
 } from '@/lib/readiness/readinessTypes';
+import { CriticalAlertsPanel, PendingTasksPanel, IncidentsPanel } from '@/components/AlertsPanels';
 
 interface ReadinessViewProps {
   onBack?: () => void;
@@ -373,6 +374,14 @@ export default function ReadinessView({ onBack }: ReadinessViewProps) {
               </div>
             )}
           </div>
+        </div>
+
+        {/* Critical Alerts, Pending Tasks, and Incidents - Desktop Only */}
+        <div className="hidden sm:block space-y-4 mt-6">
+          <h2 className="text-xl font-bold text-gray-900 mb-4">Operational Status</h2>
+          <CriticalAlertsPanel />
+          <PendingTasksPanel />
+          <IncidentsPanel />
         </div>
 
         {/* Complete Button */}
