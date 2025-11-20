@@ -23,7 +23,7 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
 
   // Check if we're on the main admin page or a sub-route
   useEffect(() => {
-    // Only show header on the main /admin page, not on sub-routes like /admin/operations, /admin/schedule, etc.
+    // Check if we're on the main /admin page (for mobile header logic)
     const onMainPage = pathname === '/admin' || pathname === '/admin/';
     setIsMainAdminPage(onMainPage);
   }, [pathname]);
@@ -65,10 +65,9 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
         <p className="text-sm font-bold whitespace-nowrap">ADMIN DEMO ACCOUNT</p>
       </div>
 
-      {/* TOM by MEDASKCA Header - Only show on main admin page when view is chat or feeds */}
-      {isMainAdminPage && (currentView === 'chat' || currentView === 'feeds') && (
-        <div className="text-white flex-shrink-0 shadow-lg z-[110]" style={{background: 'linear-gradient(135deg, #3B82F6 0%, #06B6D4 50%, #8B5CF6 100%)'}}>
-          {/* Desktop Header */}
+      {/* TOM by MEDASKCA Header */}
+      <div className="text-white flex-shrink-0 shadow-lg z-[110]" style={{background: 'linear-gradient(135deg, #3B82F6 0%, #06B6D4 50%, #8B5CF6 100%)'}}>
+        {/* Desktop Header - Show on all admin pages */}
         <div className="hidden md:flex px-6 py-3 items-center justify-between">
           {/* Left: Branding */}
           <div>
@@ -157,8 +156,9 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
           </div>
         </div>
 
-        {/* Mobile Header */}
-        <div className="md:hidden px-3 py-2.5 flex items-center justify-between gap-2">
+        {/* Mobile Header - Only show on main admin page when view is chat or feeds */}
+        {isMainAdminPage && (currentView === 'chat' || currentView === 'feeds') && (
+          <div className="md:hidden px-3 py-2.5 flex items-center justify-between gap-2">
           {/* Left: Branding/Title - Full for TOM, Compact for Feeds */}
             {currentView === 'chat' ? (
               <div className="flex-1 min-w-0">
@@ -246,8 +246,8 @@ function AdminLayoutContent({ children }: { children: React.ReactNode }) {
             </div>
           </div>
         </div>
+        )}
       </div>
-    )}
 
       {/* Content Area with TOM Panel */}
       <div className="flex-1 flex overflow-hidden relative">
