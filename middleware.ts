@@ -9,8 +9,10 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Check if user is authenticated
-  const isAuthenticated = request.cookies.get('tom_authenticated')?.value === 'true';
+  // Check if user is authenticated via Worker (medaskca_session) OR via app (tom_authenticated)
+  const hasWorkerAuth = request.cookies.has('medaskca_session');
+  const hasAppAuth = request.cookies.get('tom_authenticated')?.value === 'true';
+  const isAuthenticated = hasWorkerAuth || hasAppAuth;
 
   if (!isAuthenticated) {
     // Redirect to login
