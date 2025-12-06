@@ -1351,47 +1351,50 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
 
           {/* Extra Controls (Collapsible) */}
           {showExtraControls && (
-          <div className="flex flex-wrap gap-2">
-            <label className="px-3 py-1.5 text-white text-xs sm:text-sm font-medium rounded transition-all cursor-pointer flex items-center gap-1" className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700">
-              <Upload className="w-3 h-3 sm:w-4 sm:h-4" />
-              Upload Scrub
+          <div className="flex flex-wrap gap-2 sm:gap-3">
+            {/* Upload Scrub Button */}
+            <label className="group relative px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white text-xs sm:text-sm font-bold rounded-lg shadow-md hover:shadow-xl transition-all duration-200 cursor-pointer flex items-center gap-2 transform hover:scale-105">
+              <Upload className="w-4 h-4" />
+              <span>Upload Scrub</span>
               <input type="file" accept=".xlsx,.xls" onChange={(e) => handleFileUpload(e, 'scrub')} className="hidden" />
             </label>
 
-            <label className="px-3 py-1.5 text-white text-xs sm:text-sm font-medium rounded transition-all cursor-pointer flex items-center gap-1" className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700">
-              <Upload className="w-3 h-3 sm:w-4 sm:h-4" />
-              Upload Anaes
+            {/* Upload Anaes Button */}
+            <label className="group relative px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white text-xs sm:text-sm font-bold rounded-lg shadow-md hover:shadow-xl transition-all duration-200 cursor-pointer flex items-center gap-2 transform hover:scale-105">
+              <Upload className="w-4 h-4" />
+              <span>Upload Anaes</span>
               <input type="file" accept=".xlsx,.xls" onChange={(e) => handleFileUpload(e, 'anaes')} className="hidden" />
             </label>
 
+            {/* Clear Button */}
             <button
               onClick={handleClear}
-              className="px-3 py-1.5 bg-red-700 text-white text-xs sm:text-sm font-medium rounded hover:bg-red-800 transition-all flex items-center gap-1"
+              className="px-4 py-2 bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 text-white text-xs sm:text-sm font-bold rounded-lg shadow-md hover:shadow-xl transition-all duration-200 flex items-center gap-2 transform hover:scale-105"
             >
-              <X className="w-3 h-3 sm:w-4 sm:h-4" />
-              Clear
+              <X className="w-4 h-4" />
+              <span>Clear</span>
             </button>
 
             {!templateMode && (
               <>
                 {/* Auto-Roster Mode Toggle */}
-                <div className="flex items-center gap-1 px-2 py-1 bg-gray-700 rounded">
+                <div className="flex items-center gap-0.5 px-1 py-1 bg-gradient-to-r from-slate-700 to-slate-800 rounded-lg shadow-md border border-slate-600">
                   <button
                     onClick={() => setAutoRosterMode('single')}
-                    className={`px-2 py-0.5 text-xs rounded transition-colors ${
+                    className={`px-3 py-1 text-xs font-semibold rounded-md transition-all duration-200 ${
                       autoRosterMode === 'single'
-                        ? 'bg-purple-600 text-white'
-                        : 'text-gray-300 hover:text-white'
+                        ? 'bg-gradient-to-r from-purple-500 to-fuchsia-600 text-white shadow-md'
+                        : 'text-gray-300 hover:text-white hover:bg-slate-600'
                     }`}
                   >
                     Single
                   </button>
                   <button
                     onClick={() => setAutoRosterMode('range')}
-                    className={`px-2 py-0.5 text-xs rounded transition-colors ${
+                    className={`px-3 py-1 text-xs font-semibold rounded-md transition-all duration-200 ${
                       autoRosterMode === 'range'
-                        ? 'bg-purple-600 text-white'
-                        : 'text-gray-300 hover:text-white'
+                        ? 'bg-gradient-to-r from-purple-500 to-fuchsia-600 text-white shadow-md'
+                        : 'text-gray-300 hover:text-white hover:bg-slate-600'
                     }`}
                   >
                     Range
@@ -1400,14 +1403,14 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
 
                 {/* End Date Picker (only for range mode) */}
                 {autoRosterMode === 'range' && (
-                  <div className="flex items-center gap-1">
-                    <label className="text-xs font-medium text-white">To:</label>
+                  <div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-slate-700 to-slate-800 rounded-lg shadow-md border border-slate-600">
+                    <label className="text-xs font-bold text-white">To:</label>
                     <input
                       type="date"
                       value={autoRosterEndDate}
                       onChange={(e) => setAutoRosterEndDate(e.target.value)}
                       min={selectedDate}
-                      className="px-2 py-1 text-xs border border-gray-300 rounded focus:ring-2 focus:ring-purple-500"
+                      className="px-2 py-1 text-xs font-medium bg-white border-2 border-purple-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all"
                     />
                   </div>
                 )}
@@ -1416,37 +1419,38 @@ export default function AllocationView({ templateMode = false }: AllocationViewP
                 <button
                   onClick={handleAutoRoster}
                   disabled={isGeneratingRoster}
-                  className="px-3 py-1.5 bg-purple-600 text-white text-xs sm:text-sm font-medium rounded hover:bg-purple-700 transition-all flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-4 py-2 bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white text-xs sm:text-sm font-bold rounded-lg shadow-md hover:shadow-xl transition-all duration-200 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 disabled:transform-none"
                 >
                   {isGeneratingRoster ? (
                     <>
-                      <Loader2 className="w-3 h-3 sm:w-4 sm:h-4 animate-spin" />
-                      {rosterProgress ? `${rosterProgress.current}/${rosterProgress.total}` : 'Generating...'}
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <span>{rosterProgress ? `${rosterProgress.current}/${rosterProgress.total}` : 'Generating...'}</span>
                     </>
                   ) : (
                     <>
-                      <Sparkles className="w-3 h-3 sm:w-4 sm:h-4" />
-                      Auto-Roster
+                      <Sparkles className="w-4 h-4" />
+                      <span>Auto-Roster</span>
                     </>
                   )}
                 </button>
               </>
             )}
 
+            {/* Staff List Button */}
             <button
               onClick={() => setShowStaffList(!showStaffList)}
-              className="px-3 py-1.5 text-white text-xs sm:text-sm font-medium rounded transition-all flex items-center gap-1"
-              className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700"
+              className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white text-xs sm:text-sm font-bold rounded-lg shadow-md hover:shadow-xl transition-all duration-200 flex items-center gap-2 transform hover:scale-105"
             >
-              <List className="w-3 h-3 sm:w-4 sm:h-4" />
-              Staff List
+              <List className="w-4 h-4" />
+              <span>Staff List</span>
             </button>
 
+            {/* Initialize Button */}
             <button
               onClick={handleInitializeConfig}
-              className="px-3 py-1.5 bg-gray-600 text-white text-xs sm:text-sm font-medium rounded hover:bg-gray-700 transition-all"
+              className="px-4 py-2 bg-gradient-to-r from-slate-600 to-gray-700 hover:from-slate-700 hover:to-gray-800 text-white text-xs sm:text-sm font-bold rounded-lg shadow-md hover:shadow-xl transition-all duration-200 flex items-center gap-2 transform hover:scale-105"
             >
-              Initialize
+              <span>Initialize</span>
             </button>
           </div>
           )}
